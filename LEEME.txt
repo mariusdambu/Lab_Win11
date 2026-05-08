@@ -1,0 +1,33 @@
+WIN11 DEPLOYMENT LAB
+====================
+
+Main folder:
+E:\Lab_Win11
+
+Recommended entry point:
+E:\Lab_Win11\start_lab.cmd
+
+Default language:
+English. The launcher lets you choose English, Espanol, Francais, Romana or Deutsch before opening the menu.
+
+Structure:
+- Ayuda        -> guides, HTML search page and copy-ready commands.
+- Herramientas -> PowerShell scripts used by the lab.
+- Trabajo      -> working files only: images, ISOs, drivers, packages, offline mount point and logs.
+
+Work rules:
+- Trabajo\images is only for boot.* and install.* image files: .wim, .esd and .swm.
+- Trabajo\ISOs is only for .iso files.
+- The only expected destination outside E:\Lab_Win11 is the USB drive you choose.
+
+Normal flow:
+1. Open start_lab.cmd.
+2. Choose the language.
+3. Use option 1 for the searchable HTML command library, or option 3 for quick console copy.
+4. Use option 4 to service install.wim with the assistant.
+5. Use option 5 to create the Windows 11 USB.
+6. Use option 6 to copy install.* to one or several valid USB targets.
+7. Use option 7 to copy boot.* to one or several valid USB targets.
+
+Warning:
+Destructive USB actions require typed confirmation before a disk is erased.

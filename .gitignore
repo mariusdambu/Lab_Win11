@@ -1,0 +1,47 @@
+# Windows noise
+desktop.ini
+Thumbs.db
+*.lnk
+
+# Local Windows deployment media and images
+*.iso
+*.wim
+*.esd
+*.swm
+*.ffu
+*.vhd
+*.vhdx
+
+# Driver and package payloads can be large or vendor/private
+Trabajo/Drivers/*
+Trabajo/packages/*
+Trabajo/ISOs/*
+Trabajo/images/*
+
+# Keep placeholder files
+!Trabajo/Drivers/.gitkeep
+!Trabajo/packages/.gitkeep
+!Trabajo/ISOs/.gitkeep
+!Trabajo/images/.gitkeep
+
+# DISM working output
+Trabajo/Logs/*
+Trabajo/Scratch/*
+Trabajo/offline/*
+!Trabajo/Logs/.gitkeep
+!Trabajo/Scratch/.gitkeep
+!Trabajo/offline/.gitkeep
+
+# Answer files may contain keys, users, domain names, or local data
+Trabajo/AnswerFiles/*
+!Trabajo/AnswerFiles/.gitkeep
+
+# Temporary files
+*.log
+*.tmp
+*.bak
+*.old
+*.zip
+*.7z
+*.rar
+

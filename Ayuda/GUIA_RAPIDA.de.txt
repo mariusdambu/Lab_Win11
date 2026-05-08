@@ -1,0 +1,17 @@
+﻿KURZANLEITUNG - WIN11 LAB
+=========================
+
+Oeffnen:
+
+E:\Lab_Win11\start_lab.cmd
+
+Sprache: ENTER oder 1 Englisch, 2 Spanisch, 3 Franzoesisch, 4 Rumaenisch, 5 Deutsch
+
+Am nuetzlichsten: Option 1 HTML, Option 3 Konsolen-Kopierer, Option 4 install.wim-Assistent, Option 5 USB erstellen, Option 6 install.* auf USB kopieren, Option 7 boot.* auf USB kopieren.
+
+Ordner: images nur boot.* und install.* (.wim/.esd/.swm); ISOs nur .iso; Drivers; packages; offline.
+
+Vor dem Mounten: offline muss leer sein; dism /Get-MountedImageInfo pruefen; mit Dism /Cleanup-Mountpoints erholen.
+
+Im Setup: Shift + F10 oeffnet Konsole; ncpa.cpl oeffnet Netzwerkadapter.
+

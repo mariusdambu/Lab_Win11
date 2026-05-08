@@ -1,0 +1,1427 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lab Win11 - comandos</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f4f6f8;
+      --panel: #ffffff;
+      --ink: #17202a;
+      --muted: #5b6573;
+      --line: #d8dee7;
+      --blue: #2457a6;
+      --green: #24785b;
+      --amber: #8a5b00;
+      --red: #a33a32;
+      --shadow: 0 10px 28px rgba(22, 32, 42, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      letter-spacing: 0;
+    }
+
+    header {
+      background: #ffffff;
+      border-bottom: 1px solid var(--line);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .wrap {
+      max-width: 1220px;
+      margin: 0 auto;
+      padding: 18px;
+    }
+
+    .topbar {
+      display: grid;
+      grid-template-columns: minmax(220px, 1fr) auto;
+      gap: 16px;
+      align-items: center;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 24px;
+      line-height: 1.2;
+      font-weight: 700;
+    }
+
+    .sub {
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: flex-end;
+    }
+
+    button, .link-button {
+      border: 1px solid var(--line);
+      background: #ffffff;
+      color: var(--ink);
+      border-radius: 6px;
+      padding: 9px 11px;
+      font-size: 14px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      min-height: 38px;
+    }
+
+    button:hover, .link-button:hover {
+      border-color: #9eb2cc;
+      background: #f7fbff;
+    }
+
+    button.primary {
+      background: var(--blue);
+      color: #ffffff;
+      border-color: var(--blue);
+    }
+
+    main .wrap {
+      display: grid;
+      grid-template-columns: 300px minmax(0, 1fr);
+      gap: 18px;
+      align-items: start;
+    }
+
+    aside {
+      position: sticky;
+      top: 94px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+      padding: 14px;
+    }
+
+    label {
+      display: block;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    input[type="text"], select {
+      width: 100%;
+      min-height: 40px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 9px 10px;
+      font-size: 14px;
+      background: #ffffff;
+      color: var(--ink);
+    }
+
+    .field { margin-bottom: 14px; }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-top: 8px;
+    }
+
+    .chip {
+      border-radius: 999px;
+      padding: 7px 9px;
+      min-height: 32px;
+      font-size: 13px;
+    }
+
+    .chip.active {
+      background: #e5f0ff;
+      border-color: #8ab0e6;
+      color: #173d75;
+    }
+
+    .hint {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .status {
+      margin: 0 0 12px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      gap: 10px;
+    }
+
+    .card-head {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 10px;
+      align-items: start;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: 16px;
+      line-height: 1.25;
+    }
+
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      align-items: center;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .tag {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 4px 7px;
+      background: #f7f8fa;
+      white-space: nowrap;
+    }
+
+    .risk-low { color: var(--green); border-color: #9bd2bf; background: #eefaf5; }
+    .risk-medium { color: var(--amber); border-color: #ddc17a; background: #fff8e3; }
+    .risk-high { color: var(--red); border-color: #e2a19b; background: #fff0ee; }
+
+    pre {
+      margin: 0;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+      background: #101923;
+      color: #eef6ff;
+      border-radius: 6px;
+      padding: 12px;
+      font: 13px/1.45 Consolas, "Cascadia Mono", monospace;
+      min-height: 68px;
+    }
+
+    .note {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: auto;
+    }
+
+    .empty {
+      background: var(--panel);
+      border: 1px dashed #aab5c2;
+      border-radius: 8px;
+      padding: 24px;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    .sources {
+      margin-top: 18px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 14px;
+    }
+
+    .sources a {
+      color: var(--blue);
+      display: inline-block;
+      margin: 5px 10px 5px 0;
+    }
+
+    @media (max-width: 920px) {
+      .topbar { grid-template-columns: 1fr; }
+      .toolbar { justify-content: flex-start; }
+      main .wrap { grid-template-columns: 1fr; }
+      aside { position: static; }
+      .grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap topbar">
+      <div>
+        <h1>Lab Win11</h1>
+        <div class="sub" data-i18n="subtitle">Searchable command library for DISM, WIM, drivers, packages and USB.</div>
+      </div>
+      <div class="toolbar">
+        <select id="language" aria-label="Language">
+          <option value="en">English</option>
+          <option value="es">Espanol</option>
+          <option value="fr">Francais</option>
+          <option value="ro">Romana</option>
+          <option value="de">Deutsch</option>
+        </select>
+        <a class="link-button" id="quickGuideLink" href="./GUIA_RAPIDA.en.txt" data-i18n="quickGuide">Quick guide</a>
+        <a class="link-button" id="plainTextLink" href="./COMANDOS_DISM_Y_USB.en.txt" data-i18n="plainText">Clean text</a>
+        <button class="primary" id="copyAssistant" data-i18n="copyAssistant">Copy assistant command</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="wrap">
+      <aside>
+        <div class="field">
+          <label for="labRoot" data-i18n="labFolder">Lab folder</label>
+          <input id="labRoot" type="text" value="E:\Lab_Win11" spellcheck="false">
+          <div class="hint" data-i18n="labHint">If you ever move the folder, change this and all commands will be recalculated.</div>
+        </div>
+
+        <div class="field">
+          <label for="search" data-i18n="search">Search</label>
+          <input id="search" type="text" placeholder="driver, mount, usb, package, esd..." autofocus>
+        </div>
+
+        <div class="field">
+          <label for="riskFilter" data-i18n="risk">Risk</label>
+          <select id="riskFilter">
+            <option value="all" data-i18n="riskAll">All</option>
+            <option value="low" data-i18n="riskLow">Low</option>
+            <option value="medium" data-i18n="riskMedium">Medium</option>
+            <option value="high" data-i18n="riskHigh">High</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label data-i18n="categories">Categories</label>
+          <div class="chips" id="categories"></div>
+        </div>
+
+        <div class="hint" data-i18n="riskHint">
+          Tip: high risk commands can erase, discard or modify images. Check the path before pasting them.
+        </div>
+      </aside>
+
+      <section>
+        <p class="status" id="status"></p>
+        <div class="grid" id="cards"></div>
+        <div class="sources">
+          <strong data-i18n="references">Useful references</strong><br>
+          <a href="https://learn.microsoft.com/windows-hardware/manufacture/desktop/deployment-image-servicing-and-management--dism--command-line-options?view=windows-11">Microsoft Learn: DISM</a>
+          <a href="https://learn.microsoft.com/windows-hardware/manufacture/desktop/dism-image-management-command-line-options-s14?view=windows-11">DISM Image Management</a>
+          <a href="https://learn.microsoft.com/windows-hardware/manufacture/desktop/dism-driver-servicing-command-line-options-s14?view=windows-11">DISM Drivers</a>
+          <a href="https://learn.microsoft.com/windows-hardware/manufacture/desktop/dism-operating-system-package-servicing-command-line-options?view=windows-11">DISM Packages</a>
+          <a href="https://learn.microsoft.com/windows-hardware/manufacture/desktop/dism-unattended-servicing-command-line-options?view=windows-11">DISM Unattend</a>
+          <a href="https://learn.microsoft.com/windows-hardware/manufacture/desktop/oscdimg-command-line-options?view=windows-11">Oscdimg</a>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    const commandData = [
+      {
+        title: "Ayuda general de DISM",
+        category: "Inicio",
+        risk: "low",
+        cmd: String.raw`Dism /?`,
+        note: "Lista opciones disponibles en el DISM de esta maquina."
+      },
+      {
+        title: "Ver imagenes dentro de install.wim",
+        category: "WIM",
+        risk: "low",
+        cmd: String.raw`Dism /Get-ImageInfo /ImageFile:"{IMG}\install.wim"`,
+        note: "Usalo antes de montar para saber indices y nombres exactos."
+      },
+      {
+        title: "Ver detalle del indice 1",
+        category: "WIM",
+        risk: "low",
+        cmd: String.raw`Dism /Get-ImageInfo /ImageFile:"{IMG}\install.wim" /Index:1 /English`,
+        note: "La salida en ingles ayuda cuando buscas errores en Internet."
+      },
+      {
+        title: "Montar install.wim por indice",
+        category: "Montar",
+        risk: "medium",
+        cmd: String.raw`Dism /Mount-Image /ImageFile:"{IMG}\install.wim" /Index:1 /MountDir:"{OFFLINE}" /CheckIntegrity`,
+        note: "Cambia /Index:1 si la edicion que quieres esta en otro indice."
+      },
+      {
+        title: "Montar Windows 11 Pro por nombre",
+        category: "Montar",
+        risk: "medium",
+        cmd: String.raw`Dism /Mount-Image /ImageFile:"{IMG}\install.wim" /Name:"Windows 11 Pro" /MountDir:"{OFFLINE}"`,
+        note: "Solo funciona si ese nombre existe exactamente en la imagen."
+      },
+      {
+        title: "Ver imagenes montadas",
+        category: "Montar",
+        risk: "low",
+        cmd: String.raw`Dism /Get-MountedImageInfo`,
+        note: "Comando oficial moderno para revisar montajes activos."
+      },
+      {
+        title: "Ver WIM montadas, alias clasico",
+        category: "Montar",
+        risk: "low",
+        cmd: String.raw`dism /Get-MountedWimInfo`,
+        note: "Util si ya lo tienes memorizado de apuntes antiguos."
+      },
+      {
+        title: "Remontar imagen atascada",
+        category: "Montar",
+        risk: "medium",
+        cmd: String.raw`Dism /Remount-Image /MountDir:"{OFFLINE}"`,
+        note: "Pruebalo si DISM dice que el montaje necesita recuperarse."
+      },
+      {
+        title: "Guardar cambios sin desmontar",
+        category: "Montar",
+        risk: "medium",
+        cmd: String.raw`Dism /Commit-Image /MountDir:"{OFFLINE}" /CheckIntegrity`,
+        note: "Guarda cambios pero deja la imagen montada."
+      },
+      {
+        title: "Desmontar guardando",
+        category: "Montar",
+        risk: "high",
+        cmd: String.raw`Dism /Unmount-Image /MountDir:"{OFFLINE}" /Commit /CheckIntegrity`,
+        note: "Cierra el montaje y escribe los cambios en el WIM."
+      },
+      {
+        title: "Desmontar descartando",
+        category: "Montar",
+        risk: "high",
+        cmd: String.raw`Dism /Unmount-Image /MountDir:"{OFFLINE}" /Discard`,
+        note: "Pierde los cambios hechos en la imagen montada."
+      },
+      {
+        title: "Limpiar puntos de montaje corruptos",
+        category: "Montar",
+        risk: "medium",
+        cmd: String.raw`Dism /Cleanup-Mountpoints`,
+        note: "No desmonta imagenes recuperables, limpia recursos rotos."
+      },
+      {
+        title: "Limpiar WIM, alias clasico",
+        category: "Montar",
+        risk: "medium",
+        cmd: String.raw`dism /Cleanup-Wim`,
+        note: "Alternativa conocida para salir de montajes viejos."
+      },
+      {
+        title: "Agregar carpeta de drivers",
+        category: "Drivers",
+        risk: "medium",
+        cmd: String.raw`Dism /Image:"{OFFLINE}" /Add-Driver /Driver:"{DRIVERS}" /Recurse /ForceUnsigned`,
+        note: "DISM acepta drivers tipo INF; los instaladores .exe no se integran asi."
+      },
+      {
+        title: "Agregar un INF concreto",
+        category: "Drivers",
+        risk: "medium",
+        cmd: String.raw`Dism /Image:"{OFFLINE}" /Add-Driver /Driver:"{DRIVERS}\modelo\driver.inf" /ForceUnsigned`,
+        note: "Cambia la ruta del INF."
+      },
+      {
+        title: "Listar drivers de terceros",
+        category: "Drivers",
+        risk: "low",
+        cmd: String.raw`Dism /Image:"{OFFLINE}" /Get-Drivers /Format:Table`,
+        note: "Por defecto muestra drivers de terceros."
+      },
+      {
+        title: "Listar todos los drivers",
+        category: "Drivers",
+        risk: "low",
+        cmd: String.raw`Dism /Image:"{OFFLINE}" /Get-Drivers /All /Format:Table`,
+        note: "Incluye drivers de Windows y de terceros."
+      },
+      {
+        title: "Detalle de un driver instalado",
+        category: "Drivers",
+        risk: "low",
+        cmd: String.raw`Dism /Image:"{OFFLINE}" /Get-DriverInfo /Driver:oem1.inf`,
+        note: "Cambia oem1.inf por el nombre publicado que salga en Get-Drivers."
+      },
+      {
+        title: "Quitar driver de la imagen",
+        category: "Drivers",
+        risk: "high",
+        cmd: String.raw`Dism /Image:"{OFFLINE}" /Remove-Driver /Driver:oem1.inf`,
+        note: "Quita un driver publicado. Revisa dos veces el nombre."
+      },
+      {
+        title: "Exportar drivers del Windows actual",
+        category: "Drivers",
+        risk: "low",
+        cmd: String.raw`Dism /Online /Export-Driver /Destination:"{WORK}\ExportedDrivers"`,
+        note: "Muy util para guardar drivers reales de una maquina ya instalada."
+      },
+      {
+        title: "Agregar todos los paquetes",
+        category: "Paquetes",
+        risk: "medium",
+        cmd: String.raw`Dism /Image:"{OFFLINE}" /Add-Package /PackagePath:"{PACKAGES}"`,
+        note: "Integra .cab y .msu de la carpeta packages."
+      },
+      {
+        title: "Agregar un paquete concreto",
+        category: "Paquetes",
+        risk: "medium",
+        cmd: String.raw`Dism /Image:"{OFFLINE}" /Add-Package /PackagePath:"{PACKAGES}\NOMBRE_DEL_PAQUETE.msu"`,
+        note: "Cambia el nombre del archivo."
+      },
+      {
+        title: "Ver paquetes instalados",
+        category: "Paquetes",
+        risk: "low",
+        cmd: String.raw`Dism /Image:"{OFFLINE}" /Get-Packages /Format:Table`,
+        note: "Sirve para buscar nombres antes de quitar algo."
+      },
+      {
+        title: "Info de paquete CAB",
+        category: "Paquetes",
+        risk: "low",
+        cmd: String.raw`Dism /Image:"{OFFLINE}" /Get-PackageInfo /PackagePath:"{PACKAGES}\NOMBRE.cab"`,
+        note: "Microsoft indica que este detalle por ruta aplica a CAB, no a MSU."
+      },
+      {
+        title: "Quitar paquete por nombre",
+        category: "Paquetes",
+        risk: "high",
+        cmd: String.raw`Dism /Image:"{OFFLINE}" /Remove-Package /PackageName:NOMBRE_DEL_PAQUETE`,
+        note: "Usa Get-Packages para copiar el nombre exacto."
+      },
+      {
+        title: "Ver caracteristicas",
+        category: "Features",
+        risk: "low",
+        cmd: String.raw`Dism /Image:"{OFFLINE}" /Get-Features /Format:Table`,
+        note: "Lista componentes opcionales de la imagen."
+      },
+      {
+        title: "Activar .NET 3.5",
+        category: "Features",
+        risk: "medium",
+        cmd: String.raw`Dism /Image:"{OFFLINE}" /Enable-Feature /FeatureName:NetFx3 /All /Source:"X:\sources\sxs" /LimitAccess`,
+        note: "Cambia X: por la ISO de Windows montada."
+      },
+      {
+        title: "Ver idioma de la imagen",
+        category: "Features",
+        risk: "low",
+        cmd: String.raw`Dism /Image:"{OFFLINE}" /Get-Intl`,
+        note: "Comprueba idioma, teclado y configuracion regional."
+      },
+      {
+        title: "Poner idioma regional es-ES",
+        category: "Features",
+        risk: "medium",
+        cmd: String.raw`Dism /Image:"{OFFLINE}" /Set-AllIntl:es-ES`,
+        note: "Ajusta valores internacionales de la imagen offline."
+      },
+      {
+        title: "CheckHealth offline",
+        category: "Limpieza",
+        risk: "low",
+        cmd: String.raw`Dism /Image:"{OFFLINE}" /Cleanup-Image /CheckHealth`,
+        note: "Comprobacion rapida del estado."
+      },
+      {
+        title: "ScanHealth offline",
+        category: "Limpieza",
+        risk: "low",
+        cmd: String.raw`Dism /Image:"{OFFLINE}" /Cleanup-Image /ScanHealth`,
+        note: "Escaneo mas completo."
+      },
+      {
+        title: "RestoreHealth offline",
+        category: "Limpieza",
+        risk: "medium",
+        cmd: String.raw`Dism /Image:"{OFFLINE}" /Cleanup-Image /RestoreHealth`,
+        note: "Intenta reparar la imagen montada."
+      },
+      {
+        title: "RestoreHealth con origen",
+        category: "Limpieza",
+        risk: "medium",
+        cmd: String.raw`Dism /Image:"{OFFLINE}" /Cleanup-Image /RestoreHealth /Source:"X:\sources\install.wim" /LimitAccess`,
+        note: "Cambia X: por la ISO o medio origen."
+      },
+      {
+        title: "StartComponentCleanup",
+        category: "Limpieza",
+        risk: "medium",
+        cmd: String.raw`Dism /Image:"{OFFLINE}" /Cleanup-Image /StartComponentCleanup`,
+        note: "Limpia componentes reemplazados."
+      },
+      {
+        title: "ResetBase",
+        category: "Limpieza",
+        risk: "high",
+        cmd: String.raw`Dism /Image:"{OFFLINE}" /Cleanup-Image /StartComponentCleanup /ResetBase`,
+        note: "Reduce tamano, pero dificulta desinstalar actualizaciones integradas."
+      },
+      {
+        title: "ESD a WIM",
+        category: "Convertir",
+        risk: "medium",
+        cmd: String.raw`Dism /Export-Image /SourceImageFile:"{IMG}\install.esd" /SourceIndex:1 /DestinationImageFile:"{IMG}\install.wim" /Compress:max /CheckIntegrity`,
+        note: "Usa la carpeta Original como origen del install.esd."
+      },
+      {
+        title: "WIM a ESD",
+        category: "Convertir",
+        risk: "medium",
+        cmd: String.raw`Dism /Export-Image /SourceImageFile:"{IMG}\install.wim" /SourceIndex:1 /DestinationImageFile:"{IMG}\install.esd" /Compress:recovery /CheckIntegrity`,
+        note: "Crea ESD mas pequeno."
+      },
+      {
+        title: "Optimizar WIM exportando",
+        category: "Convertir",
+        risk: "medium",
+        cmd: String.raw`Dism /Export-Image /SourceImageFile:"{IMG}\install.wim" /SourceIndex:1 /DestinationImageFile:"{IMG}\install_optimizado.wim" /Compress:max /CheckIntegrity`,
+        note: "Exportar a un WIM nuevo elimina recursos sobrantes."
+      },
+      {
+        title: "Dividir WIM para FAT32",
+        category: "Convertir",
+        risk: "medium",
+        cmd: String.raw`Dism /Split-Image /ImageFile:"{IMG}\install.wim" /SWMFile:"{IMG}\install.swm" /FileSize:4000`,
+        note: "Crea install.swm, install2.swm, etc. util si necesitas FAT32."
+      },
+      {
+        title: "Aplicar WIM a una particion",
+        category: "Aplicar",
+        risk: "high",
+        cmd: String.raw`Dism /Apply-Image /ImageFile:"{IMG}\install.wim" /Index:1 /ApplyDir:W:\ /CheckIntegrity`,
+        note: "Cambia W: por la particion Windows destino."
+      },
+      {
+        title: "Aplicar SWM dividido",
+        category: "Aplicar",
+        risk: "high",
+        cmd: 'Dism /Apply-Image /ImageFile:"{IMG}\\install.swm" /SWMFile:"{IMG}\\install*.swm" /Index:1 /ApplyDir:W:\\',
+        note: "Para imagen dividida con Split-Image."
+      },
+      {
+        title: "Capturar particion a WIM",
+        category: "Aplicar",
+        risk: "high",
+        cmd: String.raw`Dism /Capture-Image /ImageFile:"{IMG}\captura.wim" /CaptureDir:W:\ /Name:"Win11_Custom" /Compress:max /CheckIntegrity`,
+        note: "Cambia W: por la particion que quieres capturar."
+      },
+      {
+        title: "Agregar otra imagen al WIM",
+        category: "Aplicar",
+        risk: "high",
+        cmd: String.raw`Dism /Append-Image /ImageFile:"{IMG}\install.wim" /CaptureDir:W:\ /Name:"Win11_Custom" /CheckIntegrity`,
+        note: "Comprueba espacio libre antes; si se queda sin espacio puede danar el WIM."
+      },
+      {
+        title: "Eliminar indice de WIM",
+        category: "Aplicar",
+        risk: "high",
+        cmd: String.raw`Dism /Delete-Image /ImageFile:"{IMG}\install.wim" /Index:2 /CheckIntegrity`,
+        note: "Elimina metadata del indice indicado. Haz copia antes."
+      },
+      {
+        title: "Ver discos",
+        category: "USB",
+        risk: "low",
+        cmd: String.raw`Get-Disk | Sort-Object Number | Format-Table Number,FriendlyName,BusType,Size,PartitionStyle,IsBoot,IsSystem -AutoSize`,
+        note: "Antes de tocar un USB, mira IsBoot e IsSystem."
+      },
+      {
+        title: "Ver volumenes",
+        category: "USB",
+        risk: "low",
+        cmd: String.raw`Get-Volume | Sort-Object DriveLetter | Format-Table DriveLetter,FileSystemLabel,FileSystem,DriveType,SizeRemaining,Size -AutoSize`,
+        note: "Ayuda a identificar letras FAT32/exFAT."
+      },
+      {
+        title: "Montar ISO",
+        category: "USB",
+        risk: "low",
+        cmd: String.raw`Mount-DiskImage -ImagePath "{ISOS}\Win11.iso"`,
+        note: "Despues usa Get-Volume para ver la letra asignada."
+      },
+      {
+        title: "Desmontar ISO",
+        category: "USB",
+        risk: "low",
+        cmd: String.raw`Dismount-DiskImage -ImagePath "{ISOS}\Win11.iso"`,
+        note: "Cambia el nombre si tu ISO se llama distinto."
+      },
+      {
+        title: "Copiar arranque FAT32 sin sources",
+        category: "USB",
+        risk: "medium",
+        cmd: String.raw`robocopy X:\ Z:\ /E /COPY:DAT /DCOPY:DAT /R:2 /W:2 /XD sources`,
+        note: "X: es la ISO montada. Z: es la FAT32. Despues crea Z:\\sources y copia boot.wim."
+      },
+      {
+        title: "Copiar ISO a exFAT sin imagenes",
+        category: "USB",
+        risk: "medium",
+        cmd: String.raw`robocopy X:\ Y:\ /E /COPY:DAT /DCOPY:DAT /R:2 /W:2 /XF boot.wim boot.esd boot.swm install.wim install.esd install*.swm`,
+        note: "Luego copia install.* a Y:\\sources una sola vez."
+      },
+      {
+        title: "Crear ISO con Oscdimg",
+        category: "USB",
+        risk: "medium",
+        cmd: String.raw`oscdimg -bootdata:2#p0,e,b"{WORK}\media\boot\etfsboot.com"#pEF,e,b"{WORK}\media\efi\microsoft\boot\efisys.bin" -u1 -udfver102 "{WORK}\media" "{ISOS}\Win11_custom.iso"`,
+        note: "Requiere Windows ADK y una carpeta media preparada."
+      },
+      {
+        title: "Info de boot.wim",
+        category: "WinPE",
+        risk: "low",
+        cmd: String.raw`Dism /Get-ImageInfo /ImageFile:"{IMG}\boot.wim"`,
+        note: "El indice 2 suele ser Windows Setup."
+      },
+      {
+        title: "Montar boot.wim indice 2",
+        category: "WinPE",
+        risk: "medium",
+        cmd: String.raw`DISM /Mount-Wim /WimFile:"{IMG}\boot.wim" /Index:2 /MountDir:"{OFFLINE}"`,
+        note: "Para integrar drivers al entorno de instalacion."
+      },
+      {
+        title: "Montar boot.wim indice 1",
+        category: "WinPE",
+        risk: "medium",
+        cmd: String.raw`DISM /Mount-Wim /WimFile:"{IMG}\boot.wim" /Index:1 /MountDir:"{OFFLINE}"`,
+        note: "Indice WinPE base, no siempre necesitas tocarlo."
+      },
+      {
+        title: "Agregar drivers a boot.wim",
+        category: "WinPE",
+        risk: "medium",
+        cmd: String.raw`Dism /Image:"{OFFLINE}" /Add-Driver /Driver:"{DRIVERS}" /Recurse /ForceUnsigned`,
+        note: "Mismo comando que install.wim, pero con boot.wim montado."
+      },
+      {
+        title: "Ver estado WinRE",
+        category: "WinPE",
+        risk: "low",
+        cmd: String.raw`reagentc /info`,
+        note: "Muestra donde esta Windows RE en el sistema actual."
+      },
+      {
+        title: "Montar winre.wim",
+        category: "WinPE",
+        risk: "medium",
+        cmd: String.raw`Dism /Mount-Wim /WimFile:"R:\Recovery\WindowsRE\winre.wim" /Index:1 /MountDir:"{OFFLINE}"`,
+        note: "Cambia R: si WinRE esta en otra ubicacion."
+      },
+      {
+        title: "Abrir adaptadores durante OOBE",
+        category: "Setup",
+        risk: "low",
+        cmd: String.raw`ncpa.cpl`,
+        note: "En instalacion: Shift + F10, luego este comando."
+      },
+      {
+        title: "Ver log DISM",
+        category: "Logs",
+        risk: "low",
+        cmd: String.raw`notepad "$env:WINDIR\Logs\DISM\dism.log"`,
+        note: "Abre el log por defecto."
+      },
+      {
+        title: "Seguir log DISM en vivo",
+        category: "Logs",
+        risk: "low",
+        cmd: String.raw`Get-Content -Path "$env:WINDIR\Logs\DISM\dism.log" -Tail 80 -Wait`,
+        note: "Util mientras un DISM largo esta corriendo."
+      },
+      {
+        title: "Montar con log y scratch propios",
+        category: "Logs",
+        risk: "medium",
+        cmd: String.raw`Dism /Mount-Image /ImageFile:"{IMG}\install.wim" /Index:1 /MountDir:"{OFFLINE}" /LogPath:"{WORK}\Logs\mount.log" /ScratchDir:"{WORK}\Scratch"`,
+        note: "Crea las carpetas Logs y Scratch si no existen."
+      },
+      {
+        title: "Aplicar unattend offline",
+        category: "Unattend",
+        risk: "medium",
+        cmd: String.raw`Dism /Image:"{OFFLINE}" /Apply-Unattend:"{WORK}\AnswerFiles\unattend.xml"`,
+        note: "Para paquetes o ajustes en offlineServicing."
+      }
+    ];
+
+    const uiText = {
+      en: {
+        subtitle: "Searchable command library for DISM, WIM, drivers, packages and USB.",
+        quickGuide: "Quick guide",
+        plainText: "Clean text",
+        copyAssistant: "Copy assistant command",
+        labFolder: "Lab folder",
+        labHint: "If you ever move the folder, change this and all commands will be recalculated.",
+        search: "Search",
+        searchPlaceholder: "driver, mount, usb, package, esd...",
+        risk: "Risk",
+        riskAll: "All",
+        riskLow: "Low",
+        riskMedium: "Medium",
+        riskHigh: "High",
+        categories: "Categories",
+        allCategories: "All",
+        riskHint: "Tip: high risk commands can erase, discard or modify images. Check the path before pasting them.",
+        references: "Useful references",
+        visibleStatus: "{0} visible commands out of {1}",
+        empty: "No commands match that filter.",
+        copy: "Copy",
+        copied: "Copied",
+        select: "Select",
+        copyCommand: "Copy command",
+        copyError: "I could not copy automatically. Use Select and Ctrl+C."
+      },
+      es: {
+        subtitle: "Buscador de comandos para DISM, WIM, drivers, paquetes y USB.",
+        quickGuide: "Guia rapida",
+        plainText: "Texto limpio",
+        copyAssistant: "Copiar abrir asistente",
+        labFolder: "Carpeta del lab",
+        labHint: "Si un dia cambias la carpeta, cambia esto y todos los comandos se recalculan.",
+        search: "Buscar",
+        searchPlaceholder: "driver, montar, usb, paquete, esd...",
+        risk: "Riesgo",
+        riskAll: "Todos",
+        riskLow: "Bajo",
+        riskMedium: "Medio",
+        riskHigh: "Alto",
+        categories: "Categorias",
+        allCategories: "Todos",
+        riskHint: "Consejo: los comandos marcados como alto riesgo pueden borrar, descartar o cambiar imagenes. Revisa la ruta antes de pegarlos.",
+        references: "Referencias utiles",
+        visibleStatus: "{0} comandos visibles de {1}",
+        empty: "No hay comandos con ese filtro.",
+        copy: "Copiar",
+        copied: "Copiado",
+        select: "Seleccionar",
+        copyCommand: "Copiar comando",
+        copyError: "No pude copiar automaticamente. Usa Seleccionar y Ctrl+C."
+      },
+      fr: {
+        subtitle: "Bibliotheque de commandes avec recherche pour DISM, WIM, pilotes, packages et USB.",
+        quickGuide: "Guide rapide",
+        plainText: "Texte propre",
+        copyAssistant: "Copier la commande assistant",
+        labFolder: "Dossier du lab",
+        labHint: "Si vous deplacez le dossier, changez ceci et toutes les commandes seront recalculees.",
+        search: "Rechercher",
+        searchPlaceholder: "pilote, monter, usb, package, esd...",
+        risk: "Risque",
+        riskAll: "Tous",
+        riskLow: "Faible",
+        riskMedium: "Moyen",
+        riskHigh: "Eleve",
+        categories: "Categories",
+        allCategories: "Tous",
+        riskHint: "Conseil: les commandes a risque eleve peuvent effacer, abandonner ou modifier des images. Verifiez le chemin avant de coller.",
+        references: "References utiles",
+        visibleStatus: "{0} commandes visibles sur {1}",
+        empty: "Aucune commande avec ce filtre.",
+        copy: "Copier",
+        copied: "Copie",
+        select: "Selectionner",
+        copyCommand: "Copier commande",
+        copyError: "Copie automatique impossible. Utilisez Selectionner puis Ctrl+C."
+      },
+      ro: {
+        subtitle: "Biblioteca de comenzi cu cautare pentru DISM, WIM, drivere, packages si USB.",
+        quickGuide: "Ghid rapid",
+        plainText: "Text curat",
+        copyAssistant: "Copiaza comanda asistentului",
+        labFolder: "Folder lab",
+        labHint: "Daca muti folderul, schimba aici si toate comenzile se recalculeaza.",
+        search: "Cauta",
+        searchPlaceholder: "driver, monteaza, usb, package, esd...",
+        risk: "Risc",
+        riskAll: "Toate",
+        riskLow: "Scazut",
+        riskMedium: "Mediu",
+        riskHigh: "Ridicat",
+        categories: "Categorii",
+        allCategories: "Toate",
+        riskHint: "Sfat: comenzile cu risc ridicat pot sterge, renunta sau modifica imagini. Verifica ruta inainte de lipire.",
+        references: "Referinte utile",
+        visibleStatus: "{0} comenzi vizibile din {1}",
+        empty: "Nu exista comenzi cu acest filtru.",
+        copy: "Copiaza",
+        copied: "Copiat",
+        select: "Selecteaza",
+        copyCommand: "Copiaza comanda",
+        copyError: "Nu am putut copia automat. Foloseste Selecteaza si Ctrl+C."
+      },
+      de: {
+        subtitle: "Durchsuchbare Befehlsbibliothek fuer DISM, WIM, Treiber, Packages und USB.",
+        quickGuide: "Kurzanleitung",
+        plainText: "Klartext",
+        copyAssistant: "Assistent-Befehl kopieren",
+        labFolder: "Lab-Ordner",
+        labHint: "Wenn Sie den Ordner verschieben, hier aendern; alle Befehle werden neu berechnet.",
+        search: "Suchen",
+        searchPlaceholder: "treiber, mounten, usb, package, esd...",
+        risk: "Risiko",
+        riskAll: "Alle",
+        riskLow: "Niedrig",
+        riskMedium: "Mittel",
+        riskHigh: "Hoch",
+        categories: "Kategorien",
+        allCategories: "Alle",
+        riskHint: "Hinweis: Befehle mit hohem Risiko koennen Images loeschen, verwerfen oder veraendern. Pfad vor dem Einfuegen pruefen.",
+        references: "Nuetzliche Referenzen",
+        visibleStatus: "{0} sichtbare Befehle von {1}",
+        empty: "Keine Befehle fuer diesen Filter.",
+        copy: "Kopieren",
+        copied: "Kopiert",
+        select: "Markieren",
+        copyCommand: "Befehl kopieren",
+        copyError: "Automatisches Kopieren nicht moeglich. Markieren und Ctrl+C verwenden."
+      }
+    };
+
+    const categoryText = {
+      en: { "Inicio": "Start", "WIM": "WIM", "Montar": "Mount", "Drivers": "Drivers", "Paquetes": "Packages", "Features": "Features", "Limpieza": "Health/Cleanup", "Convertir": "Convert", "Aplicar": "Apply", "USB": "USB", "WinPE": "WinPE", "Setup": "Setup", "Logs": "Logs", "Unattend": "Unattend" },
+      es: { "Inicio": "Inicio", "WIM": "WIM", "Montar": "Montar", "Drivers": "Drivers", "Paquetes": "Paquetes", "Features": "Features", "Limpieza": "Limpieza", "Convertir": "Convertir", "Aplicar": "Aplicar", "USB": "USB", "WinPE": "WinPE", "Setup": "Setup", "Logs": "Logs", "Unattend": "Unattend" },
+      fr: { "Inicio": "Debut", "WIM": "WIM", "Montar": "Monter", "Drivers": "Pilotes", "Paquetes": "Packages", "Features": "Fonctions", "Limpieza": "Sante/Nettoyage", "Convertir": "Convertir", "Aplicar": "Appliquer", "USB": "USB", "WinPE": "WinPE", "Setup": "Setup", "Logs": "Journaux", "Unattend": "Unattend" },
+      ro: { "Inicio": "Start", "WIM": "WIM", "Montar": "Montare", "Drivers": "Drivere", "Paquetes": "Packages", "Features": "Functii", "Limpieza": "Sanatate/Curatare", "Convertir": "Conversie", "Aplicar": "Aplicare", "USB": "USB", "WinPE": "WinPE", "Setup": "Setup", "Logs": "Loguri", "Unattend": "Unattend" },
+      de: { "Inicio": "Start", "WIM": "WIM", "Montar": "Mounten", "Drivers": "Treiber", "Paquetes": "Packages", "Features": "Features", "Limpieza": "Integritaet/Bereinigung", "Convertir": "Konvertieren", "Aplicar": "Anwenden", "USB": "USB", "WinPE": "WinPE", "Setup": "Setup", "Logs": "Protokolle", "Unattend": "Unattend" }
+    };
+
+    const commandText = {
+      en: [
+        ["General DISM help", "Lists available DISM options on this machine."],
+        ["View images inside install.wim", "Use it before mounting to know exact indexes and names."],
+        ["View details for index 1", "English output helps when searching errors on the Internet."],
+        ["Mount install.wim by index", "Change /Index:1 if the edition you need is on another index."],
+        ["Mount Windows 11 Pro by name", "Works only if that exact name exists in the image."],
+        ["View mounted images", "Modern official command to review active mounts."],
+        ["View mounted WIM, classic alias", "Useful if you already remember it from old notes."],
+        ["Remount stuck image", "Try it if DISM says the mount needs recovery."],
+        ["Commit changes without unmounting", "Saves changes but leaves the image mounted."],
+        ["Unmount and save", "Closes the mount and writes changes to the WIM."],
+        ["Unmount and discard", "Loses the changes made in the mounted image."],
+        ["Clean corrupt mount points", "Does not unmount recoverable images; it cleans broken resources."],
+        ["Clean WIM, classic alias", "Known alternative for getting out of old mount trouble."],
+        ["Add driver folder", "DISM accepts INF drivers; .exe installers are not integrated this way."],
+        ["Add one specific INF", "Change the INF path."],
+        ["List third-party drivers", "By default it shows third-party drivers."],
+        ["List all drivers", "Includes Windows drivers and third-party drivers."],
+        ["Installed driver details", "Change oem1.inf to the published name shown by Get-Drivers."],
+        ["Remove driver from image", "Removes a published driver. Check the name twice."],
+        ["Export drivers from current Windows", "Very useful to save real drivers from an already installed machine."],
+        ["Add all packages", "Integrates .cab and .msu files from the packages folder."],
+        ["Add one specific package", "Change the file name."],
+        ["View installed packages", "Useful for finding names before removing anything."],
+        ["CAB package info", "Microsoft says this detail by path applies to CAB, not MSU."],
+        ["Remove package by name", "Use Get-Packages to copy the exact name."],
+        ["View features", "Lists optional components in the image."],
+        ["Enable .NET 3.5", "Change X: to the mounted Windows ISO."],
+        ["View image language", "Checks language, keyboard and regional configuration."],
+        ["Set regional language es-ES", "Sets international values in the offline image."],
+        ["CheckHealth offline", "Quick state check."],
+        ["ScanHealth offline", "More complete scan."],
+        ["RestoreHealth offline", "Tries to repair the mounted image."],
+        ["RestoreHealth with source", "Change X: to the ISO or source media."],
+        ["StartComponentCleanup", "Cleans superseded components."],
+        ["ResetBase", "Reduces size but makes integrated updates harder to uninstall."],
+        ["ESD to WIM", "Uses the original folder as source for install.esd."],
+        ["WIM to ESD", "Creates a smaller ESD."],
+        ["Optimize WIM by exporting", "Exporting to a new WIM removes leftover resources."],
+        ["Split WIM for FAT32", "Creates install.swm, install2.swm, etc. useful when you need FAT32."],
+        ["Apply WIM to a partition", "Change W: to the target Windows partition."],
+        ["Apply split SWM", "For images split with Split-Image."],
+        ["Capture partition to WIM", "Change W: to the partition you want to capture."],
+        ["Append another image to WIM", "Check free space first; running out of space can damage the WIM."],
+        ["Delete WIM index", "Deletes metadata for the selected index. Make a copy first."],
+        ["View disks", "Before touching a USB, look at IsBoot and IsSystem."],
+        ["View volumes", "Helps identify FAT32/exFAT letters."],
+        ["Mount ISO", "Then use Get-Volume to see the assigned drive letter."],
+        ["Unmount ISO", "Change the name if your ISO is named differently."],
+        ["Copy FAT32 boot without sources", "X: is the mounted ISO. Z: is FAT32. Then create sources and copy boot.wim."],
+        ["Copy ISO to exFAT without images", "Then copy install.* to the exFAT sources folder once."],
+        ["Create ISO with Oscdimg", "Requires Windows ADK and a prepared media folder."],
+        ["Info boot.wim", "Index 2 is usually Windows Setup."],
+        ["Mount boot.wim index 2", "For integrating drivers into the setup environment."],
+        ["Mount boot.wim index 1", "Base WinPE index; you do not always need to touch it."],
+        ["Add drivers to boot.wim", "Same command as install.wim, but with boot.wim mounted."],
+        ["View WinRE status", "Shows where Windows RE is located on the current system."],
+        ["Mount winre.wim", "Change R: if WinRE is stored elsewhere."],
+        ["Open adapters during OOBE", "During setup: Shift + F10, then this command."],
+        ["View DISM log", "Opens the default log."],
+        ["Follow DISM log live", "Useful while a long DISM command is running."],
+        ["Mount with lab log and scratch", "Creates Logs and Scratch folders if they do not exist."],
+        ["Apply unattend offline", "For packages or offlineServicing settings."]
+      ],
+      fr: [
+        ["Aide generale DISM", "Liste les options DISM disponibles sur cette machine."],
+        ["Voir les images dans install.wim", "A utiliser avant de monter pour connaitre les index et noms exacts."],
+        ["Voir le detail de l'index 1", "La sortie en anglais aide quand vous cherchez des erreurs sur Internet."],
+        ["Monter install.wim par index", "Changez /Index:1 si l'edition voulue est sur un autre index."],
+        ["Monter Windows 11 Pro par nom", "Fonctionne seulement si ce nom exact existe dans l'image."],
+        ["Voir les images montees", "Commande officielle moderne pour verifier les montages actifs."],
+        ["Voir les WIM montees, alias classique", "Utile si vous l'avez deja memorisee dans d'anciennes notes."],
+        ["Remonter une image bloquee", "Essayez si DISM indique que le montage doit etre recupere."],
+        ["Enregistrer sans demonter", "Enregistre les changements mais laisse l'image montee."],
+        ["Demonter en enregistrant", "Ferme le montage et ecrit les changements dans le WIM."],
+        ["Demonter en abandonnant", "Perd les changements faits dans l'image montee."],
+        ["Nettoyer les points de montage corrompus", "Ne demonte pas les images recuperables; nettoie les ressources cassees."],
+        ["Nettoyer WIM, alias classique", "Alternative connue pour sortir de vieux problemes de montage."],
+        ["Ajouter un dossier de pilotes", "DISM accepte les pilotes INF; les installateurs .exe ne s'integrent pas ainsi."],
+        ["Ajouter un INF precis", "Changez le chemin de l'INF."],
+        ["Lister les pilotes tiers", "Par defaut, affiche les pilotes tiers."],
+        ["Lister tous les pilotes", "Inclut les pilotes Windows et tiers."],
+        ["Detail d'un pilote installe", "Remplacez oem1.inf par le nom publie affiche par Get-Drivers."],
+        ["Retirer un pilote de l'image", "Retire un pilote publie. Verifiez deux fois le nom."],
+        ["Exporter les pilotes du Windows actuel", "Tres utile pour garder les vrais pilotes d'une machine deja installee."],
+        ["Ajouter tous les packages", "Integre les fichiers .cab et .msu du dossier packages."],
+        ["Ajouter un package precis", "Changez le nom du fichier."],
+        ["Voir les packages installes", "Sert a trouver les noms avant de retirer quelque chose."],
+        ["Info package CAB", "Microsoft indique que ce detail par chemin s'applique aux CAB, pas aux MSU."],
+        ["Retirer un package par nom", "Utilisez Get-Packages pour copier le nom exact."],
+        ["Voir les fonctions", "Liste les composants optionnels de l'image."],
+        ["Activer .NET 3.5", "Changez X: pour l'ISO Windows montee."],
+        ["Voir la langue de l'image", "Verifie langue, clavier et configuration regionale."],
+        ["Definir la langue regionale es-ES", "Ajuste les valeurs internationales dans l'image offline."],
+        ["CheckHealth offline", "Verification rapide de l'etat."],
+        ["ScanHealth offline", "Analyse plus complete."],
+        ["RestoreHealth offline", "Tente de reparer l'image montee."],
+        ["RestoreHealth avec source", "Changez X: pour l'ISO ou le media source."],
+        ["StartComponentCleanup", "Nettoie les composants remplaces."],
+        ["ResetBase", "Reduit la taille mais complique la desinstallation des mises a jour integrees."],
+        ["ESD vers WIM", "Utilise le dossier original comme source pour install.esd."],
+        ["WIM vers ESD", "Cree un ESD plus petit."],
+        ["Optimiser WIM par export", "Exporter vers un nouveau WIM supprime les ressources restantes."],
+        ["Diviser WIM pour FAT32", "Cree install.swm, install2.swm, etc. utile si FAT32 est necessaire."],
+        ["Appliquer WIM a une partition", "Changez W: pour la partition Windows cible."],
+        ["Appliquer SWM divise", "Pour une image divisee avec Split-Image."],
+        ["Capturer une partition vers WIM", "Changez W: pour la partition a capturer."],
+        ["Ajouter une autre image au WIM", "Verifiez l'espace libre avant; manquer d'espace peut endommager le WIM."],
+        ["Supprimer un index WIM", "Supprime les metadonnees de l'index indique. Faites une copie avant."],
+        ["Voir les disques", "Avant de toucher un USB, regardez IsBoot et IsSystem."],
+        ["Voir les volumes", "Aide a identifier les lettres FAT32/exFAT."],
+        ["Monter ISO", "Utilisez ensuite Get-Volume pour voir la lettre assignee."],
+        ["Demonter ISO", "Changez le nom si votre ISO s'appelle autrement."],
+        ["Copier le demarrage FAT32 sans sources", "X: est l'ISO montee. Z: est FAT32. Creez ensuite sources et copiez boot.wim."],
+        ["Copier ISO vers exFAT sans images", "Copiez ensuite install.* une seule fois vers le dossier sources exFAT."],
+        ["Creer ISO avec Oscdimg", "Necessite Windows ADK et un dossier media prepare."],
+        ["Info boot.wim", "L'index 2 est souvent Windows Setup."],
+        ["Monter boot.wim index 2", "Pour integrer des pilotes dans l'environnement d'installation."],
+        ["Monter boot.wim index 1", "Index WinPE de base; il n'est pas toujours necessaire de le modifier."],
+        ["Ajouter des pilotes a boot.wim", "Meme commande que pour install.wim, mais avec boot.wim monte."],
+        ["Voir l'etat WinRE", "Montre ou se trouve Windows RE sur le systeme actuel."],
+        ["Monter winre.wim", "Changez R: si WinRE est ailleurs."],
+        ["Ouvrir les adaptateurs pendant OOBE", "Pendant l'installation: Shift + F10, puis cette commande."],
+        ["Voir le journal DISM", "Ouvre le journal par defaut."],
+        ["Suivre le journal DISM en direct", "Utile pendant une longue commande DISM."],
+        ["Monter avec journal et scratch du lab", "Cree les dossiers Logs et Scratch s'ils n'existent pas."],
+        ["Appliquer unattend offline", "Pour packages ou reglages offlineServicing."]
+      ],
+      ro: [
+        ["Ajutor general DISM", "Listeaza optiunile DISM disponibile pe aceasta masina."],
+        ["Vezi imaginile din install.wim", "Foloseste inainte de montare pentru indexuri si nume exacte."],
+        ["Vezi detaliul indexului 1", "Iesirea in engleza ajuta cand cauti erori pe Internet."],
+        ["Monteaza install.wim dupa index", "Schimba /Index:1 daca editia dorita este in alt index."],
+        ["Monteaza Windows 11 Pro dupa nume", "Functioneaza doar daca numele exact exista in imagine."],
+        ["Vezi imaginile montate", "Comanda oficiala moderna pentru verificarea montarilor active."],
+        ["Vezi WIM montate, alias clasic", "Utila daca o stii deja din notite vechi."],
+        ["Remonteaza imagine blocata", "Incearca daca DISM spune ca montarea trebuie recuperata."],
+        ["Salveaza fara demontare", "Salveaza modificarile dar lasa imaginea montata."],
+        ["Demonteaza salvand", "Inchide montarea si scrie modificarile in WIM."],
+        ["Demonteaza renuntand", "Pierde modificarile facute in imaginea montata."],
+        ["Curata puncte de montare corupte", "Nu demonteaza imagini recuperabile; curata resurse defecte."],
+        ["Curata WIM, alias clasic", "Alternativa cunoscuta pentru probleme vechi de montare."],
+        ["Adauga folder de drivere", "DISM accepta drivere INF; instalatoarele .exe nu se integreaza asa."],
+        ["Adauga un INF concret", "Schimba ruta INF."],
+        ["Listeaza drivere terte", "Implicit arata drivere terte."],
+        ["Listeaza toate driverele", "Include drivere Windows si terte."],
+        ["Detalii driver instalat", "Schimba oem1.inf cu numele publicat afisat de Get-Drivers."],
+        ["Sterge driver din imagine", "Sterge un driver publicat. Verifica numele de doua ori."],
+        ["Exporta driverele din Windows actual", "Foarte util pentru salvarea driverelor reale de pe o masina instalata."],
+        ["Adauga toate packages", "Integreaza fisiere .cab si .msu din folderul packages."],
+        ["Adauga un package concret", "Schimba numele fisierului."],
+        ["Vezi packages instalate", "Util pentru cautarea numelor inainte de a elimina ceva."],
+        ["Info package CAB", "Microsoft indica faptul ca detaliul dupa ruta se aplica la CAB, nu la MSU."],
+        ["Elimina package dupa nume", "Foloseste Get-Packages pentru a copia numele exact."],
+        ["Vezi functii", "Listeaza componentele optionale ale imaginii."],
+        ["Activeaza .NET 3.5", "Schimba X: cu ISO-ul Windows montat."],
+        ["Vezi limba imaginii", "Verifica limba, tastatura si configuratia regionala."],
+        ["Seteaza limba regionala es-ES", "Ajusteaza valorile internationale in imaginea offline."],
+        ["CheckHealth offline", "Verificare rapida a starii."],
+        ["ScanHealth offline", "Scanare mai completa."],
+        ["RestoreHealth offline", "Incearca sa repare imaginea montata."],
+        ["RestoreHealth cu sursa", "Schimba X: cu ISO-ul sau mediul sursa."],
+        ["StartComponentCleanup", "Curata componentele inlocuite."],
+        ["ResetBase", "Reduce dimensiunea, dar ingreuneaza dezinstalarea actualizarilor integrate."],
+        ["ESD in WIM", "Foloseste folderul original ca sursa pentru install.esd."],
+        ["WIM in ESD", "Creeaza un ESD mai mic."],
+        ["Optimizeaza WIM prin export", "Exportul intr-un WIM nou elimina resurse ramase."],
+        ["Imparte WIM pentru FAT32", "Creeaza install.swm, install2.swm etc. util daca ai nevoie de FAT32."],
+        ["Aplica WIM pe o partitie", "Schimba W: cu partitia Windows destinatie."],
+        ["Aplica SWM impartit", "Pentru imagine impartita cu Split-Image."],
+        ["Captureaza partitie in WIM", "Schimba W: cu partitia pe care vrei sa o capturezi."],
+        ["Adauga alta imagine in WIM", "Verifica spatiul liber; daca se termina spatiul, WIM-ul se poate deteriora."],
+        ["Sterge index WIM", "Sterge metadatele indexului indicat. Fa copie inainte."],
+        ["Vezi discuri", "Inainte sa atingi un USB, verifica IsBoot si IsSystem."],
+        ["Vezi volume", "Ajuta la identificarea literelor FAT32/exFAT."],
+        ["Monteaza ISO", "Apoi foloseste Get-Volume pentru litera asignata."],
+        ["Demonteaza ISO", "Schimba numele daca ISO-ul se numeste altfel."],
+        ["Copiaza boot FAT32 fara sources", "X: este ISO-ul montat. Z: este FAT32. Apoi creeaza sources si copiaza boot.wim."],
+        ["Copiaza ISO pe exFAT fara imagini", "Apoi copiaza install.* o singura data in folderul sources exFAT."],
+        ["Creeaza ISO cu Oscdimg", "Necesita Windows ADK si un folder media pregatit."],
+        ["Info boot.wim", "Indexul 2 este de obicei Windows Setup."],
+        ["Monteaza boot.wim index 2", "Pentru integrarea driverelor in mediul de instalare."],
+        ["Monteaza boot.wim index 1", "Index WinPE de baza; nu trebuie mereu modificat."],
+        ["Adauga drivere in boot.wim", "Aceeasi comanda ca install.wim, dar cu boot.wim montat."],
+        ["Vezi starea WinRE", "Arata unde este Windows RE pe sistemul curent."],
+        ["Monteaza winre.wim", "Schimba R: daca WinRE este in alta locatie."],
+        ["Deschide adaptoare in OOBE", "In instalare: Shift + F10, apoi aceasta comanda."],
+        ["Vezi log DISM", "Deschide logul implicit."],
+        ["Urmareste logul DISM live", "Util cand ruleaza o comanda DISM lunga."],
+        ["Monteaza cu log si scratch din lab", "Creeaza folderele Logs si Scratch daca nu exista."],
+        ["Aplica unattend offline", "Pentru packages sau setari offlineServicing."]
+      ],
+      de: [
+        ["Allgemeine DISM-Hilfe", "Listet verfuegbare DISM-Optionen auf diesem Rechner."],
+        ["Images in install.wim anzeigen", "Vor dem Mounten nutzen, um genaue Indexe und Namen zu kennen."],
+        ["Details von Index 1 anzeigen", "Englische Ausgabe hilft bei der Fehlersuche im Internet."],
+        ["install.wim per Index mounten", "/Index:1 aendern, wenn die Edition auf einem anderen Index liegt."],
+        ["Windows 11 Pro per Name mounten", "Funktioniert nur, wenn dieser exakte Name im Image existiert."],
+        ["Gemountete Images anzeigen", "Moderner offizieller Befehl fuer aktive Mounts."],
+        ["Gemountete WIM anzeigen, klassischer Alias", "Nuetzlich, wenn Sie ihn aus alten Notizen kennen."],
+        ["Feststeckendes Image remounten", "Versuchen, wenn DISM sagt, dass der Mount wiederhergestellt werden muss."],
+        ["Aenderungen speichern ohne Unmount", "Speichert Aenderungen, laesst das Image aber gemountet."],
+        ["Unmounten und speichern", "Schliesst den Mount und schreibt Aenderungen ins WIM."],
+        ["Unmounten und verwerfen", "Verwirft die Aenderungen im gemounteten Image."],
+        ["Korrupte Mountpunkte bereinigen", "Unmountet keine wiederherstellbaren Images; bereinigt defekte Ressourcen."],
+        ["WIM bereinigen, klassischer Alias", "Bekannte Alternative bei alten Mount-Problemen."],
+        ["Treiberordner hinzufuegen", "DISM akzeptiert INF-Treiber; .exe-Installer werden so nicht integriert."],
+        ["Ein konkretes INF hinzufuegen", "INF-Pfad aendern."],
+        ["Drittanbieter-Treiber listen", "Standardmaessig werden Drittanbieter-Treiber angezeigt."],
+        ["Alle Treiber listen", "Enthaelt Windows- und Drittanbieter-Treiber."],
+        ["Details eines installierten Treibers", "oem1.inf durch den veroeffentlichten Namen aus Get-Drivers ersetzen."],
+        ["Treiber aus Image entfernen", "Entfernt einen veroeffentlichten Treiber. Namen zweimal pruefen."],
+        ["Treiber aus aktuellem Windows exportieren", "Sehr nuetzlich, um echte Treiber einer installierten Maschine zu sichern."],
+        ["Alle Packages hinzufuegen", "Integriert .cab- und .msu-Dateien aus dem packages-Ordner."],
+        ["Ein konkretes Package hinzufuegen", "Dateinamen aendern."],
+        ["Installierte Packages anzeigen", "Hilft, Namen vor dem Entfernen zu finden."],
+        ["CAB-Package-Info", "Microsoft gibt an, dass diese Detailabfrage per Pfad fuer CAB gilt, nicht MSU."],
+        ["Package per Name entfernen", "Get-Packages nutzen, um den exakten Namen zu kopieren."],
+        ["Features anzeigen", "Listet optionale Komponenten im Image."],
+        [".NET 3.5 aktivieren", "X: durch die gemountete Windows-ISO ersetzen."],
+        ["Image-Sprache anzeigen", "Prueft Sprache, Tastatur und regionale Konfiguration."],
+        ["Regionalsprache es-ES setzen", "Setzt internationale Werte im Offline-Image."],
+        ["CheckHealth offline", "Schnelle Statuspruefung."],
+        ["ScanHealth offline", "Vollstaendigerer Scan."],
+        ["RestoreHealth offline", "Versucht, das gemountete Image zu reparieren."],
+        ["RestoreHealth mit Quelle", "X: durch ISO oder Quellmedium ersetzen."],
+        ["StartComponentCleanup", "Bereinigt ersetzte Komponenten."],
+        ["ResetBase", "Reduziert Groesse, erschwert aber das Deinstallieren integrierter Updates."],
+        ["ESD zu WIM", "Nutzt den Originalordner als Quelle fuer install.esd."],
+        ["WIM zu ESD", "Erstellt ein kleineres ESD."],
+        ["WIM durch Export optimieren", "Export in ein neues WIM entfernt uebrige Ressourcen."],
+        ["WIM fuer FAT32 teilen", "Erstellt install.swm, install2.swm usw.; nuetzlich bei FAT32."],
+        ["WIM auf Partition anwenden", "W: durch die Ziel-Windows-Partition ersetzen."],
+        ["Geteiltes SWM anwenden", "Fuer Images, die mit Split-Image geteilt wurden."],
+        ["Partition zu WIM erfassen", "W: durch die zu erfassende Partition ersetzen."],
+        ["Weiteres Image zum WIM hinzufuegen", "Freien Platz vorher pruefen; Platzmangel kann das WIM beschaedigen."],
+        ["WIM-Index loeschen", "Loescht Metadaten des angegebenen Indexes. Vorher kopieren."],
+        ["Datentraeger anzeigen", "Vor USB-Aktionen IsBoot und IsSystem pruefen."],
+        ["Volumes anzeigen", "Hilft beim Erkennen von FAT32/exFAT-Buchstaben."],
+        ["ISO mounten", "Danach Get-Volume nutzen, um den Buchstaben zu sehen."],
+        ["ISO unmounten", "Namen aendern, wenn die ISO anders heisst."],
+        ["FAT32-Boot ohne sources kopieren", "X: ist die gemountete ISO. Z: ist FAT32. Danach sources erstellen und boot.wim kopieren."],
+        ["ISO nach exFAT ohne Images kopieren", "Danach install.* einmal in den exFAT-sources-Ordner kopieren."],
+        ["ISO mit Oscdimg erstellen", "Benoetigt Windows ADK und einen vorbereiteten media-Ordner."],
+        ["Info boot.wim", "Index 2 ist meistens Windows Setup."],
+        ["boot.wim Index 2 mounten", "Zum Integrieren von Treibern in die Setup-Umgebung."],
+        ["boot.wim Index 1 mounten", "Basis-WinPE-Index; nicht immer noetig."],
+        ["Treiber zu boot.wim hinzufuegen", "Gleicher Befehl wie bei install.wim, aber mit gemountetem boot.wim."],
+        ["WinRE-Status anzeigen", "Zeigt, wo Windows RE auf dem aktuellen System liegt."],
+        ["winre.wim mounten", "R: aendern, wenn WinRE woanders liegt."],
+        ["Adapter waehrend OOBE oeffnen", "Im Setup: Shift + F10, dann dieser Befehl."],
+        ["DISM-Protokoll anzeigen", "Oeffnet das Standardprotokoll."],
+        ["DISM-Protokoll live verfolgen", "Nuetzlich waehrend ein langer DISM-Befehl laeuft."],
+        ["Mit Lab-Protokoll und Scratch mounten", "Erstellt Logs- und Scratch-Ordner, wenn sie fehlen."],
+        ["Unattend offline anwenden", "Fuer Packages oder offlineServicing-Einstellungen."]
+      ]
+    };
+
+    const assistantCommand = String.raw`powershell.exe -NoProfile -ExecutionPolicy RemoteSigned -File "{LAB}\Herramientas\Modificar-InstallWim.ps1" -Language "{LANG}"`;
+
+    const els = {
+      language: document.getElementById("language"),
+      labRoot: document.getElementById("labRoot"),
+      search: document.getElementById("search"),
+      riskFilter: document.getElementById("riskFilter"),
+      categories: document.getElementById("categories"),
+      cards: document.getElementById("cards"),
+      status: document.getElementById("status"),
+      copyAssistant: document.getElementById("copyAssistant"),
+      quickGuideLink: document.getElementById("quickGuideLink"),
+      plainTextLink: document.getElementById("plainTextLink")
+    };
+
+    const supportedLanguages = ["en", "es", "fr", "ro", "de"];
+    const requestedLang = new URLSearchParams(window.location.search).get("lang");
+    let currentLang = supportedLanguages.includes(requestedLang)
+      ? requestedLang
+      : (supportedLanguages.includes(localStorage.getItem("labWin11Lang")) ? localStorage.getItem("labWin11Lang") : "en");
+    let activeCategory = "all";
+
+    function t(key) {
+      return (uiText[currentLang] && uiText[currentLang][key]) || uiText.en[key] || key;
+    }
+
+    function format(text, ...args) {
+      return args.reduce((value, arg, index) => value.replace(`{${index}}`, arg), text);
+    }
+
+    function cleanRoot(value) {
+      return value.replace(/^"+|"+$/g, "").replace(/[\\\/]+$/g, "");
+    }
+
+    function pathMap() {
+      const lab = cleanRoot(els.labRoot.value || "E:\\Lab_Win11");
+      const work = lab + "\\Trabajo";
+      return {
+        "{LAB}": lab,
+        "{WORK}": work,
+        "{IMG}": work + "\\images",
+        "{ISOS}": work + "\\ISOs",
+        "{OFFLINE}": work + "\\offline",
+        "{DRIVERS}": work + "\\Drivers",
+        "{PACKAGES}": work + "\\packages"
+      };
+    }
+
+    function expand(text) {
+      const map = pathMap();
+      return Object.keys(map).reduce((value, key) => value.split(key).join(map[key]), text);
+    }
+
+    function categoryLabel(category) {
+      return (categoryText[currentLang] && categoryText[currentLang][category]) || category;
+    }
+
+    function riskLabel(risk) {
+      if (risk === "high") return t("riskHigh");
+      if (risk === "medium") return t("riskMedium");
+      return t("riskLow");
+    }
+
+    function localizedCommand(item, index) {
+      const translated = commandText[currentLang] && commandText[currentLang][index];
+      return {
+        ...item,
+        originalTitle: item.title,
+        originalCategory: item.category,
+        title: translated ? translated[0] : item.title,
+        note: translated ? translated[1] : item.note,
+        categoryLabel: categoryLabel(item.category)
+      };
+    }
+
+    function localizedCommands() {
+      return commandData.map((item, index) => localizedCommand(item, index));
+    }
+
+    function localizedAssistantCommand() {
+      return assistantCommand.replace("{LANG}", currentLang);
+    }
+
+    function applyLanguage() {
+      document.documentElement.lang = currentLang;
+      els.language.value = currentLang;
+      localStorage.setItem("labWin11Lang", currentLang);
+      document.querySelectorAll("[data-i18n]").forEach(node => {
+        node.textContent = t(node.dataset.i18n);
+      });
+      els.search.placeholder = t("searchPlaceholder");
+      els.quickGuideLink.href = `./GUIA_RAPIDA.${currentLang}.txt`;
+      els.plainTextLink.href = `./COMANDOS_DISM_Y_USB.${currentLang}.txt`;
+      buildCategories();
+      render();
+    }
+
+    function buildCategories() {
+      const cats = ["all", ...Array.from(new Set(commandData.map(item => item.category))).sort()];
+      els.categories.innerHTML = "";
+      cats.forEach(cat => {
+        const btn = document.createElement("button");
+        btn.className = "chip" + (cat === activeCategory ? " active" : "");
+        btn.textContent = cat === "all" ? t("allCategories") : categoryLabel(cat);
+        btn.addEventListener("click", () => {
+          activeCategory = cat;
+          buildCategories();
+          render();
+        });
+        els.categories.appendChild(btn);
+      });
+    }
+
+    function matches(item) {
+      const text = (els.search.value || "").trim().toLowerCase();
+      const risk = els.riskFilter.value;
+      const expanded = expand(item.cmd).toLowerCase();
+      const haystack = [item.title, item.originalTitle, item.categoryLabel, item.originalCategory, item.risk, item.note, expanded].join(" ").toLowerCase();
+
+      if (activeCategory !== "all" && item.originalCategory !== activeCategory) return false;
+      if (risk !== "all" && item.risk !== risk) return false;
+      if (text && !haystack.includes(text)) return false;
+      return true;
+    }
+
+    function render() {
+      const localized = localizedCommands();
+      const items = localized.filter(matches);
+      els.status.textContent = format(t("visibleStatus"), items.length, commandData.length);
+      els.cards.innerHTML = "";
+
+      if (items.length === 0) {
+        const empty = document.createElement("div");
+        empty.className = "empty";
+        empty.textContent = t("empty");
+        els.cards.appendChild(empty);
+        return;
+      }
+
+      items.forEach(item => {
+        const card = document.createElement("article");
+        card.className = "card";
+
+        const head = document.createElement("div");
+        head.className = "card-head";
+
+        const titleBlock = document.createElement("div");
+        const title = document.createElement("h2");
+        title.textContent = item.title;
+        const meta = document.createElement("div");
+        meta.className = "meta";
+        const category = document.createElement("span");
+        category.className = "tag";
+        category.textContent = item.categoryLabel;
+        const risk = document.createElement("span");
+        risk.className = `tag risk-${item.risk}`;
+        risk.textContent = riskLabel(item.risk);
+        meta.append(category, risk);
+        titleBlock.append(title, meta);
+
+        const copyTop = document.createElement("button");
+        copyTop.textContent = t("copy");
+        copyTop.addEventListener("click", () => copyCommand(item, copyTop));
+
+        head.append(titleBlock, copyTop);
+
+        const pre = document.createElement("pre");
+        pre.textContent = expand(item.cmd);
+
+        const note = document.createElement("div");
+        note.className = "note";
+        note.textContent = item.note;
+
+        const actions = document.createElement("div");
+        actions.className = "actions";
+        const select = document.createElement("button");
+        select.textContent = t("select");
+        select.addEventListener("click", () => selectText(pre));
+        const copyBottom = document.createElement("button");
+        copyBottom.textContent = t("copyCommand");
+        copyBottom.addEventListener("click", () => copyCommand(item, copyBottom));
+        actions.append(select, copyBottom);
+
+        card.append(head, pre, note, actions);
+        els.cards.appendChild(card);
+      });
+    }
+
+    function selectText(node) {
+      const range = document.createRange();
+      range.selectNodeContents(node);
+      const selection = window.getSelection();
+      selection.removeAllRanges();
+      selection.addRange(range);
+    }
+
+    async function copyText(text, button) {
+      try {
+        if (navigator.clipboard && window.isSecureContext) {
+          await navigator.clipboard.writeText(text);
+        } else {
+          const textarea = document.createElement("textarea");
+          textarea.value = text;
+          textarea.style.position = "fixed";
+          textarea.style.left = "-9999px";
+          document.body.appendChild(textarea);
+          textarea.focus();
+          textarea.select();
+          document.execCommand("copy");
+          textarea.remove();
+        }
+        const old = button.textContent;
+        button.textContent = t("copied");
+        setTimeout(() => button.textContent = old, 1100);
+      } catch (error) {
+        alert(t("copyError"));
+      }
+    }
+
+    function copyCommand(item, button) {
+      copyText(expand(item.cmd), button);
+    }
+
+    els.search.addEventListener("input", render);
+    els.riskFilter.addEventListener("change", render);
+    els.labRoot.addEventListener("input", render);
+    els.language.addEventListener("change", () => {
+      currentLang = els.language.value;
+      const url = new URL(window.location.href);
+      url.searchParams.set("lang", currentLang);
+      window.history.replaceState(null, "", url.toString());
+      applyLanguage();
+    });
+    els.copyAssistant.addEventListener("click", () => copyText(expand(localizedAssistantCommand()), els.copyAssistant));
+
+    applyLanguage();
+  </script>
+</body>
+</html>

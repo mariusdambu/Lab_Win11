@@ -1,0 +1,17 @@
+﻿GHID RAPID - LAB WIN11
+======================
+
+Deschide:
+
+E:\Lab_Win11\start_lab.cmd
+
+Limba: ENTER sau 1 Engleza, 2 Spaniola, 3 Franceza, 4 Romana, 5 Germana
+
+Cel mai util: optiunea 1 HTML, optiunea 3 copiere consola, optiunea 4 asistent install.wim, optiunea 5 creare USB, optiunea 6 copiere install.* pe USB, optiunea 7 copiere boot.* pe USB.
+
+Foldere: images doar boot.* si install.* (.wim/.esd/.swm); ISOs doar .iso; Drivers; packages; offline.
+
+Inainte de montare: offline trebuie gol; verifica dism /Get-MountedImageInfo; recupereaza cu Dism /Cleanup-Mountpoints.
+
+In instalare: Shift + F10 deschide consola; ncpa.cpl deschide adaptoare retea.
+

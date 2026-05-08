@@ -1,0 +1,17 @@
+﻿GUIDE RAPIDE - LAB WIN11
+========================
+
+Ouvrir:
+
+E:\Lab_Win11\start_lab.cmd
+
+Langue: ENTREE ou 1 Anglais, 2 Espagnol, 3 Francais, 4 Roumain, 5 Allemand
+
+Le plus utile: option 1 HTML, option 3 copie console, option 4 assistant install.wim, option 5 creer USB, option 6 copier install.* vers USB, option 7 copier boot.* vers USB.
+
+Dossiers: images seulement boot.* et install.* (.wim/.esd/.swm); ISOs seulement .iso; Drivers; packages; offline.
+
+Avant montage: offline doit etre vide; verifiez dism /Get-MountedImageInfo; recuperez avec Dism /Cleanup-Mountpoints.
+
+Pendant installation: Shift + F10 ouvre console; ncpa.cpl ouvre adaptateurs reseau.
+

@@ -1,0 +1,49 @@
+GUIA RAPIDA - LAB WIN11
+=======================
+
+Abre:
+E:\Lab_Win11\start_lab.cmd
+
+Idioma:
+- ENTER o 1: English
+- 2: Espanol
+- 3: Francais
+- 4: Romana
+- 5: Deutsch
+
+Lo mas comodo:
+- Opcion 1: ayuda HTML con buscador y botones de copiar.
+- Opcion 2: comandos DISM limpios en texto.
+- Opcion 3: copiador de comandos desde consola.
+- Opcion 4: asistente seguro para modificar install.wim.
+- Opcion 5: crear USB Windows 11 con seleccion de disco.
+- Opcion 6: copiar install.* a una o varias unidades.
+- Opcion 7: copiar boot.* a una o varias unidades.
+
+Carpetas de trabajo:
+- E:\Lab_Win11\Trabajo\images  -> solo boot.* e install.* (.wim/.esd/.swm)
+- E:\Lab_Win11\Trabajo\ISOs    -> solo archivos .iso
+- E:\Lab_Win11\Trabajo\Drivers
+- E:\Lab_Win11\Trabajo\packages
+- E:\Lab_Win11\Trabajo\offline
+
+Antes de montar una imagen:
+1. Comprueba que E:\Lab_Win11\Trabajo\offline esta vacia.
+2. Comprueba montajes anteriores:
+   dism /Get-MountedImageInfo
+3. Si DISM quedo a medias:
+   Dism /Cleanup-Mountpoints
+
+Orden tipico para modificar install.wim:
+1. Dism /Get-ImageInfo /ImageFile:"E:\Lab_Win11\Trabajo\images\install.wim"
+2. Dism /Mount-Image /ImageFile:"E:\Lab_Win11\Trabajo\images\install.wim" /Index:1 /MountDir:"E:\Lab_Win11\Trabajo\offline"
+3. Dism /Image:"E:\Lab_Win11\Trabajo\offline" /Add-Driver /Driver:"E:\Lab_Win11\Trabajo\Drivers" /Recurse /ForceUnsigned
+4. Dism /Image:"E:\Lab_Win11\Trabajo\offline" /Add-Package /PackagePath:"E:\Lab_Win11\Trabajo\packages"
+5. Dism /Unmount-Image /MountDir:"E:\Lab_Win11\Trabajo\offline" /Commit
+
+Si quieres descartar cambios:
+Dism /Unmount-Image /MountDir:"E:\Lab_Win11\Trabajo\offline" /Discard
+
+Durante instalacion:
+- Shift + F10 abre consola.
+- ncpa.cpl abre adaptadores de red.

@@ -1,0 +1,138 @@
+COMANDOS LIMPIOS - LAB WIN11
+============================
+
+Ruta de trabajo:
+E:\Lab_Win11\Trabajo
+
+Abre PowerShell como administrador.
+
+
+0) Ayuda y estado DISM
+----------------------
+Dism /?
+
+Dism /Get-MountedImageInfo
+
+Dism /Cleanup-Mountpoints
+
+dism /Get-MountedWimInfo
+
+dism /Cleanup-Wim
+
+
+1) Ver imagenes
+---------------
+Dism /Get-ImageInfo /ImageFile:"E:\Lab_Win11\Trabajo\images\install.wim"
+
+Dism /Get-ImageInfo /ImageFile:"E:\Lab_Win11\Trabajo\images\install.wim" /Index:1 /English
+
+Dism /Get-ImageInfo /ImageFile:"E:\Lab_Win11\Trabajo\images\boot.wim"
+
+
+2) Montar y desmontar install.wim
+---------------------------------
+Dism /Mount-Image /ImageFile:"E:\Lab_Win11\Trabajo\images\install.wim" /Index:1 /MountDir:"E:\Lab_Win11\Trabajo\offline" /CheckIntegrity
+
+Dism /Mount-Image /ImageFile:"E:\Lab_Win11\Trabajo\images\install.wim" /Name:"Windows 11 Pro" /MountDir:"E:\Lab_Win11\Trabajo\offline"
+
+Dism /Commit-Image /MountDir:"E:\Lab_Win11\Trabajo\offline" /CheckIntegrity
+
+Dism /Unmount-Image /MountDir:"E:\Lab_Win11\Trabajo\offline" /Commit /CheckIntegrity
+
+Dism /Unmount-Image /MountDir:"E:\Lab_Win11\Trabajo\offline" /Discard
+
+
+3) Drivers
+----------
+Dism /Image:"E:\Lab_Win11\Trabajo\offline" /Add-Driver /Driver:"E:\Lab_Win11\Trabajo\Drivers" /Recurse /ForceUnsigned
+
+Dism /Image:"E:\Lab_Win11\Trabajo\offline" /Get-Drivers /Format:Table
+
+Dism /Image:"E:\Lab_Win11\Trabajo\offline" /Get-Drivers /All /Format:Table
+
+Dism /Image:"E:\Lab_Win11\Trabajo\offline" /Get-DriverInfo /Driver:oem1.inf
+
+Dism /Online /Export-Driver /Destination:"E:\Lab_Win11\Trabajo\ExportedDrivers"
+
+
+4) Paquetes y caracteristicas
+-----------------------------
+Dism /Image:"E:\Lab_Win11\Trabajo\offline" /Add-Package /PackagePath:"E:\Lab_Win11\Trabajo\packages"
+
+Dism /Image:"E:\Lab_Win11\Trabajo\offline" /Get-Packages /Format:Table
+
+Dism /Image:"E:\Lab_Win11\Trabajo\offline" /Get-PackageInfo /PackagePath:"E:\Lab_Win11\Trabajo\packages\NOMBRE.cab"
+
+Dism /Image:"E:\Lab_Win11\Trabajo\offline" /Get-Features /Format:Table
+
+Dism /Image:"E:\Lab_Win11\Trabajo\offline" /Enable-Feature /FeatureName:NetFx3 /All /Source:"X:\sources\sxs" /LimitAccess
+
+
+5) Limpieza y reparacion
+------------------------
+Dism /Image:"E:\Lab_Win11\Trabajo\offline" /Cleanup-Image /CheckHealth
+
+Dism /Image:"E:\Lab_Win11\Trabajo\offline" /Cleanup-Image /ScanHealth
+
+Dism /Image:"E:\Lab_Win11\Trabajo\offline" /Cleanup-Image /RestoreHealth
+
+Dism /Image:"E:\Lab_Win11\Trabajo\offline" /Cleanup-Image /RestoreHealth /Source:"X:\sources\install.wim" /LimitAccess
+
+Dism /Image:"E:\Lab_Win11\Trabajo\offline" /Cleanup-Image /StartComponentCleanup
+
+Dism /Image:"E:\Lab_Win11\Trabajo\offline" /Cleanup-Image /StartComponentCleanup /ResetBase
+
+
+6) WIM, ESD y SWM
+-----------------
+Dism /Export-Image /SourceImageFile:"E:\Lab_Win11\Trabajo\images\install.esd" /SourceIndex:1 /DestinationImageFile:"E:\Lab_Win11\Trabajo\images\install.wim" /Compress:max /CheckIntegrity
+
+Dism /Export-Image /SourceImageFile:"E:\Lab_Win11\Trabajo\images\install.wim" /SourceIndex:1 /DestinationImageFile:"E:\Lab_Win11\Trabajo\images\install.esd" /Compress:recovery /CheckIntegrity
+
+Dism /Export-Image /SourceImageFile:"E:\Lab_Win11\Trabajo\images\install.wim" /SourceIndex:1 /DestinationImageFile:"E:\Lab_Win11\Trabajo\images\install_optimizado.wim" /Compress:max /CheckIntegrity
+
+Dism /Split-Image /ImageFile:"E:\Lab_Win11\Trabajo\images\install.wim" /SWMFile:"E:\Lab_Win11\Trabajo\images\install.swm" /FileSize:4000
+
+
+7) boot.wim, WinPE y WinRE
+--------------------------
+DISM /Mount-Wim /WimFile:"E:\Lab_Win11\Trabajo\images\boot.wim" /Index:2 /MountDir:"E:\Lab_Win11\Trabajo\offline"
+
+Dism /Image:"E:\Lab_Win11\Trabajo\offline" /Add-Driver /Driver:"E:\Lab_Win11\Trabajo\Drivers" /Recurse /ForceUnsigned
+
+Dism /Unmount-Image /MountDir:"E:\Lab_Win11\Trabajo\offline" /Commit
+
+reagentc /info
+
+Dism /Mount-Wim /WimFile:"R:\Recovery\WindowsRE\winre.wim" /Index:1 /MountDir:"E:\Lab_Win11\Trabajo\offline"
+
+
+8) USB e ISO
+------------
+Get-Disk | Sort-Object Number | Format-Table Number,FriendlyName,BusType,Size,PartitionStyle,IsBoot,IsSystem -AutoSize
+
+Get-Volume | Sort-Object DriveLetter | Format-Table DriveLetter,FileSystemLabel,FileSystem,DriveType,SizeRemaining,Size -AutoSize
+
+Mount-DiskImage -ImagePath "E:\Lab_Win11\Trabajo\ISOs\Win11.iso"
+
+Dismount-DiskImage -ImagePath "E:\Lab_Win11\Trabajo\ISOs\Win11.iso"
+
+robocopy X:\ Z:\ /E /COPY:DAT /DCOPY:DAT /R:2 /W:2 /XD sources
+
+New-Item -ItemType Directory -Path "Z:\sources" -Force
+
+Copy-Item "E:\Lab_Win11\Trabajo\images\boot.wim" "Z:\sources\boot.wim" -Force
+
+robocopy X:\ Y:\ /E /COPY:DAT /DCOPY:DAT /R:2 /W:2 /XF boot.wim boot.esd boot.swm install.wim install.esd install*.swm
+
+Copy-Item "E:\Lab_Win11\Trabajo\images\install.wim" "Y:\sources\install.wim" -Force
+
+
+9) Logs
+-------
+notepad "$env:WINDIR\Logs\DISM\dism.log"
+
+Get-Content -Path "$env:WINDIR\Logs\DISM\dism.log" -Tail 80 -Wait
+
+Dism /Mount-Image /ImageFile:"E:\Lab_Win11\Trabajo\images\install.wim" /Index:1 /MountDir:"E:\Lab_Win11\Trabajo\offline" /LogPath:"E:\Lab_Win11\Trabajo\Logs\mount.log" /ScratchDir:"E:\Lab_Win11\Trabajo\Scratch"
+

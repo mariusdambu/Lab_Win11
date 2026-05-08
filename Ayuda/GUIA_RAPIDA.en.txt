@@ -1,0 +1,17 @@
+﻿QUICK GUIDE - WIN11 LAB
+=======================
+
+Open:
+
+E:\Lab_Win11\start_lab.cmd
+
+Language: ENTER or 1 English, 2 Spanish, 3 French, 4 Romanian, 5 German
+
+Most useful: option 1 HTML search, option 3 console copier, option 4 install.wim assistant, option 5 create USB, option 6 copy install.* to USB, option 7 copy boot.* to USB.
+
+Work folders: images only boot.* and install.* (.wim/.esd/.swm); ISOs only .iso; Drivers; packages; offline.
+
+Before mounting: offline must be empty; check dism /Get-MountedImageInfo; recover with Dism /Cleanup-Mountpoints.
+
+During setup: Shift + F10 opens console; ncpa.cpl opens network adapters.
+
