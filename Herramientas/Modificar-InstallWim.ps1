@@ -1288,10 +1288,34 @@ try {
 catch {
     Write-Host ""
     Write-Host $_.Exception.Message -ForegroundColor Red
-    if ($Mounted) {
+
+    $imageStillMounted = $false
+    try {
+        $imageStillMounted = ($Mounted -or (Test-OfflineRootMounted))
+    }
+    catch {
+        $imageStillMounted = $Mounted
+    }
+
+    if ($imageStillMounted) {
         Write-Host ""
         Write-Host (LF "MaybeMounted" $OfflineRoot) -ForegroundColor Yellow
         Write-Host (L "ManualCommitDiscard")
+        Write-Host ""
+        Write-Host (L "ManualPromptIntro") -ForegroundColor Yellow
+        Write-Host (L "ManualPromptExit") -ForegroundColor Yellow
+        Write-Host ""
+        $pauseBeforeExit = $false
+        $host.EnterNestedPrompt()
+
+        if (Test-OfflineRootMounted) {
+            Write-Host ""
+            Write-Host (LF "LeftMounted" $OfflineRoot) -ForegroundColor Yellow
+            Write-Host (L "ManualCommitDiscard")
+        }
+        else {
+            $Mounted = $false
+        }
     }
 }
 finally {
