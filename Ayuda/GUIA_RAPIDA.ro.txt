@@ -1,9 +1,9 @@
-﻿GHID RAPID - LAB WIN11
+GHID RAPID - LAB WIN11
 ======================
 
 Deschide:
 
-E:\Lab_Win11\start_lab.cmd
+C:\Lab_Win11\start_lab.cmd
 
 Limba: ENTER sau 1 Engleza, 2 Spaniola, 3 Franceza, 4 Romana, 5 Germana
 

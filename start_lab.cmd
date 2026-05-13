@@ -19,6 +19,8 @@ if not exist "%POWERSHELL%" (
     exit /b 1
 )
 
+"%POWERSHELL%" -NoProfile -ExecutionPolicy RemoteSigned -Command "Get-ChildItem -LiteralPath '%LABROOT%' -Recurse -File -Include *.ps1,*.cmd,*.html,*.txt | Unblock-File -ErrorAction SilentlyContinue" >nul 2>&1
+
 "%POWERSHELL%" -NoProfile -ExecutionPolicy RemoteSigned -File "%STARTER%"
 set "LAB_EXIT=%ERRORLEVEL%"
 

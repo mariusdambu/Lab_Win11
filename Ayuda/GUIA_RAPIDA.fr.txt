@@ -1,9 +1,9 @@
-﻿GUIDE RAPIDE - LAB WIN11
+GUIDE RAPIDE - LAB WIN11
 ========================
 
 Ouvrir:
 
-E:\Lab_Win11\start_lab.cmd
+C:\Lab_Win11\start_lab.cmd
 
 Langue: ENTREE ou 1 Anglais, 2 Espagnol, 3 Francais, 4 Roumain, 5 Allemand
 

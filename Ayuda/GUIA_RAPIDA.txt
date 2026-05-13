@@ -2,7 +2,7 @@ GUIA RAPIDA - LAB WIN11
 =======================
 
 Abre:
-E:\Lab_Win11\start_lab.cmd
+C:\Lab_Win11\start_lab.cmd
 
 Idioma:
 - ENTER o 1: English
@@ -21,28 +21,28 @@ Lo mas comodo:
 - Opcion 7: copiar boot.* a una o varias unidades.
 
 Carpetas de trabajo:
-- E:\Lab_Win11\Trabajo\images  -> solo boot.* e install.* (.wim/.esd/.swm)
-- E:\Lab_Win11\Trabajo\ISOs    -> solo archivos .iso
-- E:\Lab_Win11\Trabajo\Drivers
-- E:\Lab_Win11\Trabajo\packages
-- E:\Lab_Win11\Trabajo\offline
+- C:\Lab_Win11\Trabajo\images  -> solo boot.* e install.* (.wim/.esd/.swm)
+- C:\Lab_Win11\Trabajo\ISOs    -> solo archivos .iso
+- C:\Lab_Win11\Trabajo\Drivers
+- C:\Lab_Win11\Trabajo\packages
+- C:\Lab_Win11\Trabajo\offline
 
 Antes de montar una imagen:
-1. Comprueba que E:\Lab_Win11\Trabajo\offline esta vacia.
+1. Comprueba que C:\Lab_Win11\Trabajo\offline esta vacia.
 2. Comprueba montajes anteriores:
    dism /Get-MountedImageInfo
 3. Si DISM quedo a medias:
    Dism /Cleanup-Mountpoints
 
 Orden tipico para modificar install.wim:
-1. Dism /Get-ImageInfo /ImageFile:"E:\Lab_Win11\Trabajo\images\install.wim"
-2. Dism /Mount-Image /ImageFile:"E:\Lab_Win11\Trabajo\images\install.wim" /Index:1 /MountDir:"E:\Lab_Win11\Trabajo\offline"
-3. Dism /Image:"E:\Lab_Win11\Trabajo\offline" /Add-Driver /Driver:"E:\Lab_Win11\Trabajo\Drivers" /Recurse /ForceUnsigned
-4. Dism /Image:"E:\Lab_Win11\Trabajo\offline" /Add-Package /PackagePath:"E:\Lab_Win11\Trabajo\packages"
-5. Dism /Unmount-Image /MountDir:"E:\Lab_Win11\Trabajo\offline" /Commit
+1. Dism /Get-ImageInfo /ImageFile:"C:\Lab_Win11\Trabajo\images\install.wim"
+2. Dism /Mount-Image /ImageFile:"C:\Lab_Win11\Trabajo\images\install.wim" /Index:1 /MountDir:"C:\Lab_Win11\Trabajo\offline"
+3. Dism /Image:"C:\Lab_Win11\Trabajo\offline" /Add-Driver /Driver:"C:\Lab_Win11\Trabajo\Drivers" /Recurse /ForceUnsigned
+4. Dism /Image:"C:\Lab_Win11\Trabajo\offline" /Add-Package /PackagePath:"C:\Lab_Win11\Trabajo\packages"
+5. Dism /Unmount-Image /MountDir:"C:\Lab_Win11\Trabajo\offline" /Commit
 
 Si quieres descartar cambios:
-Dism /Unmount-Image /MountDir:"E:\Lab_Win11\Trabajo\offline" /Discard
+Dism /Unmount-Image /MountDir:"C:\Lab_Win11\Trabajo\offline" /Discard
 
 Durante instalacion:
 - Shift + F10 abre consola.

@@ -1,9 +1,9 @@
-﻿QUICK GUIDE - WIN11 LAB
+QUICK GUIDE - WIN11 LAB
 =======================
 
 Open:
 
-E:\Lab_Win11\start_lab.cmd
+C:\Lab_Win11\start_lab.cmd
 
 Language: ENTER or 1 English, 2 Spanish, 3 French, 4 Romanian, 5 German
 

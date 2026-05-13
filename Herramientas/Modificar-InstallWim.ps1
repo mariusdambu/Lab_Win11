@@ -60,6 +60,8 @@ Add-LabTranslations @{
         Completed = "Done"
         MaybeMounted = "The image may still be mounted in {0}."
         ManualCommitDiscard = "You can review it and then use Commit or Discard from the command menu."
+        ManualPromptIntro = "Manual PowerShell prompt opened in this elevated window."
+        ManualPromptExit = "Type exit when you want to close this window."
         BootWimMissing = "boot.wim was not found in {0}. Boot driver injection skipped."
         BootNoDrivers = "No INF drivers were found, so boot.wim driver injection is skipped."
         BootQuestion = "Also inject the same drivers into boot.wim for setup/storage/network?"
@@ -80,7 +82,7 @@ Add-LabTranslations @{
         ManualMediaOption = "Type a mounted drive letter or a lab ISO manually"
         MountedIsoHint = "If the ISO is already mounted, choose the mounted drive option."
         MediaPrompt = "Number, mounted drive letter (example I:) or ISO path"
-        MediaPromptFallback = "Mounted drive letter or ISO inside {0}, example I: or E:\Lab_Win11\Trabajo\ISOs\Win11.iso"
+        MediaPromptFallback = "Mounted drive letter or ISO inside {0}, example I: or {0}\Win11.iso"
         MissingBootWim = "Media {0} does not look like Windows setup media. sources\boot.wim is missing."
         MissingInstallImage = "Media {0} does not contain sources\install.wim, sources\install.esd or sources\install.swm."
         MediaNotFound = "Selected media does not exist: {0}"
@@ -142,6 +144,8 @@ Add-LabTranslations @{
         Completed = "Terminado"
         MaybeMounted = "La imagen puede seguir montada en {0}."
         ManualCommitDiscard = "Puedes revisar y luego usar Commit o Discard desde el menu de comandos."
+        ManualPromptIntro = "Prompt manual de PowerShell abierto en esta ventana elevada."
+        ManualPromptExit = "Escribe exit cuando quieras cerrar esta ventana."
         BootWimMissing = "No se encontro boot.wim en {0}. Se omite la inyeccion de drivers en boot.wim."
         BootNoDrivers = "No se encontraron drivers INF, asi que se omite la inyeccion en boot.wim."
         BootQuestion = "Injectar tambien los mismos drivers en boot.wim para setup/almacenamiento/red?"
@@ -162,7 +166,7 @@ Add-LabTranslations @{
         ManualMediaOption = "Escribir una letra montada o una ISO del lab manualmente"
         MountedIsoHint = "Si ya tenias la ISO montada, elige la opcion de unidad ya montada."
         MediaPrompt = "Numero, letra montada (ej. I:) o ruta ISO"
-        MediaPromptFallback = "Letra ya montada o ISO dentro de {0}, ejemplo I: o E:\Lab_Win11\Trabajo\ISOs\Win11.iso"
+        MediaPromptFallback = "Letra ya montada o ISO dentro de {0}, ejemplo I: o {0}\Win11.iso"
         MissingBootWim = "El medio {0} no parece instalador Windows. Falta sources\boot.wim."
         MissingInstallImage = "El medio {0} no tiene sources\install.wim, sources\install.esd ni sources\install.swm."
         MediaNotFound = "No existe el medio indicado: {0}"
@@ -224,6 +228,8 @@ Add-LabTranslations @{
         Completed = "Termine"
         MaybeMounted = "L'image peut encore etre montee dans {0}."
         ManualCommitDiscard = "Vous pouvez verifier puis utiliser Commit ou Discard depuis le menu de commandes."
+        ManualPromptIntro = "Invite PowerShell manuel ouvert dans cette fenetre elevee."
+        ManualPromptExit = "Tapez exit quand vous voulez fermer cette fenetre."
         BootWimMissing = "boot.wim introuvable dans {0}. Injection des pilotes dans boot.wim ignoree."
         BootNoDrivers = "Aucun pilote INF trouve, injection dans boot.wim ignoree."
         BootQuestion = "Injecter aussi les memes pilotes dans boot.wim pour setup/stockage/reseau?"
@@ -244,7 +250,7 @@ Add-LabTranslations @{
         ManualMediaOption = "Saisir une lettre montee ou une ISO du lab manuellement"
         MountedIsoHint = "Si l'ISO est deja montee, choisissez l'option lecteur monte."
         MediaPrompt = "Numero, lettre montee (ex. I:) ou chemin ISO"
-        MediaPromptFallback = "Lettre montee ou ISO dans {0}, exemple I: ou E:\Lab_Win11\Trabajo\ISOs\Win11.iso"
+        MediaPromptFallback = "Lettre montee ou ISO dans {0}, exemple I: ou {0}\Win11.iso"
         MissingBootWim = "Le media {0} ne ressemble pas a un installateur Windows. sources\boot.wim manque."
         MissingInstallImage = "Le media {0} ne contient pas sources\install.wim, sources\install.esd ni sources\install.swm."
         MediaNotFound = "Media selectionne introuvable: {0}"
@@ -306,6 +312,8 @@ Add-LabTranslations @{
         Completed = "Terminat"
         MaybeMounted = "Imaginea poate fi inca montata in {0}."
         ManualCommitDiscard = "Poti verifica si apoi folosi Commit sau Discard din meniul de comenzi."
+        ManualPromptIntro = "Prompt PowerShell manual deschis in aceasta fereastra elevata."
+        ManualPromptExit = "Tasteaza exit cand vrei sa inchizi fereastra."
         BootWimMissing = "boot.wim nu a fost gasit in {0}. Se omite injectarea driverelor in boot.wim."
         BootNoDrivers = "Nu s-au gasit drivere INF, deci se omite injectarea in boot.wim."
         BootQuestion = "Injectezi aceleasi drivere si in boot.wim pentru setup/stocare/retea?"
@@ -326,7 +334,7 @@ Add-LabTranslations @{
         ManualMediaOption = "Tasteaza manual o litera montata sau un ISO din lab"
         MountedIsoHint = "Daca ISO este deja montat, alege optiunea de unitate montata."
         MediaPrompt = "Numar, litera montata (ex. I:) sau cale ISO"
-        MediaPromptFallback = "Litera montata sau ISO in {0}, exemplu I: sau E:\Lab_Win11\Trabajo\ISOs\Win11.iso"
+        MediaPromptFallback = "Litera montata sau ISO in {0}, exemplu I: sau {0}\Win11.iso"
         MissingBootWim = "Mediul {0} nu pare instalator Windows. Lipseste sources\boot.wim."
         MissingInstallImage = "Mediul {0} nu contine sources\install.wim, sources\install.esd sau sources\install.swm."
         MediaNotFound = "Mediul selectat nu exista: {0}"
@@ -388,6 +396,8 @@ Add-LabTranslations @{
         Completed = "Fertig"
         MaybeMounted = "Das Image kann noch in {0} gemountet sein."
         ManualCommitDiscard = "Sie koennen es pruefen und dann Commit oder Discard aus dem Befehlsmenue verwenden."
+        ManualPromptIntro = "Manuelle PowerShell-Eingabe in diesem erhoehten Fenster geoeffnet."
+        ManualPromptExit = "Geben Sie exit ein, wenn Sie dieses Fenster schliessen wollen."
         BootWimMissing = "boot.wim wurde in {0} nicht gefunden. Treiberintegration in boot.wim wird uebersprungen."
         BootNoDrivers = "Keine INF-Treiber gefunden, daher wird boot.wim uebersprungen."
         BootQuestion = "Dieselben Treiber auch in boot.wim fuer Setup/Speicher/Netzwerk integrieren?"
@@ -408,7 +418,7 @@ Add-LabTranslations @{
         ManualMediaOption = "Gemounteten Laufwerksbuchstaben oder Lab-ISO manuell eingeben"
         MountedIsoHint = "Wenn die ISO bereits gemountet ist, waehlen Sie die gemountete Laufwerksoption."
         MediaPrompt = "Nummer, gemounteter Buchstabe (z.B. I:) oder ISO-Pfad"
-        MediaPromptFallback = "Gemounteter Buchstabe oder ISO in {0}, Beispiel I: oder E:\Lab_Win11\Trabajo\ISOs\Win11.iso"
+        MediaPromptFallback = "Gemounteter Buchstabe oder ISO in {0}, Beispiel I: oder {0}\Win11.iso"
         MissingBootWim = "Medium {0} sieht nicht wie Windows-Setup aus. sources\boot.wim fehlt."
         MissingInstallImage = "Medium {0} enthaelt weder sources\install.wim, sources\install.esd noch sources\install.swm."
         MediaNotFound = "Ausgewaehltes Medium existiert nicht: {0}"
@@ -938,6 +948,11 @@ function Assert-OfflineReady {
         New-Item -ItemType Directory -Path $OfflineRoot -Force | Out-Null
     }
 
+    $placeholderNames = @(".gitkeep", "README.md", "README.txt", "README_OFFLINE.txt")
+    Get-ChildItem -LiteralPath $OfflineRoot -Force -File -ErrorAction SilentlyContinue |
+        Where-Object { $_.Name -in $placeholderNames } |
+        Remove-Item -Force -ErrorAction SilentlyContinue
+
     $offlineItems = @(Get-ChildItem -LiteralPath $OfflineRoot -Force -ErrorAction SilentlyContinue)
     if ($offlineItems.Count -gt 0) {
         throw (LF "OfflineNotEmpty" $OfflineRoot)
@@ -1030,6 +1045,8 @@ function Invoke-BootWimDriverFlow {
 
     Write-Host (L "BootDone") -ForegroundColor Green
 }
+
+$pauseBeforeExit = $true
 
 try {
     foreach ($dir in @($ImagesRoot, $IsoRoot, $LogsRoot, $ScratchRoot)) {
@@ -1184,8 +1201,19 @@ try {
     Write-Section (L "Completed")
     Write-Host ("{0}: {1}" -f (L "Log"), $logPath)
 
-    if ($finalAction -ne "MOUNTED") {
+    if ($finalAction -eq "SAVE") {
         Invoke-BootWimDriverFlow -DriverCount $driverCount -LogPath $logPath
+        $pauseBeforeExit = $false
+    } elseif ($finalAction -eq "MOUNTED") {
+        Write-Host ""
+        Write-Host (L "ManualPromptIntro") -ForegroundColor Yellow
+        Write-Host (L "ManualCommitDiscard")
+        Write-Host (L "ManualPromptExit") -ForegroundColor Yellow
+        Write-Host ""
+        $pauseBeforeExit = $false
+        $host.EnterNestedPrompt()
+    } else {
+        $pauseBeforeExit = $false
     }
 }
 catch {
@@ -1201,4 +1229,6 @@ finally {
     Dismount-LabIsoIfNeeded
 }
 
-Read-Host (L "PressEnterExit") | Out-Null
+if ($pauseBeforeExit) {
+    Read-Host (L "PressEnterExit") | Out-Null
+}
