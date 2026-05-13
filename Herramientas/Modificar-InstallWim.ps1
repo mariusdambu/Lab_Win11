@@ -1,4 +1,4 @@
-#Requires -RunAsAdministrator
+﻿#Requires -RunAsAdministrator
 [CmdletBinding()]
 param(
     [string]$ImageFile,
@@ -62,16 +62,16 @@ Add-LabTranslations @{
         ManualCommitDiscard = "You can review it and then use Commit or Discard from the command menu."
         ManualPromptIntro = "Manual PowerShell prompt opened in this elevated window."
         ManualPromptExit = "Type exit when you want to close this window."
-        BootWimMissing = "boot.wim was not found in {0}. Boot driver injection skipped."
-        BootNoDrivers = "No INF drivers were found, so boot.wim driver injection is skipped."
-        BootQuestion = "Also inject the same drivers into boot.wim for setup/storage/network?"
+        BootWimMissing = "boot.wim was not found in {0}. boot.wim step skipped."
+        BootNoDrivers = "No INF drivers were found. You can still mount boot.wim for manual changes."
+        BootQuestion = "Work with boot.wim too: drivers or manual WinPE/startnet changes?"
         BootInfo = "boot.wim information"
         BootIndexPrompt = "boot.wim index to mount [2]"
         InvalidBootIndex = "Invalid boot.wim index."
         MountBoot = "Mount boot.wim"
         InjectBootDrivers = "Inject drivers into boot.wim"
         SaveBoot = "Save and unmount boot.wim"
-        BootDone = "boot.wim driver injection completed."
+        BootDone = "boot.wim step completed."
         ReadOnlyCheck = "Checking read-only attributes on boot.* and install.*..."
         ReadOnlyCleared = "Read-only removed: {0}"
         ReadOnlyClearFailed = "I could not remove read-only from {0}: {1}"
@@ -146,16 +146,16 @@ Add-LabTranslations @{
         ManualCommitDiscard = "Puedes revisar y luego usar Commit o Discard desde el menu de comandos."
         ManualPromptIntro = "Prompt manual de PowerShell abierto en esta ventana elevada."
         ManualPromptExit = "Escribe exit cuando quieras cerrar esta ventana."
-        BootWimMissing = "No se encontro boot.wim en {0}. Se omite la inyeccion de drivers en boot.wim."
-        BootNoDrivers = "No se encontraron drivers INF, asi que se omite la inyeccion en boot.wim."
-        BootQuestion = "Injectar tambien los mismos drivers en boot.wim para setup/almacenamiento/red?"
+        BootWimMissing = "No se encontro boot.wim en {0}. Se omite el paso boot.wim."
+        BootNoDrivers = "No se encontraron drivers INF. Aun puedes montar boot.wim para cambios manuales."
+        BootQuestion = "Trabajar tambien con boot.wim: drivers o cambios manuales de WinPE/startnet?"
         BootInfo = "Informacion de boot.wim"
         BootIndexPrompt = "Indice de boot.wim a montar [2]"
         InvalidBootIndex = "Indice de boot.wim no valido."
         MountBoot = "Montar boot.wim"
         InjectBootDrivers = "Injectar drivers en boot.wim"
         SaveBoot = "Guardar y desmontar boot.wim"
-        BootDone = "Inyeccion de drivers en boot.wim completada."
+        BootDone = "Paso boot.wim completado."
         ReadOnlyCheck = "Comprobando atributo solo lectura en boot.* e install.*..."
         ReadOnlyCleared = "Solo lectura quitado: {0}"
         ReadOnlyClearFailed = "No pude quitar solo lectura de {0}: {1}"
@@ -230,16 +230,16 @@ Add-LabTranslations @{
         ManualCommitDiscard = "Vous pouvez verifier puis utiliser Commit ou Discard depuis le menu de commandes."
         ManualPromptIntro = "Invite PowerShell manuel ouvert dans cette fenetre elevee."
         ManualPromptExit = "Tapez exit quand vous voulez fermer cette fenetre."
-        BootWimMissing = "boot.wim introuvable dans {0}. Injection des pilotes dans boot.wim ignoree."
-        BootNoDrivers = "Aucun pilote INF trouve, injection dans boot.wim ignoree."
-        BootQuestion = "Injecter aussi les memes pilotes dans boot.wim pour setup/stockage/reseau?"
+        BootWimMissing = "boot.wim introuvable dans {0}. Etape boot.wim ignoree."
+        BootNoDrivers = "Aucun pilote INF trouve. Vous pouvez quand meme monter boot.wim pour des changements manuels."
+        BootQuestion = "Travailler aussi avec boot.wim: pilotes ou changements manuels WinPE/startnet?"
         BootInfo = "Informations de boot.wim"
         BootIndexPrompt = "Index boot.wim a monter [2]"
         InvalidBootIndex = "Index boot.wim invalide."
         MountBoot = "Monter boot.wim"
         InjectBootDrivers = "Injecter les pilotes dans boot.wim"
         SaveBoot = "Enregistrer et demonter boot.wim"
-        BootDone = "Injection des pilotes dans boot.wim terminee."
+        BootDone = "Etape boot.wim terminee."
         ReadOnlyCheck = "Verification de l'attribut lecture seule sur boot.* et install.*..."
         ReadOnlyCleared = "Lecture seule retiree: {0}"
         ReadOnlyClearFailed = "Impossible de retirer la lecture seule de {0}: {1}"
@@ -314,16 +314,16 @@ Add-LabTranslations @{
         ManualCommitDiscard = "Poti verifica si apoi folosi Commit sau Discard din meniul de comenzi."
         ManualPromptIntro = "Prompt PowerShell manual deschis in aceasta fereastra elevata."
         ManualPromptExit = "Tasteaza exit cand vrei sa inchizi fereastra."
-        BootWimMissing = "boot.wim nu a fost gasit in {0}. Se omite injectarea driverelor in boot.wim."
-        BootNoDrivers = "Nu s-au gasit drivere INF, deci se omite injectarea in boot.wim."
-        BootQuestion = "Injectezi aceleasi drivere si in boot.wim pentru setup/stocare/retea?"
+        BootWimMissing = "boot.wim nu a fost gasit in {0}. Pasul boot.wim este omis."
+        BootNoDrivers = "Nu s-au gasit drivere INF. Tot poti monta boot.wim pentru modificari manuale."
+        BootQuestion = "Lucrezi si cu boot.wim: drivere sau modificari manuale WinPE/startnet?"
         BootInfo = "Informatii boot.wim"
         BootIndexPrompt = "Index boot.wim de montat [2]"
         InvalidBootIndex = "Index boot.wim invalid."
         MountBoot = "Monteaza boot.wim"
         InjectBootDrivers = "Injecteaza drivere in boot.wim"
         SaveBoot = "Salveaza si demonteaza boot.wim"
-        BootDone = "Injectarea driverelor in boot.wim este finalizata."
+        BootDone = "Pasul boot.wim este finalizat."
         ReadOnlyCheck = "Verific atributul doar-citire pe boot.* si install.*..."
         ReadOnlyCleared = "Doar-citire eliminat: {0}"
         ReadOnlyClearFailed = "Nu am putut elimina doar-citire de pe {0}: {1}"
@@ -398,16 +398,16 @@ Add-LabTranslations @{
         ManualCommitDiscard = "Sie koennen es pruefen und dann Commit oder Discard aus dem Befehlsmenue verwenden."
         ManualPromptIntro = "Manuelle PowerShell-Eingabe in diesem erhoehten Fenster geoeffnet."
         ManualPromptExit = "Geben Sie exit ein, wenn Sie dieses Fenster schliessen wollen."
-        BootWimMissing = "boot.wim wurde in {0} nicht gefunden. Treiberintegration in boot.wim wird uebersprungen."
-        BootNoDrivers = "Keine INF-Treiber gefunden, daher wird boot.wim uebersprungen."
-        BootQuestion = "Dieselben Treiber auch in boot.wim fuer Setup/Speicher/Netzwerk integrieren?"
+        BootWimMissing = "boot.wim wurde in {0} nicht gefunden. boot.wim-Schritt wird uebersprungen."
+        BootNoDrivers = "Keine INF-Treiber gefunden. boot.wim kann trotzdem fuer manuelle Aenderungen gemountet werden."
+        BootQuestion = "Auch mit boot.wim arbeiten: Treiber oder manuelle WinPE/startnet-Aenderungen?"
         BootInfo = "boot.wim-Informationen"
         BootIndexPrompt = "Zu mountender boot.wim Index [2]"
         InvalidBootIndex = "Ungueltiger boot.wim Index."
         MountBoot = "boot.wim mounten"
         InjectBootDrivers = "Treiber in boot.wim injizieren"
         SaveBoot = "boot.wim speichern und unmounten"
-        BootDone = "Treiberintegration in boot.wim abgeschlossen."
+        BootDone = "boot.wim-Schritt abgeschlossen."
         ReadOnlyCheck = "Schreibschutz fuer boot.* und install.* wird geprueft..."
         ReadOnlyCleared = "Schreibschutz entfernt: {0}"
         ReadOnlyClearFailed = "Schreibschutz konnte nicht von {0} entfernt werden: {1}"
@@ -943,6 +943,18 @@ function Select-ImageFile {
     }
 }
 
+function Get-LabDriverCount {
+    if (-not (Test-Path -LiteralPath $DriversRoot -PathType Container)) {
+        return 0
+    }
+
+    return @(Get-ChildItem -LiteralPath $DriversRoot -Recurse -File -Filter "*.inf" -ErrorAction SilentlyContinue).Count
+}
+
+function Test-OfflineRootMounted {
+    $mountedInfo = & dism.exe /English /Get-MountedImageInfo 2>&1
+    return (($mountedInfo -join "`n") -match [regex]::Escape($OfflineRoot))
+}
 function Assert-OfflineReady {
     if (-not (Test-Path -LiteralPath $OfflineRoot -PathType Container)) {
         New-Item -ItemType Directory -Path $OfflineRoot -Force | Out-Null
@@ -985,11 +997,6 @@ function Invoke-BootWimDriverFlow {
         [string]$LogPath
     )
 
-    if ($DriverCount -le 0) {
-        Write-Host (L "BootNoDrivers") -ForegroundColor Yellow
-        return
-    }
-
     $bootWim = Join-Path $ImagesRoot "boot.wim"
     if (-not (Test-Path -LiteralPath $bootWim -PathType Leaf)) {
         Write-Host (LF "BootWimMissing" $ImagesRoot) -ForegroundColor Yellow
@@ -998,6 +1005,14 @@ function Invoke-BootWimDriverFlow {
 
     if (-not (Read-YesNo -Question (L "BootQuestion") -Default $true)) {
         return
+    }
+
+    $doBootDrivers = $false
+    if ($DriverCount -le 0) {
+        Write-Host (L "BootNoDrivers") -ForegroundColor Yellow
+    }
+    else {
+        $doBootDrivers = Read-YesNo -Question (LF "InjectDriversQuestion" $DriverCount) -Default $true
     }
 
     Clear-ImageReadOnlyAttribute -Path $bootWim
@@ -1023,27 +1038,71 @@ function Invoke-BootWimDriverFlow {
     )
     $script:Mounted = $true
 
-    Invoke-DismStep -Title (L "InjectBootDrivers") -Arguments @(
-        "/Image:$OfflineRoot",
-        "/Add-Driver",
-        "/Driver:$DriversRoot",
-        "/Recurse",
-        "/ForceUnsigned",
-        "/LogPath:$LogPath",
-        "/ScratchDir:$ScratchRoot"
-    )
+    if ($doBootDrivers) {
+        Invoke-DismStep -Title (L "InjectBootDrivers") -Arguments @(
+            "/Image:$OfflineRoot",
+            "/Add-Driver",
+            "/Driver:$DriversRoot",
+            "/Recurse",
+            "/ForceUnsigned",
+            "/LogPath:$LogPath",
+            "/ScratchDir:$ScratchRoot"
+        )
+    }
 
-    Invoke-DismStep -Title (L "SaveBoot") -Arguments @(
-        "/Unmount-Image",
-        "/MountDir:$OfflineRoot",
-        "/Commit",
-        "/CheckIntegrity",
-        "/LogPath:$LogPath",
-        "/ScratchDir:$ScratchRoot"
-    )
-    $script:Mounted = $false
+    Write-Section (L "Finish")
+    Write-Host (L "FinalSave")
+    Write-Host (L "FinalDiscard")
+    Write-Host (L "FinalMounted")
+    $bootFinalAction = $null
+    do {
+        $answer = (Read-Host (L "Option")).Trim().ToUpperInvariant()
+        if ($answer -in @("S", "G", "E", "C")) { $bootFinalAction = "SAVE" }
+        elseif ($answer -eq "D") { $bootFinalAction = "DISCARD" }
+        elseif ($answer -eq "M") { $bootFinalAction = "MOUNTED" }
+    } until ($bootFinalAction)
 
-    Write-Host (L "BootDone") -ForegroundColor Green
+    if ($bootFinalAction -eq "SAVE") {
+        Invoke-DismStep -Title (L "SaveBoot") -Arguments @(
+            "/Unmount-Image",
+            "/MountDir:$OfflineRoot",
+            "/Commit",
+            "/CheckIntegrity",
+            "/LogPath:$LogPath",
+            "/ScratchDir:$ScratchRoot"
+        )
+        $script:Mounted = $false
+        Write-Host (L "BootDone") -ForegroundColor Green
+    }
+    elseif ($bootFinalAction -eq "DISCARD") {
+        Invoke-DismStep -Title (L "DiscardAndUnmount") -Arguments @(
+            "/Unmount-Image",
+            "/MountDir:$OfflineRoot",
+            "/Discard",
+            "/LogPath:$LogPath",
+            "/ScratchDir:$ScratchRoot"
+        )
+        $script:Mounted = $false
+    }
+    else {
+        Write-Host (LF "LeftMounted" $OfflineRoot) -ForegroundColor Yellow
+        Write-Host ""
+        Write-Host (L "ManualPromptIntro") -ForegroundColor Yellow
+        Write-Host (L "ManualCommitDiscard")
+        Write-Host (L "ManualPromptExit") -ForegroundColor Yellow
+        Write-Host ""
+        $host.EnterNestedPrompt()
+
+        if (Test-OfflineRootMounted) {
+            Write-Host ""
+            Write-Host (LF "LeftMounted" $OfflineRoot) -ForegroundColor Yellow
+            Write-Host (L "ManualCommitDiscard")
+        }
+        else {
+            $script:Mounted = $false
+            Write-Host (L "BootDone") -ForegroundColor Green
+        }
+    }
 }
 
 $pauseBeforeExit = $true
@@ -1212,6 +1271,16 @@ try {
         Write-Host ""
         $pauseBeforeExit = $false
         $host.EnterNestedPrompt()
+
+        if (Test-OfflineRootMounted) {
+            Write-Host ""
+            Write-Host (LF "LeftMounted" $OfflineRoot) -ForegroundColor Yellow
+            Write-Host (L "ManualCommitDiscard")
+        }
+        else {
+            $Mounted = $false
+            Invoke-BootWimDriverFlow -DriverCount (Get-LabDriverCount) -LogPath $logPath
+        }
     } else {
         $pauseBeforeExit = $false
     }
@@ -1232,3 +1301,6 @@ finally {
 if ($pauseBeforeExit) {
     Read-Host (L "PressEnterExit") | Out-Null
 }
+
+
+

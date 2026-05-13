@@ -25,25 +25,14 @@ Real deployment payload is intentionally ignored by Git:
 - packages
 - logs
 - temporary mount contents
+- private local sync helpers
 
 The repository contains the lab, not your private deployment payload.
 
-## Publishing Workflow
+## Location
 
-Default source lab:
-
-```text
-C:\Lab_Win11
-```
-
-Default GitHub publishing copy:
+Use this lab from:
 
 ```text
 folder where this repository is cloned
-```
-
-Run this before committing:
-
-```text
-Sync-GitHub-Lab.cmd
 ```
