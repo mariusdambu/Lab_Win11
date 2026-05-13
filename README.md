@@ -30,13 +30,13 @@ The repository contains the lab, not your private deployment payload.
 
 ## Publishing Workflow
 
-Production lab:
+Default source lab:
 
 ```text
 C:\Lab_Win11
 ```
 
-GitHub publishing copy:
+Default GitHub publishing copy:
 
 ```text
 folder where this repository is cloned
