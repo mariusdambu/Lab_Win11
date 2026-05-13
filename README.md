@@ -39,7 +39,7 @@ C:\Lab_Win11
 GitHub publishing copy:
 
 ```text
-F:\Aplicatii\Lab_Win11\GitHub
+folder where this repository is cloned
 ```
 
 Run this before committing:
