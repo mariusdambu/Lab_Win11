@@ -73,6 +73,8 @@ Add-LabTranslations @{
         Cmd26Desc = "Mounts install.wim while keeping log and scratch files inside the lab. Useful for diagnostics."
         Cmd27Title = "27 Open network in OOBE"
         Cmd27Desc = "Opens network connections during setup after Shift+F10."
+        Cmd28Title = "28 StartComponentCleanup + ResetBase"
+        Cmd28Desc = "Final cleanup for a validated offline image. Reduces component store size, but integrated updates cannot be uninstalled later."
     }
     es = @{
         CopyConsoleTitle = "COMANDOS IMPRESCINDIBLES - LAB WIN11"
@@ -135,6 +137,8 @@ Add-LabTranslations @{
         Cmd26Desc = "Monta install.wim guardando log y scratch dentro del laboratorio. Util para diagnosticar errores."
         Cmd27Title = "27 Abrir red en OOBE"
         Cmd27Desc = "Abre conexiones de red durante la instalacion al usar Shift+F10."
+        Cmd28Title = "28 StartComponentCleanup + ResetBase"
+        Cmd28Desc = "Limpieza final para una imagen offline ya validada. Reduce el tamano de componentes, pero luego no podras desinstalar los updates integrados."
     }
     fr = @{
         CopyConsoleTitle = "COMMANDES ESSENTIELLES - LAB WIN11"
@@ -197,6 +201,8 @@ Add-LabTranslations @{
         Cmd26Desc = "Monte install.wim avec journal et scratch dans le laboratoire. Utile pour diagnostiquer."
         Cmd27Title = "27 Ouvrir le reseau dans OOBE"
         Cmd27Desc = "Ouvre les connexions reseau pendant l'installation apres Shift+F10."
+        Cmd28Title = "28 StartComponentCleanup + ResetBase"
+        Cmd28Desc = "Nettoyage final pour une image offline validee. Reduit la taille des composants, mais les mises a jour integrees ne pourront plus etre desinstallees."
     }
     ro = @{
         CopyConsoleTitle = "COMENZI ESENTIALE - LAB WIN11"
@@ -259,6 +265,8 @@ Add-LabTranslations @{
         Cmd26Desc = "Monteaza install.wim cu log si scratch in laborator. Util pentru diagnostic."
         Cmd27Title = "27 Deschide reteaua in OOBE"
         Cmd27Desc = "Deschide conexiunile de retea in timpul instalarii dupa Shift+F10."
+        Cmd28Title = "28 StartComponentCleanup + ResetBase"
+        Cmd28Desc = "Curatare finala pentru o imagine offline validata. Reduce dimensiunea componentelor, dar actualizarile integrate nu mai pot fi dezinstalate."
     }
     de = @{
         CopyConsoleTitle = "WICHTIGE BEFEHLE - WIN11 LAB"
@@ -321,6 +329,8 @@ Add-LabTranslations @{
         Cmd26Desc = "Mountet install.wim mit Protokoll und Scratch im Labor. Nuetzlich zur Diagnose."
         Cmd27Title = "27 Netzwerk in OOBE oeffnen"
         Cmd27Desc = "Oeffnet Netzwerkverbindungen waehrend Setup nach Shift+F10."
+        Cmd28Title = "28 StartComponentCleanup + ResetBase"
+        Cmd28Desc = "Finale Bereinigung fuer ein validiertes Offline-Image. Reduziert die Komponentengroesse, integrierte Updates koennen danach aber nicht deinstalliert werden."
     }
 }
 
@@ -351,6 +361,12 @@ function Clear-LabHost {
     try { Clear-Host } catch { Write-Host "" }
 }
 
+function Get-CommandDisplayTitle {
+    param([pscustomobject]$Command)
+
+    return ((L "$($Command.Key)Title") -replace "^\d+\s+", "")
+}
+
 $images = Join-Work "images"
 $installWim = Join-Work "images\install.wim"
 $installEsd = Join-Work "images\install.esd"
@@ -364,11 +380,13 @@ $scratch = Join-Work "Scratch"
 
 $commands = @(
     [pscustomobject]@{ Key = "Cmd01"; Risk = "Low"; Text = "Dism /Get-MountedImageInfo" },
-    [pscustomobject]@{ Key = "Cmd02"; Risk = "Low"; Text = "Dism /Get-ImageInfo /ImageFile:`"$installWim`"" },
     [pscustomobject]@{ Key = "Cmd03"; Risk = "Low"; Text = "Dism /Get-ImageInfo /ImageFile:`"$installEsd`"" },
+    [pscustomobject]@{ Key = "Cmd18"; Risk = "Medium"; Text = "Dism /Export-Image /SourceImageFile:`"$installEsd`" /SourceIndex:1 /DestinationImageFile:`"$installWim`" /Compress:max /CheckIntegrity" },
+    [pscustomobject]@{ Key = "Cmd02"; Risk = "Low"; Text = "Dism /Get-ImageInfo /ImageFile:`"$installWim`"" },
     [pscustomobject]@{ Key = "Cmd04"; Risk = "Low"; Text = "Dism /Get-ImageInfo /ImageFile:`"$bootWim`"" },
     [pscustomobject]@{ Key = "Cmd05"; Risk = "Medium"; Text = "Dism /Mount-Image /ImageFile:`"$installWim`" /Index:1 /MountDir:`"$offline`" /CheckIntegrity" },
     [pscustomobject]@{ Key = "Cmd06"; Risk = "Medium"; Text = "Dism /Mount-Image /ImageFile:`"$installWim`" /Name:`"Windows 11 Pro`" /MountDir:`"$offline`"" },
+    [pscustomobject]@{ Key = "Cmd26"; Risk = "Medium"; Text = "Dism /Mount-Image /ImageFile:`"$installWim`" /Index:1 /MountDir:`"$offline`" /LogPath:`"$logs\mount.log`" /ScratchDir:`"$scratch`"" },
     [pscustomobject]@{ Key = "Cmd07"; Risk = "Medium"; Text = "DISM /Mount-Wim /WimFile:`"$bootWim`" /Index:1 /MountDir:`"$offline`"" },
     [pscustomobject]@{ Key = "Cmd08"; Risk = "Medium"; Text = "DISM /Mount-Wim /WimFile:`"$bootWim`" /Index:2 /MountDir:`"$offline`"" },
     [pscustomobject]@{ Key = "Cmd09"; Risk = "Medium"; Text = "Dism /Image:`"$offline`" /Add-Driver /Driver:`"$drivers`" /Recurse /ForceUnsigned" },
@@ -376,13 +394,13 @@ $commands = @(
     [pscustomobject]@{ Key = "Cmd11"; Risk = "Medium"; Text = "Dism /Image:`"$offline`" /Add-Package /PackagePath:`"$packages`"" },
     [pscustomobject]@{ Key = "Cmd12"; Risk = "Low"; Text = "Dism /Image:`"$offline`" /Get-Packages /Format:Table" },
     [pscustomobject]@{ Key = "Cmd13"; Risk = "Medium"; Text = "Dism /Image:`"$offline`" /Cleanup-Image /StartComponentCleanup" },
+    [pscustomobject]@{ Key = "Cmd28"; Risk = "High"; Text = "Dism /Image:`"$offline`" /Cleanup-Image /StartComponentCleanup /ResetBase" },
     [pscustomobject]@{ Key = "Cmd14"; Risk = "High"; Text = "Dism /Unmount-Image /MountDir:`"$offline`" /Commit /CheckIntegrity" },
     [pscustomobject]@{ Key = "Cmd15"; Risk = "High"; Text = "Dism /Unmount-Image /MountDir:`"$offline`" /Discard" },
     [pscustomobject]@{ Key = "Cmd16"; Risk = "Medium"; Text = "Dism /Remount-Image /MountDir:`"$offline`"" },
     [pscustomobject]@{ Key = "Cmd17"; Risk = "Medium"; Text = "Dism /Cleanup-Mountpoints" },
-    [pscustomobject]@{ Key = "Cmd18"; Risk = "Medium"; Text = "Dism /Export-Image /SourceImageFile:`"$installEsd`" /SourceIndex:1 /DestinationImageFile:`"$installWim`" /Compress:max /CheckIntegrity" },
+    [pscustomobject]@{ Key = "Cmd20"; Risk = "Medium"; Text = "Dism /Export-Image /SourceImageFile:`"$installWim`" /SourceIndex:6 /DestinationImageFile:`"$images\install_optimizado.wim`" /Compress:max /CheckIntegrity" },
     [pscustomobject]@{ Key = "Cmd19"; Risk = "Medium"; Text = "Dism /Export-Image /SourceImageFile:`"$installWim`" /SourceIndex:1 /DestinationImageFile:`"$installEsd`" /Compress:recovery /CheckIntegrity" },
-    [pscustomobject]@{ Key = "Cmd20"; Risk = "Medium"; Text = "Dism /Export-Image /SourceImageFile:`"$installWim`" /SourceIndex:1 /DestinationImageFile:`"$images\install_optimizado.wim`" /Compress:max /CheckIntegrity" },
     [pscustomobject]@{ Key = "Cmd21"; Risk = "Medium"; Text = "Dism /Split-Image /ImageFile:`"$installWim`" /SWMFile:`"$images\install.swm`" /FileSize:4000" },
     [pscustomobject]@{ Key = "Cmd22"; Risk = "Low"; Text = "Mount-DiskImage -ImagePath `"$isos\Win11.iso`"" },
     [pscustomobject]@{ Key = "Cmd23"; Risk = "Low"; Text = "Dismount-DiskImage -ImagePath `"$isos\Win11.iso`"" },
@@ -391,7 +409,6 @@ Get-Disk | Sort-Object Number | Format-Table Number,FriendlyName,BusType,Size,Pa
 Get-Volume | Sort-Object DriveLetter | Format-Table DriveLetter,FileSystemLabel,FileSystem,DriveType,SizeRemaining,Size -AutoSize
 "@ },
     [pscustomobject]@{ Key = "Cmd25"; Risk = "Low"; Text = 'notepad "$env:WINDIR\Logs\DISM\dism.log"' },
-    [pscustomobject]@{ Key = "Cmd26"; Risk = "Medium"; Text = "Dism /Mount-Image /ImageFile:`"$installWim`" /Index:1 /MountDir:`"$offline`" /LogPath:`"$logs\mount.log`" /ScratchDir:`"$scratch`"" },
     [pscustomobject]@{ Key = "Cmd27"; Risk = "Low"; Text = "ncpa.cpl" }
 )
 
@@ -400,7 +417,7 @@ while ($true) {
     Write-LabSection (L "CopyConsoleTitle")
 
     for ($i = 0; $i -lt $commands.Count; $i++) {
-        Write-Host ("{0,2}. {1}" -f ($i + 1), (L "$($commands[$i].Key)Title"))
+        Write-Host ("{0,2}. {1}" -f ($i + 1), (Get-CommandDisplayTitle $commands[$i]))
     }
     Write-Host (" 0. {0}" -f (L "Back"))
     Write-Host ""
@@ -423,7 +440,7 @@ while ($true) {
     $selected = $commands[$number - 1]
 
     while ($true) {
-        $titleText = L "$($selected.Key)Title"
+        $titleText = "{0:00} {1}" -f $number, (Get-CommandDisplayTitle $selected)
         Clear-LabHost
         Write-LabSection $titleText
         Write-LabSubsection ((L "WhatItDoes") + ":") Yellow
