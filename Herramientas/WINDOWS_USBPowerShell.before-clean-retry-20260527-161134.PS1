@@ -75,12 +75,6 @@ Add-LabTranslations @{
         CancelNotUsb = "Cancelled because the disk did not look like USB."
         RunningDiskPart = "Running DiskPart: {0}"
         DiskPartFailed = "DiskPart failed. Review {0}"
-        CleanRetry = "Retrying USB clean ({0}/{1})..."
-        CleanAttemptFailed = "Clean attempt {0} failed. Review {1}"
-        CleanManualTitle = "Windows still cannot clean the USB automatically."
-        CleanManualHelp1 = "You can unplug/replug the USB or clean it manually with Disk Management/DiskPart."
-        CleanManualHelp2 = "Do not close this window. When the USB is ready, come back here."
-        CleanManualPrompt = "Press ENTER to re-check the USB and continue"
         CleaningDisk = "Cleaning disk {0}..."
         StateAfterClean = "State after clean: {0}"
         InitGpt = "Initializing disk {0} as GPT for UEFI..."
@@ -179,12 +173,6 @@ Add-LabTranslations @{
         CancelNotUsb = "Cancelado porque el disco no parecia USB."
         RunningDiskPart = "Ejecutando DiskPart: {0}"
         DiskPartFailed = "DiskPart fallo. Revisa {0}"
-        CleanRetry = "Reintentando limpiar el USB ({0}/{1})..."
-        CleanAttemptFailed = "El intento de clean {0} fallo. Revisa {1}"
-        CleanManualTitle = "Windows sigue sin poder limpiar el USB automaticamente."
-        CleanManualHelp1 = "Puedes desconectar/conectar el USB o limpiarlo manualmente con Administracion de discos/DiskPart."
-        CleanManualHelp2 = "No cierres esta ventana. Cuando el USB este preparado, vuelve aqui."
-        CleanManualPrompt = "Pulsa ENTER para comprobar el USB y continuar"
         CleaningDisk = "Limpiando disco {0}..."
         StateAfterClean = "Estado tras clean: {0}"
         InitGpt = "Inicializando disco {0} como GPT para UEFI..."
@@ -285,12 +273,6 @@ Add-LabTranslations @{
         CancelNotUsb = "Annule car le disque ne semblait pas USB."
         RunningDiskPart = "Execution de DiskPart: {0}"
         DiskPartFailed = "DiskPart a echoue. Revoyez {0}"
-        CleanRetry = "Nouvel essai de nettoyage USB ({0}/{1})..."
-        CleanAttemptFailed = "La tentative clean {0} a echoue. Revoyez {1}"
-        CleanManualTitle = "Windows ne peut toujours pas nettoyer la cle USB automatiquement."
-        CleanManualHelp1 = "Vous pouvez debrancher/rebrancher la cle USB ou la nettoyer manuellement avec Gestion des disques/DiskPart."
-        CleanManualHelp2 = "Ne fermez pas cette fenetre. Quand la cle USB est prete, revenez ici."
-        CleanManualPrompt = "Appuyez sur ENTREE pour verifier la cle USB et continuer"
         CleaningDisk = "Nettoyage du disque {0}..."
         StateAfterClean = "Etat apres clean: {0}"
         InitGpt = "Initialisation du disque {0} en GPT pour UEFI..."
@@ -390,12 +372,6 @@ Add-LabTranslations @{
         CancelNotUsb = "Anulat deoarece discul nu parea USB."
         RunningDiskPart = "Rulez DiskPart: {0}"
         DiskPartFailed = "DiskPart a esuat. Verifica {0}"
-        CleanRetry = "Reincerc curatarea USB ({0}/{1})..."
-        CleanAttemptFailed = "Incercarea clean {0} a esuat. Verifica {1}"
-        CleanManualTitle = "Windows inca nu poate curata USB-ul automat."
-        CleanManualHelp1 = "Poti scoate/reconecta USB-ul sau il poti curata manual cu Disk Management/DiskPart."
-        CleanManualHelp2 = "Nu inchide aceasta fereastra. Cand USB-ul este gata, revino aici."
-        CleanManualPrompt = "Apasa ENTER pentru a verifica USB-ul si a continua"
         CleaningDisk = "Curat discul {0}..."
         StateAfterClean = "Stare dupa clean: {0}"
         InitGpt = "Initializez discul {0} ca GPT pentru UEFI..."
@@ -495,12 +471,6 @@ Add-LabTranslations @{
         CancelNotUsb = "Abgebrochen, weil der Datentraeger nicht wie USB aussah."
         RunningDiskPart = "DiskPart wird ausgefuehrt: {0}"
         DiskPartFailed = "DiskPart ist fehlgeschlagen. Pruefen Sie {0}"
-        CleanRetry = "USB-Bereinigung wird erneut versucht ({0}/{1})..."
-        CleanAttemptFailed = "Clean-Versuch {0} ist fehlgeschlagen. Pruefen Sie {1}"
-        CleanManualTitle = "Windows kann den USB-Datentraeger weiterhin nicht automatisch bereinigen."
-        CleanManualHelp1 = "Sie koennen den USB-Datentraeger neu einstecken oder manuell mit Datentraegerverwaltung/DiskPart bereinigen."
-        CleanManualHelp2 = "Schliessen Sie dieses Fenster nicht. Wenn der USB-Datentraeger bereit ist, kommen Sie hierher zurueck."
-        CleanManualPrompt = "Druecken Sie ENTER, um den USB-Datentraeger erneut zu pruefen und fortzufahren"
         CleaningDisk = "Datentraeger {0} wird bereinigt..."
         StateAfterClean = "Status nach clean: {0}"
         InitGpt = "Datentraeger {0} wird als GPT fuer UEFI initialisiert..."
@@ -946,8 +916,7 @@ function Confirm-DiskLooksExternal {
 function Invoke-DiskPartScript {
     param(
         [string[]]$Lines,
-        [string]$Name,
-        [switch]$NoThrow
+        [string]$Name
     )
 
     $scriptPath = Join-Path $LogsRoot ("diskpart-{0}-{1}.txt" -f $Name, (Get-Date -Format "yyyyMMdd-HHmmss"))
@@ -959,74 +928,21 @@ function Invoke-DiskPartScript {
     $output | Set-Content -LiteralPath $outputPath -Encoding UTF8
     Add-Content -LiteralPath $LogPath -Value ($output | Out-String)
 
-    $failed = ($LASTEXITCODE -ne 0 -or ($output -match "DiskPart has encountered an error|Virtual Disk Service error|error"))
-    if ($failed) {
-        if ($NoThrow) {
-            return [pscustomobject]@{
-                Success = $false
-                ScriptPath = $scriptPath
-                OutputPath = $outputPath
-            }
-        }
+    if ($LASTEXITCODE -ne 0 -or ($output -match "DiskPart has encountered an error|Virtual Disk Service error|error")) {
         throw (LF "DiskPartFailed" $outputPath)
     }
-
-    if ($NoThrow) {
-        return [pscustomobject]@{
-            Success = $true
-            ScriptPath = $scriptPath
-            OutputPath = $outputPath
-        }
-    }
-}
-
-function Invoke-DiskCleanWithRetry {
-    param([int]$Number)
-
-    $maxAttempts = 3
-    for ($attempt = 1; $attempt -le $maxAttempts; $attempt++) {
-        if ($attempt -gt 1) {
-            Write-Step (LF "CleanRetry" $attempt $maxAttempts) Yellow
-        }
-
-        Set-Disk -Number $Number -IsOffline $false -ErrorAction SilentlyContinue
-        Set-Disk -Number $Number -IsReadOnly $false -ErrorAction SilentlyContinue
-        Update-Disk -Number $Number -ErrorAction SilentlyContinue
-
-        $result = Invoke-DiskPartScript -Name ("clean-disk{0}-try{1}" -f $Number, $attempt) -NoThrow -Lines @(
-            "select disk $Number",
-            "online disk noerr",
-            "attributes disk clear readonly",
-            "clean",
-            "rescan",
-            "exit"
-        )
-
-        if ($result.Success) {
-            return
-        }
-
-        Write-Step (LF "CleanAttemptFailed" $attempt $result.OutputPath) Yellow
-        Start-Sleep -Seconds (2 + $attempt)
-    }
-
-    Write-Host ""
-    Write-Step (L "CleanManualTitle") Yellow
-    Write-Host (L "CleanManualHelp1") -ForegroundColor Yellow
-    Write-Host (L "CleanManualHelp2") -ForegroundColor Yellow
-    Read-Host (L "CleanManualPrompt") | Out-Null
-
-    Set-Disk -Number $Number -IsOffline $false -ErrorAction SilentlyContinue
-    Set-Disk -Number $Number -IsReadOnly $false -ErrorAction SilentlyContinue
-    Update-Disk -Number $Number -ErrorAction SilentlyContinue
-    Start-Sleep -Seconds 2
 }
 
 function Initialize-DiskForUefiGptUsb {
     param([int]$Number)
 
     Write-Step (LF "CleaningDisk" $Number) Cyan
-    Invoke-DiskCleanWithRetry -Number $Number
+    Invoke-DiskPartScript -Name "clean-disk$Number" -Lines @(
+        "select disk $Number",
+        "clean",
+        "rescan",
+        "exit"
+    )
 
     Start-Sleep -Seconds 2
     Update-Disk -Number $Number -ErrorAction SilentlyContinue
