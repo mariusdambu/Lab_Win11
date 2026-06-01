@@ -27,9 +27,16 @@ Add-LabTranslations @{
         AlreadyMounted = "DISM already has an image mounted in {0}"
         DismFailed = "DISM failed in '{0}' with exit code {1}."
         DismConsoleLog = "DISM console output"
-        DismWorking = "DISM is working. Long output is hidden here and saved to the log."
         DismOk = "OK: {0}"
         DismErrorTail = "Last DISM lines before the error:"
+        ExportInstallTitle = "Export optimized install.wim"
+        ExportInstallUsedIndex = "Mounted install.wim index: {0}"
+        ExportInstallCommand = "Command ready:"
+        ExportInstallRunQuestion = "Run export/optimization now?"
+        ExportInstallCopyQuestion = "Copy command to clipboard?"
+        ExportInstallCopied = "Command copied to clipboard."
+        ExportInstallCopyFailed = "I could not copy the command: {0}"
+        ExportInstallSkipped = "Export not executed."
         ImageInformation = "Image information"
         ViewInstallIndexes = "View install.wim indexes"
         MountIndexPrompt = "Index to mount"
@@ -65,10 +72,21 @@ Add-LabTranslations @{
         BootWimMissing = "boot.wim was not found in {0}. boot.wim step skipped."
         BootNoDrivers = "No INF drivers were found. You can still mount boot.wim for manual changes."
         BootQuestion = "Work with boot.wim too: drivers or manual WinPE/startnet changes?"
+        BootFlowTitle = "boot.wim flow"
+        FlowChoiceTitle = "What do you want to modify?"
+        FlowChoiceInstall = "1. install.wim"
+        FlowChoiceBoot = "2. boot.wim"
+        FlowChoiceBoth = "3. both (install.wim first)"
+        FlowChoicePrompt = "Option [1]"
+        FlowChoiceInvalid = "Invalid option."
+        ContinueInstallQuestion = "Continue with install.wim now?"
+        CannotContinueMounted = "Cannot continue because an image is still mounted in {0}."
+        ImportBootQuestion = "No boot.wim is ready in Trabajo\images. Copy boot.wim from ISO/media now?"
         BootInfo = "boot.wim information"
         BootIndexPrompt = "boot.wim index to mount [2]"
         InvalidBootIndex = "Invalid boot.wim index."
         MountBoot = "Mount boot.wim"
+        InjectBootDriversQuestion = "Inject {0} INF drivers into boot.wim from Trabajo\Drivers?"
         InjectBootDrivers = "Inject drivers into boot.wim"
         SaveBoot = "Save and unmount boot.wim"
         BootDone = "boot.wim step completed."
@@ -111,9 +129,16 @@ Add-LabTranslations @{
         AlreadyMounted = "DISM ya tiene una imagen montada en {0}"
         DismFailed = "DISM fallo en '{0}' con codigo {1}."
         DismConsoleLog = "Salida consola DISM"
-        DismWorking = "DISM trabajando. La salida larga se oculta aqui y queda guardada en el log."
         DismOk = "OK: {0}"
         DismErrorTail = "Ultimas lineas de DISM antes del error:"
+        ExportInstallTitle = "Exportar install.wim optimizado"
+        ExportInstallUsedIndex = "Indice install.wim montado: {0}"
+        ExportInstallCommand = "Comando preparado:"
+        ExportInstallRunQuestion = "Ejecutar exportacion/optimizacion ahora?"
+        ExportInstallCopyQuestion = "Copiar comando al portapapeles?"
+        ExportInstallCopied = "Comando copiado al portapapeles."
+        ExportInstallCopyFailed = "No pude copiar el comando: {0}"
+        ExportInstallSkipped = "Exportacion no ejecutada."
         ImageInformation = "Informacion de la imagen"
         ViewInstallIndexes = "Ver indices de install.wim"
         MountIndexPrompt = "Indice que quieres montar"
@@ -149,10 +174,21 @@ Add-LabTranslations @{
         BootWimMissing = "No se encontro boot.wim en {0}. Se omite el paso boot.wim."
         BootNoDrivers = "No se encontraron drivers INF. Aun puedes montar boot.wim para cambios manuales."
         BootQuestion = "Trabajar tambien con boot.wim: drivers o cambios manuales de WinPE/startnet?"
+        BootFlowTitle = "Flujo boot.wim"
+        FlowChoiceTitle = "Que quieres modificar?"
+        FlowChoiceInstall = "1. install.wim"
+        FlowChoiceBoot = "2. boot.wim"
+        FlowChoiceBoth = "3. ambos (install.wim primero)"
+        FlowChoicePrompt = "Opcion [1]"
+        FlowChoiceInvalid = "Opcion no valida."
+        ContinueInstallQuestion = "Continuar ahora con install.wim?"
+        CannotContinueMounted = "No puedo continuar porque una imagen sigue montada en {0}."
+        ImportBootQuestion = "No hay boot.wim listo en Trabajo\images. Copiar boot.wim desde ISO/medio ahora?"
         BootInfo = "Informacion de boot.wim"
         BootIndexPrompt = "Indice de boot.wim a montar [2]"
         InvalidBootIndex = "Indice de boot.wim no valido."
         MountBoot = "Montar boot.wim"
+        InjectBootDriversQuestion = "Injectar {0} drivers INF en boot.wim desde Trabajo\Drivers?"
         InjectBootDrivers = "Injectar drivers en boot.wim"
         SaveBoot = "Guardar y desmontar boot.wim"
         BootDone = "Paso boot.wim completado."
@@ -195,9 +231,16 @@ Add-LabTranslations @{
         AlreadyMounted = "DISM a deja une image montee dans {0}"
         DismFailed = "DISM a echoue dans '{0}' avec le code {1}."
         DismConsoleLog = "Sortie console DISM"
-        DismWorking = "DISM travaille. La sortie longue est masquee ici et enregistree dans le log."
         DismOk = "OK: {0}"
         DismErrorTail = "Dernieres lignes DISM avant l'erreur:"
+        ExportInstallTitle = "Exporter install.wim optimise"
+        ExportInstallUsedIndex = "Index install.wim monte: {0}"
+        ExportInstallCommand = "Commande prete:"
+        ExportInstallRunQuestion = "Executer l'export/optimisation maintenant?"
+        ExportInstallCopyQuestion = "Copier la commande dans le presse-papiers?"
+        ExportInstallCopied = "Commande copiee dans le presse-papiers."
+        ExportInstallCopyFailed = "Impossible de copier la commande: {0}"
+        ExportInstallSkipped = "Export non execute."
         ImageInformation = "Informations de l'image"
         ViewInstallIndexes = "Voir les index de install.wim"
         MountIndexPrompt = "Index a monter"
@@ -233,10 +276,21 @@ Add-LabTranslations @{
         BootWimMissing = "boot.wim introuvable dans {0}. Etape boot.wim ignoree."
         BootNoDrivers = "Aucun pilote INF trouve. Vous pouvez quand meme monter boot.wim pour des changements manuels."
         BootQuestion = "Travailler aussi avec boot.wim: pilotes ou changements manuels WinPE/startnet?"
+        BootFlowTitle = "Flux boot.wim"
+        FlowChoiceTitle = "Que voulez-vous modifier?"
+        FlowChoiceInstall = "1. install.wim"
+        FlowChoiceBoot = "2. boot.wim"
+        FlowChoiceBoth = "3. les deux (install.wim d'abord)"
+        FlowChoicePrompt = "Option [1]"
+        FlowChoiceInvalid = "Option invalide."
+        ContinueInstallQuestion = "Continuer avec install.wim maintenant?"
+        CannotContinueMounted = "Impossible de continuer car une image est encore montee dans {0}."
+        ImportBootQuestion = "Aucun boot.wim pret dans Trabajo\images. Copier boot.wim depuis ISO/media maintenant?"
         BootInfo = "Informations de boot.wim"
         BootIndexPrompt = "Index boot.wim a monter [2]"
         InvalidBootIndex = "Index boot.wim invalide."
         MountBoot = "Monter boot.wim"
+        InjectBootDriversQuestion = "Injecter {0} pilotes INF dans boot.wim depuis Trabajo\Drivers?"
         InjectBootDrivers = "Injecter les pilotes dans boot.wim"
         SaveBoot = "Enregistrer et demonter boot.wim"
         BootDone = "Etape boot.wim terminee."
@@ -279,9 +333,16 @@ Add-LabTranslations @{
         AlreadyMounted = "DISM are deja o imagine montata in {0}"
         DismFailed = "DISM a esuat in '{0}' cu codul {1}."
         DismConsoleLog = "Iesire consola DISM"
-        DismWorking = "DISM lucreaza. Iesirea lunga este ascunsa aici si salvata in log."
         DismOk = "OK: {0}"
         DismErrorTail = "Ultimele linii DISM inainte de eroare:"
+        ExportInstallTitle = "Exporta install.wim optimizat"
+        ExportInstallUsedIndex = "Index install.wim montat: {0}"
+        ExportInstallCommand = "Comanda pregatita:"
+        ExportInstallRunQuestion = "Rulezi exportul/optimizarea acum?"
+        ExportInstallCopyQuestion = "Copiezi comanda in clipboard?"
+        ExportInstallCopied = "Comanda copiata in clipboard."
+        ExportInstallCopyFailed = "Nu am putut copia comanda: {0}"
+        ExportInstallSkipped = "Exportul nu a fost executat."
         ImageInformation = "Informatii imagine"
         ViewInstallIndexes = "Vezi indexurile install.wim"
         MountIndexPrompt = "Indexul de montat"
@@ -317,10 +378,21 @@ Add-LabTranslations @{
         BootWimMissing = "boot.wim nu a fost gasit in {0}. Pasul boot.wim este omis."
         BootNoDrivers = "Nu s-au gasit drivere INF. Tot poti monta boot.wim pentru modificari manuale."
         BootQuestion = "Lucrezi si cu boot.wim: drivere sau modificari manuale WinPE/startnet?"
+        BootFlowTitle = "Flux boot.wim"
+        FlowChoiceTitle = "Ce vrei sa modifici?"
+        FlowChoiceInstall = "1. install.wim"
+        FlowChoiceBoot = "2. boot.wim"
+        FlowChoiceBoth = "3. ambele (install.wim primul)"
+        FlowChoicePrompt = "Optiune [1]"
+        FlowChoiceInvalid = "Optiune invalida."
+        ContinueInstallQuestion = "Continui acum cu install.wim?"
+        CannotContinueMounted = "Nu pot continua deoarece o imagine este inca montata in {0}."
+        ImportBootQuestion = "Nu exista boot.wim pregatit in Trabajo\images. Copiezi boot.wim din ISO/media acum?"
         BootInfo = "Informatii boot.wim"
         BootIndexPrompt = "Index boot.wim de montat [2]"
         InvalidBootIndex = "Index boot.wim invalid."
         MountBoot = "Monteaza boot.wim"
+        InjectBootDriversQuestion = "Injecteaza {0} drivere INF in boot.wim din Trabajo\Drivers?"
         InjectBootDrivers = "Injecteaza drivere in boot.wim"
         SaveBoot = "Salveaza si demonteaza boot.wim"
         BootDone = "Pasul boot.wim este finalizat."
@@ -363,9 +435,16 @@ Add-LabTranslations @{
         AlreadyMounted = "DISM hat bereits ein Image in {0} gemountet"
         DismFailed = "DISM ist in '{0}' mit Code {1} fehlgeschlagen."
         DismConsoleLog = "DISM Konsolenausgabe"
-        DismWorking = "DISM arbeitet. Lange Ausgabe wird hier ausgeblendet und im Log gespeichert."
         DismOk = "OK: {0}"
         DismErrorTail = "Letzte DISM-Zeilen vor dem Fehler:"
+        ExportInstallTitle = "Optimiertes install.wim exportieren"
+        ExportInstallUsedIndex = "Gemounteter install.wim Index: {0}"
+        ExportInstallCommand = "Befehl bereit:"
+        ExportInstallRunQuestion = "Export/Optimierung jetzt ausfuehren?"
+        ExportInstallCopyQuestion = "Befehl in die Zwischenablage kopieren?"
+        ExportInstallCopied = "Befehl in die Zwischenablage kopiert."
+        ExportInstallCopyFailed = "Befehl konnte nicht kopiert werden: {0}"
+        ExportInstallSkipped = "Export nicht ausgefuehrt."
         ImageInformation = "Image-Informationen"
         ViewInstallIndexes = "Indexe von install.wim anzeigen"
         MountIndexPrompt = "Zu mountender Index"
@@ -401,10 +480,21 @@ Add-LabTranslations @{
         BootWimMissing = "boot.wim wurde in {0} nicht gefunden. boot.wim-Schritt wird uebersprungen."
         BootNoDrivers = "Keine INF-Treiber gefunden. boot.wim kann trotzdem fuer manuelle Aenderungen gemountet werden."
         BootQuestion = "Auch mit boot.wim arbeiten: Treiber oder manuelle WinPE/startnet-Aenderungen?"
+        BootFlowTitle = "boot.wim Ablauf"
+        FlowChoiceTitle = "Was moechten Sie bearbeiten?"
+        FlowChoiceInstall = "1. install.wim"
+        FlowChoiceBoot = "2. boot.wim"
+        FlowChoiceBoth = "3. beides (install.wim zuerst)"
+        FlowChoicePrompt = "Option [1]"
+        FlowChoiceInvalid = "Ungueltige Option."
+        ContinueInstallQuestion = "Jetzt mit install.wim fortfahren?"
+        CannotContinueMounted = "Fortfahren nicht moeglich, weil ein Image noch in {0} gemountet ist."
+        ImportBootQuestion = "Kein boot.wim in Trabajo\images bereit. boot.wim jetzt aus ISO/Medium kopieren?"
         BootInfo = "boot.wim-Informationen"
         BootIndexPrompt = "Zu mountender boot.wim Index [2]"
         InvalidBootIndex = "Ungueltiger boot.wim Index."
         MountBoot = "boot.wim mounten"
+        InjectBootDriversQuestion = "{0} INF-Treiber aus Trabajo\Drivers in boot.wim injizieren?"
         InjectBootDrivers = "Treiber in boot.wim injizieren"
         SaveBoot = "boot.wim speichern und unmounten"
         BootDone = "boot.wim-Schritt abgeschlossen."
@@ -789,25 +879,59 @@ function ConvertTo-NativeCommandLineArgument {
     return ('"{0}"' -f ($Argument -replace '"', '\"'))
 }
 
-function Update-DismProgressFromLine {
+function New-InstallExportCommandText {
     param(
-        [string]$Title,
-        [string]$Line
+        [string]$SourceImageFile,
+        [int]$SourceIndex,
+        [string]$DestinationImageFile
     )
 
-    if ($Line -match 'Installing\s+(\d+)\s+of\s+(\d+)') {
-        $current = [int]$Matches[1]
-        $total = [int]$Matches[2]
-        if ($total -gt 0) {
-            $percent = [int][Math]::Min(100, [Math]::Floor(($current * 100.0) / $total))
-            Write-Progress -Activity $Title -Status ("Drivers {0}/{1}" -f $current, $total) -PercentComplete $percent
+    return 'Dism /Export-Image /SourceImageFile:"{0}" /SourceIndex:{1} /DestinationImageFile:"{2}" /Compress:max /CheckIntegrity' -f $SourceImageFile, $SourceIndex, $DestinationImageFile
+}
+
+function Offer-InstallWimExport {
+    param(
+        [string]$SourceImageFile,
+        [int]$SourceIndex
+    )
+
+    $destinationImage = Join-Path $ImagesRoot "install_optimizado.wim"
+    $commandText = New-InstallExportCommandText -SourceImageFile $SourceImageFile -SourceIndex $SourceIndex -DestinationImageFile $destinationImage
+
+    Write-Section (L "ExportInstallTitle")
+    Write-Host (LF "ExportInstallUsedIndex" $SourceIndex)
+    Write-Host (L "ExportInstallCommand") -ForegroundColor Cyan
+    Write-Host $commandText -ForegroundColor Cyan
+    Write-Host ""
+
+    if (Read-YesNo -Question (L "ExportInstallRunQuestion") -Default $false) {
+        try {
+            Invoke-DismStep -Title (L "ExportInstallTitle") -Arguments @(
+                "/Export-Image",
+                "/SourceImageFile:$SourceImageFile",
+                "/SourceIndex:$SourceIndex",
+                "/DestinationImageFile:$destinationImage",
+                "/Compress:max",
+                "/CheckIntegrity"
+            )
+        }
+        catch {
+            Write-Host $_.Exception.Message -ForegroundColor Red
         }
         return
     }
 
-    if ($Line -match '([0-9]{1,3}(?:\.[0-9]+)?)%') {
-        $percent = [int][Math]::Min(100, [Math]::Floor([double]$Matches[1]))
-        Write-Progress -Activity $Title -Status ("{0}%" -f $percent) -PercentComplete $percent
+    if (Read-YesNo -Question (L "ExportInstallCopyQuestion") -Default $true) {
+        try {
+            Set-Clipboard -Value $commandText
+            Write-Host (L "ExportInstallCopied") -ForegroundColor Green
+        }
+        catch {
+            Write-Host (LF "ExportInstallCopyFailed" $_.Exception.Message) -ForegroundColor Yellow
+        }
+    }
+    else {
+        Write-Host (L "ExportInstallSkipped") -ForegroundColor Yellow
     }
 }
 
@@ -826,67 +950,20 @@ function Invoke-DismStep {
         Add-Content -LiteralPath $script:DismConsoleLogPath -Value $commandLine
     }
 
-    if ($ShowOutput) {
-        Write-Host $commandLine -ForegroundColor DarkGray
-    }
-    else {
-        Write-Host (L "DismWorking") -ForegroundColor Yellow
-    }
+    Write-Host $commandLine -ForegroundColor DarkGray
 
     $dismExe = Join-Path $env:SystemRoot "System32\dism.exe"
     if (-not (Test-Path -LiteralPath $dismExe -PathType Leaf)) {
         $dismExe = "dism.exe"
     }
 
-    if ($ShowOutput) {
-        & $dismExe @Arguments
-        $exitCode = $LASTEXITCODE
-        if ($exitCode -ne 0) {
-            throw (LF "DismFailed" $Title $exitCode)
-        }
-
-        Write-Host (LF "DismOk" $Title) -ForegroundColor Green
-        return
-    }
-
-    $stdoutPath = Join-Path $LogsRoot ("dism-console-{0}.out.txt" -f ([guid]::NewGuid().ToString("N")))
-    $stderrPath = Join-Path $LogsRoot ("dism-console-{0}.err.txt" -f ([guid]::NewGuid().ToString("N")))
-    $argumentLine = ($Arguments | ForEach-Object { ConvertTo-NativeCommandLineArgument $_ }) -join " "
-    $cmdExe = Join-Path $env:SystemRoot "System32\cmd.exe"
-    $cmdLine = "{0} {1} > `"{2}`" 2> `"{3}`"" -f $dismExe, $argumentLine, $stdoutPath, $stderrPath
-    $startInfo = New-Object System.Diagnostics.ProcessStartInfo
-    $startInfo.FileName = $cmdExe
-    $startInfo.Arguments = "/d /c $cmdLine"
-    $startInfo.UseShellExecute = $false
-    $startInfo.CreateNoWindow = $true
-    $process = New-Object System.Diagnostics.Process
-    $process.StartInfo = $startInfo
-    [void]$process.Start()
-    $seenLines = 0
-
-    while (-not $process.HasExited) {
-        if (Test-Path -LiteralPath $stdoutPath) {
-            $currentLines = @(Get-Content -LiteralPath $stdoutPath -Encoding OEM -ErrorAction SilentlyContinue)
-            if ($currentLines.Count -gt $seenLines) {
-                foreach ($line in @($currentLines | Select-Object -Skip $seenLines)) {
-                    Update-DismProgressFromLine -Title $Title -Line $line
-                }
-                $seenLines = $currentLines.Count
-            }
-        }
-        Start-Sleep -Milliseconds 500
-    }
-    $process.WaitForExit()
-    Write-Progress -Activity $Title -Completed
-
     $outputLines = @()
-    if (Test-Path -LiteralPath $stdoutPath) {
-        $outputLines += @(Get-Content -LiteralPath $stdoutPath -Encoding OEM -ErrorAction SilentlyContinue)
+    & $dismExe @Arguments 2>&1 | ForEach-Object {
+        $line = $_.ToString()
+        $outputLines += $line
+        Write-Host $line
     }
-    if (Test-Path -LiteralPath $stderrPath) {
-        $outputLines += @(Get-Content -LiteralPath $stderrPath -Encoding OEM -ErrorAction SilentlyContinue)
-    }
-    $exitCode = $process.ExitCode
+    $exitCode = $LASTEXITCODE
 
     if ($script:DismConsoleLogPath) {
         Add-Content -LiteralPath $script:DismConsoleLogPath -Value $outputLines
@@ -899,13 +976,10 @@ function Invoke-DismStep {
                 Write-Host ("  {0}" -f $line) -ForegroundColor Yellow
             }
         }
-        Remove-Item -LiteralPath $stdoutPath, $stderrPath -Force -ErrorAction SilentlyContinue
         throw (LF "DismFailed" $Title $exitCode)
     }
 
     Write-Host (LF "DismOk" $Title) -ForegroundColor Green
-
-    Remove-Item -LiteralPath $stdoutPath, $stderrPath -Force -ErrorAction SilentlyContinue
 }
 
 function Select-ImageFile {
@@ -991,28 +1065,128 @@ function Read-BootIndex {
     }
 }
 
+function Read-AssistantTargetChoice {
+    Write-Section (L "FlowChoiceTitle")
+    Write-Host (L "FlowChoiceInstall")
+    Write-Host (L "FlowChoiceBoot")
+    Write-Host (L "FlowChoiceBoth")
+    Write-Host ""
+
+    while ($true) {
+        $answer = (Read-Host (L "FlowChoicePrompt")).Trim()
+        if ([string]::IsNullOrWhiteSpace($answer)) {
+            return "INSTALL"
+        }
+
+        switch ($answer.ToUpperInvariant()) {
+            "1" { return "INSTALL" }
+            "I" { return "INSTALL" }
+            "2" { return "BOOT" }
+            "B" { return "BOOT" }
+            "3" { return "BOTH" }
+            "A" { return "BOTH" }
+        }
+
+        Write-Host (L "FlowChoiceInvalid") -ForegroundColor Yellow
+    }
+}
+
+function New-DismLogSession {
+    $timestamp = Get-Date -Format "yyyyMMdd-HHmmss"
+    $logPath = Join-Path $LogsRoot "Modificar-InstallWim-$timestamp.log"
+    $script:DismConsoleLogPath = Join-Path $LogsRoot "Modificar-InstallWim-$timestamp.console.txt"
+    Set-Content -LiteralPath $script:DismConsoleLogPath -Value ("DISM console output - {0}" -f (Get-Date -Format "yyyy-MM-dd HH:mm:ss")) -Encoding UTF8
+    return $logPath
+}
+
+function Ensure-BootWimReady {
+    $bootWim = Join-Path $ImagesRoot "boot.wim"
+    if (Test-Path -LiteralPath $bootWim -PathType Leaf) {
+        return $false
+    }
+
+    if (-not (Read-YesNo -Question (L "ImportBootQuestion") -Default $true)) {
+        return $false
+    }
+
+    try {
+        $mediaRoot = Resolve-InstallMedia
+        $sources = Join-Path $mediaRoot "sources"
+        Write-Section (L "CopyBootFromMedia")
+        $bootFile = Get-Item -LiteralPath (Join-Path $sources "boot.wim") -ErrorAction Stop
+        Copy-ImageFileToImages -SourceFile $bootFile -DestinationName "boot.wim"
+        return $true
+    }
+    finally {
+        Dismount-LabIsoIfNeeded
+    }
+}
+
+function Ensure-ImagesForFlow {
+    param(
+        [ValidateSet("INSTALL", "BOOT", "BOTH")]
+        [string]$FlowChoice
+    )
+
+    $importedImages = $false
+
+    if ($FlowChoice -in @("INSTALL", "BOTH")) {
+        $importedImages = (Ensure-InstallWimReady) -or $importedImages
+    }
+
+    if ($FlowChoice -in @("BOOT", "BOTH")) {
+        $importedImages = (Ensure-BootWimReady) -or $importedImages
+    }
+
+    if ($importedImages) {
+        Clear-LabImageReadOnlyAttributes
+    }
+}
+
+function Invoke-BootContinuation {
+    param(
+        [string]$LogPath,
+        [int]$DriverCount,
+        [bool]$AskBeforeStart
+    )
+
+    if ($AskBeforeStart -and -not (Read-YesNo -Question (L "BootQuestion") -Default $true)) {
+        return "SKIPPED"
+    }
+
+    $importedBoot = Ensure-BootWimReady
+    if ($importedBoot) {
+        Clear-LabImageReadOnlyAttributes
+    }
+
+    return Invoke-BootWimDriverFlow -DriverCount $DriverCount -LogPath $LogPath -AskBeforeStart $false
+}
+
 function Invoke-BootWimDriverFlow {
     param(
         [int]$DriverCount,
-        [string]$LogPath
+        [string]$LogPath,
+        [bool]$AskBeforeStart = $true
     )
 
     $bootWim = Join-Path $ImagesRoot "boot.wim"
     if (-not (Test-Path -LiteralPath $bootWim -PathType Leaf)) {
         Write-Host (LF "BootWimMissing" $ImagesRoot) -ForegroundColor Yellow
-        return
+        return "SKIPPED"
     }
 
-    if (-not (Read-YesNo -Question (L "BootQuestion") -Default $true)) {
-        return
+    if ($AskBeforeStart -and -not (Read-YesNo -Question (L "BootQuestion") -Default $true)) {
+        return "SKIPPED"
     }
+
+    Write-Section (L "BootFlowTitle")
 
     $doBootDrivers = $false
     if ($DriverCount -le 0) {
         Write-Host (L "BootNoDrivers") -ForegroundColor Yellow
     }
     else {
-        $doBootDrivers = Read-YesNo -Question (LF "InjectDriversQuestion" $DriverCount) -Default $true
+        $doBootDrivers = Read-YesNo -Question (LF "InjectBootDriversQuestion" $DriverCount) -Default $true
     }
 
     Clear-ImageReadOnlyAttribute -Path $bootWim
@@ -1073,6 +1247,7 @@ function Invoke-BootWimDriverFlow {
         )
         $script:Mounted = $false
         Write-Host (L "BootDone") -ForegroundColor Green
+        return "SAVE"
     }
     elseif ($bootFinalAction -eq "DISCARD") {
         Invoke-DismStep -Title (L "DiscardAndUnmount") -Arguments @(
@@ -1083,6 +1258,7 @@ function Invoke-BootWimDriverFlow {
             "/ScratchDir:$ScratchRoot"
         )
         $script:Mounted = $false
+        return "DISCARD"
     }
     else {
         Write-Host (LF "LeftMounted" $OfflineRoot) -ForegroundColor Yellow
@@ -1097,32 +1273,25 @@ function Invoke-BootWimDriverFlow {
             Write-Host ""
             Write-Host (LF "LeftMounted" $OfflineRoot) -ForegroundColor Yellow
             Write-Host (L "ManualCommitDiscard")
+            return "MOUNTED"
         }
         else {
             $script:Mounted = $false
             Write-Host (L "BootDone") -ForegroundColor Green
+            return "MANUAL_UNMOUNTED"
         }
     }
 }
 
-$pauseBeforeExit = $true
+function Invoke-InstallWimFlow {
+    param(
+        [string]$LogPath,
+        [switch]$OfferBootAfter,
+        [switch]$RunBootAfter
+    )
 
-try {
-    foreach ($dir in @($ImagesRoot, $IsoRoot, $LogsRoot, $ScratchRoot)) {
-        New-Item -ItemType Directory -Path $dir -Force | Out-Null
-    }
-
-    Clear-LabImageReadOnlyAttributes
-    $importedImages = Ensure-InstallWimReady
-    if ($importedImages) {
-        Clear-LabImageReadOnlyAttributes
-    }
     $selectedImage = Select-ImageFile
     Clear-ImageReadOnlyAttribute -Path $selectedImage
-    $timestamp = Get-Date -Format "yyyyMMdd-HHmmss"
-    $logPath = Join-Path $LogsRoot "Modificar-InstallWim-$timestamp.log"
-    $script:DismConsoleLogPath = Join-Path $LogsRoot "Modificar-InstallWim-$timestamp.console.txt"
-    Set-Content -LiteralPath $script:DismConsoleLogPath -Value ("DISM console output - {0}" -f (Get-Date -Format "yyyy-MM-dd HH:mm:ss")) -Encoding UTF8
     $driverCount = if (Test-Path -LiteralPath $DriversRoot -PathType Container) {
         @(Get-ChildItem -LiteralPath $DriversRoot -Recurse -File -Filter "*.inf" -ErrorAction SilentlyContinue).Count
     } else {
@@ -1137,11 +1306,11 @@ try {
     Invoke-DismStep -Title (L "ViewInstallIndexes") -ShowOutput -Arguments @(
         "/Get-ImageInfo",
         "/ImageFile:$selectedImage",
-        "/LogPath:$logPath",
+        "/LogPath:$LogPath",
         "/ScratchDir:$ScratchRoot"
     )
 
-    if (-not $PSBoundParameters.ContainsKey("Index") -or $null -eq $Index) {
+    if ($null -eq $Index) {
         while ($true) {
             $answer = Read-Host (L "MountIndexPrompt")
             $parsed = 0
@@ -1152,6 +1321,7 @@ try {
             Write-Host (L "InvalidIndex") -ForegroundColor Yellow
         }
     }
+    $mountedInstallIndex = [int]$Index
 
     $doDrivers = (-not $SkipDrivers) -and $driverCount -gt 0 -and (Read-YesNo -Question (LF "InjectDriversQuestion" $driverCount) -Default $true)
     $doPackages = (-not $SkipPackages) -and $packageCount -gt 0 -and (Read-YesNo -Question (LF "InjectPackagesQuestion" $packageCount) -Default $true)
@@ -1164,13 +1334,13 @@ try {
     Write-Host ("{0,-8}: {1}" -f (L "Drivers"), $(if ($doDrivers) { L "YesText" } else { L "NoText" }))
     Write-Host ("{0,-8}: {1}" -f (L "Packages"), $(if ($doPackages) { L "YesText" } else { L "NoText" }))
     Write-Host ("{0,-8}: {1}" -f (L "Cleanup"), $(if ($doCleanup) { L "CleanupYes" } else { L "NoText" }))
-    Write-Host ("{0,-8}: {1}" -f (L "Log"), $logPath)
+    Write-Host ("{0,-8}: {1}" -f (L "Log"), $LogPath)
     Write-Host ("{0,-8}: {1}" -f (L "DismConsoleLog"), $script:DismConsoleLogPath)
     Write-Host ""
 
     if (-not (Read-YesNo -Question (L "StartNowQuestion") -Default $false)) {
         Write-Host (L "Cancelled") -ForegroundColor Yellow
-        return
+        return "CANCELLED"
     }
 
     Assert-OfflineReady
@@ -1181,10 +1351,10 @@ try {
         "/Index:$Index",
         "/MountDir:$OfflineRoot",
         "/CheckIntegrity",
-        "/LogPath:$logPath",
+        "/LogPath:$LogPath",
         "/ScratchDir:$ScratchRoot"
     )
-    $Mounted = $true
+    $script:Mounted = $true
 
     if ($doDrivers) {
         Invoke-DismStep -Title (L "InjectDrivers") -Arguments @(
@@ -1193,7 +1363,7 @@ try {
             "/Driver:$DriversRoot",
             "/Recurse",
             "/ForceUnsigned",
-            "/LogPath:$logPath",
+            "/LogPath:$LogPath",
             "/ScratchDir:$ScratchRoot"
         )
     }
@@ -1203,7 +1373,7 @@ try {
             "/Image:$OfflineRoot",
             "/Add-Package",
             "/PackagePath:$PackagesRoot",
-            "/LogPath:$logPath",
+            "/LogPath:$LogPath",
             "/ScratchDir:$ScratchRoot"
         )
     }
@@ -1213,7 +1383,7 @@ try {
             "/Image:$OfflineRoot",
             "/Cleanup-Image",
             "/StartComponentCleanup",
-            "/LogPath:$logPath",
+            "/LogPath:$LogPath",
             "/ScratchDir:$ScratchRoot"
         )
     }
@@ -1240,49 +1410,116 @@ try {
             "/MountDir:$OfflineRoot",
             "/Commit",
             "/CheckIntegrity",
-            "/LogPath:$logPath",
+            "/LogPath:$LogPath",
             "/ScratchDir:$ScratchRoot"
         )
-        $Mounted = $false
+        $script:Mounted = $false
     } elseif ($finalAction -eq "DISCARD") {
         Invoke-DismStep -Title (L "DiscardAndUnmount") -Arguments @(
             "/Unmount-Image",
             "/MountDir:$OfflineRoot",
             "/Discard",
-            "/LogPath:$logPath",
+            "/LogPath:$LogPath",
             "/ScratchDir:$ScratchRoot"
         )
-        $Mounted = $false
+        $script:Mounted = $false
     } else {
         Write-Host (LF "LeftMounted" $OfflineRoot) -ForegroundColor Yellow
     }
 
     Write-Section (L "Completed")
-    Write-Host ("{0}: {1}" -f (L "Log"), $logPath)
+    Write-Host ("{0}: {1}" -f (L "Log"), $LogPath)
+
+    if ((-not $AutoCommit) -and $finalAction -in @("SAVE", "DISCARD")) {
+        Offer-InstallWimExport -SourceImageFile $selectedImage -SourceIndex $mountedInstallIndex
+    }
 
     if ($finalAction -eq "SAVE") {
-        Invoke-BootWimDriverFlow -DriverCount $driverCount -LogPath $logPath
-        $pauseBeforeExit = $false
+        if ($RunBootAfter) {
+            [void](Invoke-BootContinuation -DriverCount $driverCount -LogPath $LogPath -AskBeforeStart $false)
+        }
+        elseif ($OfferBootAfter) {
+            [void](Invoke-BootContinuation -DriverCount $driverCount -LogPath $LogPath -AskBeforeStart $true)
+        }
+        return "SAVE"
+    } elseif ($finalAction -eq "DISCARD") {
+        if ($RunBootAfter) {
+            [void](Invoke-BootContinuation -DriverCount $driverCount -LogPath $LogPath -AskBeforeStart $false)
+        }
+        elseif ($OfferBootAfter) {
+            [void](Invoke-BootContinuation -DriverCount $driverCount -LogPath $LogPath -AskBeforeStart $true)
+        }
+        return "DISCARD"
     } elseif ($finalAction -eq "MOUNTED") {
         Write-Host ""
         Write-Host (L "ManualPromptIntro") -ForegroundColor Yellow
         Write-Host (L "ManualCommitDiscard")
         Write-Host (L "ManualPromptExit") -ForegroundColor Yellow
         Write-Host ""
-        $pauseBeforeExit = $false
         $host.EnterNestedPrompt()
 
         if (Test-OfflineRootMounted) {
             Write-Host ""
             Write-Host (LF "LeftMounted" $OfflineRoot) -ForegroundColor Yellow
             Write-Host (L "ManualCommitDiscard")
+            return "MOUNTED"
         }
         else {
-            $Mounted = $false
-            Invoke-BootWimDriverFlow -DriverCount (Get-LabDriverCount) -LogPath $logPath
+            $script:Mounted = $false
+            if ($RunBootAfter) {
+                [void](Invoke-BootContinuation -DriverCount (Get-LabDriverCount) -LogPath $LogPath -AskBeforeStart $false)
+            }
+            elseif ($OfferBootAfter) {
+                [void](Invoke-BootContinuation -DriverCount (Get-LabDriverCount) -LogPath $LogPath -AskBeforeStart $true)
+            }
+            return "MANUAL_UNMOUNTED"
         }
-    } else {
-        $pauseBeforeExit = $false
+    }
+}
+
+$pauseBeforeExit = $true
+
+try {
+    foreach ($dir in @($ImagesRoot, $IsoRoot, $LogsRoot, $ScratchRoot)) {
+        New-Item -ItemType Directory -Path $dir -Force | Out-Null
+    }
+
+    Clear-LabImageReadOnlyAttributes
+    $flowChoice = Read-AssistantTargetChoice
+    $logPath = New-DismLogSession
+
+    if ($flowChoice -eq "BOOT") {
+        Ensure-ImagesForFlow -FlowChoice "BOOT"
+        $bootResult = Invoke-BootWimDriverFlow -DriverCount (Get-LabDriverCount) -LogPath $logPath -AskBeforeStart $false
+        if ($bootResult -eq "MOUNTED" -or (Test-OfflineRootMounted)) {
+            Write-Host ""
+            Write-Host (LF "CannotContinueMounted" $OfflineRoot) -ForegroundColor Yellow
+            $pauseBeforeExit = $false
+        }
+        elseif (Read-YesNo -Question (L "ContinueInstallQuestion") -Default $false) {
+            Ensure-ImagesForFlow -FlowChoice "INSTALL"
+            $installResult = Invoke-InstallWimFlow -LogPath $logPath
+            if ($installResult -ne "CANCELLED") {
+                $pauseBeforeExit = $false
+            }
+        }
+        else {
+            $pauseBeforeExit = $false
+        }
+    }
+    elseif ($flowChoice -eq "BOTH") {
+        Ensure-ImagesForFlow -FlowChoice "BOTH"
+        $installResult = Invoke-InstallWimFlow -LogPath $logPath -RunBootAfter
+        if ($installResult -ne "CANCELLED") {
+            $pauseBeforeExit = $false
+        }
+    }
+    else {
+        Ensure-ImagesForFlow -FlowChoice "INSTALL"
+        $installResult = Invoke-InstallWimFlow -LogPath $logPath -OfferBootAfter
+        if ($installResult -ne "CANCELLED") {
+            $pauseBeforeExit = $false
+        }
     }
 }
 catch {
@@ -1291,10 +1528,10 @@ catch {
 
     $imageStillMounted = $false
     try {
-        $imageStillMounted = ($Mounted -or (Test-OfflineRootMounted))
+        $imageStillMounted = ($script:Mounted -or (Test-OfflineRootMounted))
     }
     catch {
-        $imageStillMounted = $Mounted
+        $imageStillMounted = $script:Mounted
     }
 
     if ($imageStillMounted) {
@@ -1314,7 +1551,7 @@ catch {
             Write-Host (L "ManualCommitDiscard")
         }
         else {
-            $Mounted = $false
+            $script:Mounted = $false
         }
     }
 }

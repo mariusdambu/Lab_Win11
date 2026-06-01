@@ -264,14 +264,12 @@ function Open-LocalizedHelpText {
     Open-FileOrFolder (Join-Path $HelpRoot "COMANDOS_DISM_Y_USB.txt")
 }
 
-function Start-ElevatedScript {
+function Invoke-LabScript {
     param([string]$Path)
     Assert-Path $Path
     Write-Host (TF "Launching" $Path) -ForegroundColor Cyan
-    Write-Host (T "RequiresAdmin") -ForegroundColor Yellow
-    $args = "-NoProfile -ExecutionPolicy RemoteSigned -File `"$Path`" -Language `"$Language`""
     $windowsPowerShell = Join-Path $env:SystemRoot "System32\WindowsPowerShell\v1.0\powershell.exe"
-    Start-Process -FilePath $windowsPowerShell -ArgumentList $args -Verb RunAs | Out-Null
+    & $windowsPowerShell -NoProfile -ExecutionPolicy RemoteSigned -File $Path -Language $Language
 }
 
 function Show-LabFiles {
@@ -371,13 +369,13 @@ do {
             "1" { Open-HtmlHelp }
             "2" { Open-LocalizedHelpText }
             "3" { & (Join-Path $ScriptRoot "Copiar-Comando.ps1") -Language $Language }
-            "4" { Start-ElevatedScript (Join-Path $ScriptRoot "Modificar-InstallWim.ps1") }
-            "5" { Start-ElevatedScript (Join-Path $ScriptRoot "WINDOWS_USBPowerShell.PS1") }
+            "4" { Invoke-LabScript (Join-Path $ScriptRoot "Modificar-InstallWim.ps1") }
+            "5" { Invoke-LabScript (Join-Path $ScriptRoot "WINDOWS_USBPowerShell.PS1") }
             "6" { & (Join-Path $ScriptRoot "copiar_install_wim.ps1") -Language $Language }
             "7" { & (Join-Path $ScriptRoot "copiar_boot_wim.ps1") -Language $Language }
             "8" { Show-LabFiles }
             "9" { Show-DisksAndVolumes }
-            "10" { Start-ElevatedScript (Join-Path $ScriptRoot "Ver-MontajesDism.ps1") }
+            "10" { Invoke-LabScript (Join-Path $ScriptRoot "Ver-MontajesDism.ps1") }
             "11" { Open-FileOrFolder $WorkRoot }
             "12" { Open-FileOrFolder $HelpRoot }
             "0" { return }

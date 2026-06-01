@@ -284,10 +284,12 @@ function Copy-LabFileWithProgress {
         try { (Get-Item -LiteralPath $Destination -ErrorAction Stop).IsReadOnly = $false } catch {}
     }
 
+    Write-Host ("  {0} [{1}]" -f $sourceItem.Name, (Format-LabBytes ([UInt64]$sourceItem.Length))) -ForegroundColor DarkGray
+
     $buffer = New-Object byte[] (4MB)
     $total = [UInt64]$sourceItem.Length
     $copied = [UInt64]0
-    $lastPercent = -1
+    $nextReport = 10
     $inputStream = $null
     $outputStream = $null
 
@@ -300,20 +302,20 @@ function Copy-LabFileWithProgress {
             $copied += [UInt64]$read
 
             $percent = if ($total -gt 0) { [int][Math]::Min(100, [Math]::Floor(($copied * 100.0) / $total)) } else { 100 }
-            if ($percent -ne $lastPercent) {
-                $lastPercent = $percent
-                Write-Progress -Activity $Activity -Status ("{0}: {1} / {2}" -f $sourceItem.Name, (Format-LabBytes $copied), (Format-LabBytes $total)) -PercentComplete $percent
+            while ($percent -ge $nextReport -and $nextReport -lt 100) {
+                Write-Host ("  {0,3}% - {1} / {2}" -f $nextReport, (Format-LabBytes $copied), (Format-LabBytes $total)) -ForegroundColor DarkGray
+                $nextReport += 10
             }
         }
     }
     finally {
         if ($outputStream) { $outputStream.Dispose() }
         if ($inputStream) { $inputStream.Dispose() }
-        Write-Progress -Activity $Activity -Completed
     }
 
     $destinationItem = Get-Item -LiteralPath $Destination -ErrorAction Stop
     $destinationItem.LastWriteTime = $sourceItem.LastWriteTime
+    Write-Host ("  100% - {0} [{1}]" -f $destinationItem.Name, (Format-LabBytes ([UInt64]$destinationItem.Length))) -ForegroundColor Green
     return $destinationItem
 }
 

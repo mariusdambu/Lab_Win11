@@ -1127,14 +1127,14 @@ function Invoke-RobocopyCopy {
         )
     }
 
-    Write-Progress -Activity "Robocopy" -Status ("{0} -> {1}" -f $Source, $Destination) -PercentComplete 0
+    Write-Step ("Robocopy: {0} -> {1}" -f $Source, $Destination) Cyan
     $output = @(& robocopy @arguments 2>&1)
     $exitCode = $LASTEXITCODE
-    Write-Progress -Activity "Robocopy" -Completed
     Add-Content -LiteralPath $LogPath -Value ($output | Out-String)
     if ($exitCode -ge 8) {
         throw (LF "RobocopyFailed" $exitCode)
     }
+    Write-Step ("OK Robocopy (exit code {0})" -f $exitCode) Green
 }
 
 function Copy-BootPartitionFiles {

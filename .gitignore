@@ -36,6 +36,9 @@ desktop.ini
 Thumbs.db
 *.tmp
 *.bak
+*.old
+*.before-*
+*.before-bootstrap-*
 
 # Private local sync helpers
 Sync-GitHub-Lab.cmd

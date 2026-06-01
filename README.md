@@ -6,14 +6,16 @@ Windows 11 deployment lab for preparing install images and USB media.
 
 1. Download or clone this repository.
 2. Run `start_lab.cmd`.
-3. Choose your language.
-4. Put your working files under `Trabajo`:
+3. Accept the single UAC prompt at startup.
+4. Choose your language.
+5. Put your working files under `Trabajo`:
    - `Trabajo\ISOs` for Windows ISO files
    - `Trabajo\images` for `boot.wim`, `install.wim`, `install.esd` or `install*.swm`
    - `Trabajo\Drivers` for extracted INF drivers
    - `Trabajo\packages` for CAB/MSU packages
 
-The lab uses Windows PowerShell 5.1 and DISM.
+The lab uses Windows PowerShell 5.1, DISM and standard Windows deployment tools.
+`start_lab.cmd` calls `Bootstrap-Lab.ps1`, which handles the initial elevation and then launches the lab menu.
 
 ## Important
 
