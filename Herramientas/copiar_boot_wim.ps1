@@ -16,11 +16,20 @@ $ToolsRoot = $PSScriptRoot
 $LabRoot = Split-Path -Parent $ToolsRoot
 $WorkRoot = Join-Path $LabRoot "Trabajo"
 $ImagesRoot = Join-Path $WorkRoot "images"
+$IsosRoot = Join-Path $WorkRoot "ISOs"
 
 Add-LabTranslations @{
     en = @{
         CopyConfirmWord = "COPY"
         NoBootPayload = "I cannot find boot.wim, boot.esd or boot*.swm inside {0}"
+        AskCopyBootFromIso = "Trabajo\images does not contain boot.*. Mount an ISO from Trabajo\ISOs and copy the original boot.wim now?"
+        NoIsoFound = "No ISO files were found in {0}."
+        ChooseIso = "Choose ISO to mount:"
+        MountingIso = "Mounting ISO: {0}"
+        DismountingIso = "Dismounting ISO: {0}"
+        IsoSourcesMissing = "The mounted ISO does not contain a sources folder: {0}"
+        IsoBootMissing = "The mounted ISO does not contain boot.wim, boot.esd or boot*.swm."
+        CopyingBootFromIso = "Copying boot.* from ISO to Trabajo\images..."
         ChooseBootSource = "Choose boot.* source:"
         SourceNotFound = "Source does not exist: {0}"
         SourceInsideImages = "The source must be inside {0}"
@@ -66,6 +75,14 @@ Add-LabTranslations @{
     es = @{
         CopyConfirmWord = "COPIAR"
         NoBootPayload = "No encuentro boot.wim, boot.esd ni boot*.swm dentro de {0}"
+        AskCopyBootFromIso = "Trabajo\images no contiene boot.*. Montar una ISO de Trabajo\ISOs y copiar el boot.wim original ahora?"
+        NoIsoFound = "No se encontraron archivos ISO en {0}."
+        ChooseIso = "Elige ISO para montar:"
+        MountingIso = "Montando ISO: {0}"
+        DismountingIso = "Desmontando ISO: {0}"
+        IsoSourcesMissing = "La ISO montada no contiene carpeta sources: {0}"
+        IsoBootMissing = "La ISO montada no contiene boot.wim, boot.esd ni boot*.swm."
+        CopyingBootFromIso = "Copiando boot.* desde ISO a Trabajo\images..."
         ChooseBootSource = "Elige boot.* origen:"
         SourceNotFound = "No existe el origen: {0}"
         SourceInsideImages = "El origen debe estar dentro de {0}"
@@ -111,13 +128,37 @@ Add-LabTranslations @{
 }
 Add-LabTranslations @{
     fr = @{
-        CopyConfirmWord = "COPIER"; NoBootPayload = "Je ne trouve pas boot.wim, boot.esd ni boot*.swm dans {0}"; ChooseBootSource = "Choisir la source boot.*:"; ValidTargets = "Destinations valides:"; SkippedTargets = "Ignorees:"; CopyPlan = "Plan de copie:"; ConfirmCopy = "Tapez {0} pour commencer"; CancelNoCopy = "Annule. Rien n'a ete copie."; CopyingTo = "Copie de boot.* vers {0}..."; CopyDone = "Copie terminee."; None = "Aucune."; DestPrompt = "Destinations: lettres ou numeros separes par virgule ({0}A = tout)"
+        CopyConfirmWord = "COPIER"; NoBootPayload = "Je ne trouve pas boot.wim, boot.esd ni boot*.swm dans {0}"
+        AskCopyBootFromIso = "Trabajo\images ne contient pas boot.*. Monter une ISO depuis Trabajo\ISOs et copier le boot.wim original maintenant?"
+        NoIsoFound = "Aucun fichier ISO trouve dans {0}."
+        ChooseIso = "Choisir l ISO a monter:"
+        MountingIso = "Montage ISO: {0}"
+        DismountingIso = "Demontage ISO: {0}"
+        IsoSourcesMissing = "L ISO montee ne contient pas de dossier sources: {0}"
+        IsoBootMissing = "L ISO montee ne contient pas boot.wim, boot.esd ni boot*.swm."
+        CopyingBootFromIso = "Copie de boot.* depuis ISO vers Trabajo\images..."; ChooseBootSource = "Choisir la source boot.*:"; ValidTargets = "Destinations valides:"; SkippedTargets = "Ignorees:"; CopyPlan = "Plan de copie:"; ConfirmCopy = "Tapez {0} pour commencer"; CancelNoCopy = "Annule. Rien n'a ete copie."; CopyingTo = "Copie de boot.* vers {0}..."; CopyDone = "Copie terminee."; None = "Aucune."; DestPrompt = "Destinations: lettres ou numeros separes par virgule ({0}A = tout)"
     }
     ro = @{
-        CopyConfirmWord = "COPIAZA"; NoBootPayload = "Nu gasesc boot.wim, boot.esd sau boot*.swm in {0}"; ChooseBootSource = "Alege sursa boot.*:"; ValidTargets = "Destinatii valide:"; SkippedTargets = "Omise:"; CopyPlan = "Plan de copiere:"; ConfirmCopy = "Tasteaza {0} pentru a incepe"; CancelNoCopy = "Anulat. Nu am copiat nimic."; CopyingTo = "Copiez boot.* in {0}..."; CopyDone = "Copiere finalizata."; None = "Niciuna."; DestPrompt = "Destinatii: litere sau numere separate prin virgula ({0}A = toate)"
+        CopyConfirmWord = "COPIAZA"; NoBootPayload = "Nu gasesc boot.wim, boot.esd sau boot*.swm in {0}"
+        AskCopyBootFromIso = "Trabajo\images nu contine boot.*. Montez un ISO din Trabajo\ISOs si copiez boot.wim original acum?"
+        NoIsoFound = "Nu s-au gasit fisiere ISO in {0}."
+        ChooseIso = "Alege ISO pentru montare:"
+        MountingIso = "Montez ISO: {0}"
+        DismountingIso = "Demontez ISO: {0}"
+        IsoSourcesMissing = "ISO-ul montat nu contine folder sources: {0}"
+        IsoBootMissing = "ISO-ul montat nu contine boot.wim, boot.esd sau boot*.swm."
+        CopyingBootFromIso = "Copiez boot.* din ISO in Trabajo\images..."; ChooseBootSource = "Alege sursa boot.*:"; ValidTargets = "Destinatii valide:"; SkippedTargets = "Omise:"; CopyPlan = "Plan de copiere:"; ConfirmCopy = "Tasteaza {0} pentru a incepe"; CancelNoCopy = "Anulat. Nu am copiat nimic."; CopyingTo = "Copiez boot.* in {0}..."; CopyDone = "Copiere finalizata."; None = "Niciuna."; DestPrompt = "Destinatii: litere sau numere separate prin virgula ({0}A = toate)"
     }
     de = @{
-        CopyConfirmWord = "KOPIEREN"; NoBootPayload = "Ich finde boot.wim, boot.esd oder boot*.swm nicht in {0}"; ChooseBootSource = "boot.* Quelle waehlen:"; ValidTargets = "Gueltige Ziele:"; SkippedTargets = "Uebersprungen:"; CopyPlan = "Kopierplan:"; ConfirmCopy = "Tippen Sie {0} zum Start"; CancelNoCopy = "Abgebrochen. Es wurde nichts kopiert."; CopyingTo = "Kopiere boot.* nach {0}..."; CopyDone = "Kopie abgeschlossen."; None = "Keine."; DestPrompt = "Ziele: Buchstaben oder Nummern durch Komma getrennt ({0}A = alle)"
+        CopyConfirmWord = "KOPIEREN"; NoBootPayload = "Ich finde boot.wim, boot.esd oder boot*.swm nicht in {0}"
+        AskCopyBootFromIso = "Trabajo\images enthaelt kein boot.*. Eine ISO aus Trabajo\ISOs mounten und das originale boot.wim jetzt kopieren?"
+        NoIsoFound = "Keine ISO-Dateien in {0} gefunden."
+        ChooseIso = "ISO zum Mounten waehlen:"
+        MountingIso = "ISO wird gemountet: {0}"
+        DismountingIso = "ISO wird demountet: {0}"
+        IsoSourcesMissing = "Die gemountete ISO enthaelt keinen sources-Ordner: {0}"
+        IsoBootMissing = "Die gemountete ISO enthaelt kein boot.wim, boot.esd oder boot*.swm."
+        CopyingBootFromIso = "boot.* wird aus ISO nach Trabajo\images kopiert..."; ChooseBootSource = "boot.* Quelle waehlen:"; ValidTargets = "Gueltige Ziele:"; SkippedTargets = "Uebersprungen:"; CopyPlan = "Kopierplan:"; ConfirmCopy = "Tippen Sie {0} zum Start"; CancelNoCopy = "Abgebrochen. Es wurde nichts kopiert."; CopyingTo = "Kopiere boot.* nach {0}..."; CopyDone = "Kopie abgeschlossen."; None = "Keine."; DestPrompt = "Ziele: Buchstaben oder Nummern durch Komma getrennt ({0}A = alle)"
     }
 }
 Add-LabTranslations @{
@@ -314,10 +355,138 @@ function Get-BootPayloadCandidates {
     return @($payloads.ToArray())
 }
 
+function Get-IsoCandidates {
+    if (-not (Test-Path -LiteralPath $IsosRoot -PathType Container)) {
+        return @()
+    }
+
+    return @(Get-ChildItem -LiteralPath $IsosRoot -Filter "*.iso" -File -ErrorAction SilentlyContinue | Sort-Object LastWriteTime -Descending)
+}
+
+function Select-IsoCandidate {
+    $isos = @(Get-IsoCandidates)
+    if ($isos.Count -eq 0) {
+        throw (LF "NoIsoFound" $IsosRoot)
+    }
+
+    Write-LabSection (L "ChooseIso")
+    for ($i = 0; $i -lt $isos.Count; $i++) {
+        Write-Host ("{0,2}. {1}  [{2}]" -f ($i + 1), $isos[$i].FullName, (Format-Bytes -Bytes ([UInt64]$isos[$i].Length)))
+    }
+
+    do {
+        $answer = Read-Host (L "Number")
+        $number = 0
+    } until ([int]::TryParse($answer, [ref]$number) -and $number -ge 1 -and $number -le $isos.Count)
+
+    return $isos[$number - 1]
+}
+
+function Mount-IsoForSources {
+    param([string]$IsoPath)
+
+    $mountedByScript = $false
+    try {
+        $image = Get-DiskImage -ImagePath $IsoPath -ErrorAction SilentlyContinue
+        if (-not $image -or -not $image.Attached) {
+            Write-LabSection (LF "MountingIso" $IsoPath)
+            Mount-DiskImage -ImagePath $IsoPath -ErrorAction Stop | Out-Null
+            $mountedByScript = $true
+            Start-Sleep -Seconds 1
+            $image = Get-DiskImage -ImagePath $IsoPath -ErrorAction Stop
+        }
+
+        $volume = @($image | Get-Volume -ErrorAction SilentlyContinue | Where-Object DriveLetter | Select-Object -First 1)
+        if (-not $volume) {
+            throw (LF "IsoSourcesMissing" $IsoPath)
+        }
+
+        $sources = "{0}:\sources" -f $volume.DriveLetter
+        if (-not (Test-Path -LiteralPath $sources -PathType Container)) {
+            throw (LF "IsoSourcesMissing" $sources)
+        }
+
+        return [pscustomobject]@{
+            IsoPath = $IsoPath
+            MountedByScript = $mountedByScript
+            Sources = $sources
+        }
+    }
+    catch {
+        if ($mountedByScript) {
+            Dismount-DiskImage -ImagePath $IsoPath -ErrorAction SilentlyContinue | Out-Null
+        }
+        throw
+    }
+}
+
+function Dismount-IsoForSources {
+    param([object]$MountInfo)
+
+    if ($MountInfo -and $MountInfo.MountedByScript) {
+        Write-LabSection (LF "DismountingIso" $MountInfo.IsoPath)
+        Dismount-DiskImage -ImagePath $MountInfo.IsoPath -ErrorAction SilentlyContinue | Out-Null
+    }
+}
+
+function Get-BootPayloadFromIsoSources {
+    param([string]$SourcesRoot)
+
+    $wim = Get-Item -LiteralPath (Join-Path $SourcesRoot "boot.wim") -ErrorAction SilentlyContinue
+    if ($wim) { return New-BootPayload -Type "WIM" -Files @($wim) }
+
+    $esd = Get-Item -LiteralPath (Join-Path $SourcesRoot "boot.esd") -ErrorAction SilentlyContinue
+    if ($esd) { return New-BootPayload -Type "ESD" -Files @($esd) }
+
+    $swmFiles = @(Get-ChildItem -LiteralPath $SourcesRoot -File -Filter "boot*.swm" -ErrorAction SilentlyContinue | Sort-Object Name)
+    if ($swmFiles.Count -gt 0) {
+        if (-not ($swmFiles | Where-Object { $_.Name -ieq "boot.swm" })) {
+            throw (L "SwmNeedsBoot")
+        }
+        return New-BootPayload -Type "SWM" -Files $swmFiles
+    }
+
+    return $null
+}
+
+function Ensure-BootPayloadFromIso {
+    if (-not (Confirm-LabYesNo -Question (L "AskCopyBootFromIso") -Default $true)) {
+        return $false
+    }
+
+    $iso = Select-IsoCandidate
+    $mountInfo = $null
+    try {
+        $mountInfo = Mount-IsoForSources -IsoPath $iso.FullName
+        $payload = Get-BootPayloadFromIsoSources -SourcesRoot $mountInfo.Sources
+        if (-not $payload) {
+            throw (L "IsoBootMissing")
+        }
+
+        if (-not (Test-Path -LiteralPath $ImagesRoot -PathType Container)) {
+            New-Item -ItemType Directory -Path $ImagesRoot -Force | Out-Null
+        }
+
+        Write-LabSection (L "CopyingBootFromIso")
+        foreach ($file in @($payload.Files)) {
+            Copy-LabFileWithProgress -Source $file.FullName -Destination (Join-Path $ImagesRoot $file.Name) -Activity (L "CopyingBootFromIso") | Out-Null
+        }
+
+        return $true
+    }
+    finally {
+        Dismount-IsoForSources -MountInfo $mountInfo
+    }
+}
 function Resolve-SourcePayload {
     param([string]$SourcePath)
     if ([string]::IsNullOrWhiteSpace($SourcePath)) {
         $payloads = @(Get-BootPayloadCandidates)
+        if ($payloads.Count -eq 0) {
+            if (Ensure-BootPayloadFromIso) {
+                $payloads = @(Get-BootPayloadCandidates)
+            }
+        }
         if ($payloads.Count -eq 0) { throw (LF "NoBootPayload" $ImagesRoot) }
         if ($payloads.Count -eq 1) { return $payloads[0] }
         Write-LabSection (L "ChooseBootSource")
@@ -519,3 +688,4 @@ foreach ($target in $targets) {
 Write-Host ""
 Write-LabOk (L "CopyDone")
 Pause-Exit
+

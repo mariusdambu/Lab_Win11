@@ -16,12 +16,21 @@ $ToolsRoot = $PSScriptRoot
 $LabRoot = Split-Path -Parent $ToolsRoot
 $WorkRoot = Join-Path $LabRoot "Trabajo"
 $ImagesRoot = Join-Path $WorkRoot "images"
+$IsosRoot = Join-Path $WorkRoot "ISOs"
 
 Add-LabTranslations @{
     en = @{
         CopyConfirmWord = "COPY"
         SwmMissing = "SWM files exist in {0}, but install.swm is missing."
         NoPayload = "I cannot find install.wim, install.esd or install*.swm inside {0}"
+        AskCopyInstallFromIso = "Trabajo\images does not contain install.*. Mount an ISO from Trabajo\ISOs and copy the original install.* now?"
+        NoIsoFound = "No ISO files were found in {0}."
+        ChooseIso = "Choose ISO to mount:"
+        MountingIso = "Mounting ISO: {0}"
+        DismountingIso = "Dismounting ISO: {0}"
+        IsoSourcesMissing = "The mounted ISO does not contain a sources folder: {0}"
+        IsoInstallMissing = "The mounted ISO does not contain install.wim, install.esd or install*.swm."
+        CopyingInstallFromIso = "Copying install.* from ISO to Trabajo\images..."
         ChooseSource = "Choose install.* source:"
         SourceNotFound = "Source does not exist: {0}"
         SourceInsideImages = "The source must be inside {0}"
@@ -69,6 +78,14 @@ Add-LabTranslations @{
         CopyConfirmWord = "COPIAR"
         SwmMissing = "Hay archivos SWM en {0}, pero falta install.swm."
         NoPayload = "No encuentro install.wim, install.esd ni install*.swm dentro de {0}"
+        AskCopyInstallFromIso = "Trabajo\images no contiene install.*. Montar una ISO de Trabajo\ISOs y copiar el install.* original ahora?"
+        NoIsoFound = "No se encontraron archivos ISO en {0}."
+        ChooseIso = "Elige ISO para montar:"
+        MountingIso = "Montando ISO: {0}"
+        DismountingIso = "Desmontando ISO: {0}"
+        IsoSourcesMissing = "La ISO montada no contiene carpeta sources: {0}"
+        IsoInstallMissing = "La ISO montada no contiene install.wim, install.esd ni install*.swm."
+        CopyingInstallFromIso = "Copiando install.* desde ISO a Trabajo\images..."
         ChooseSource = "Elige install.* origen:"
         SourceNotFound = "No existe el origen: {0}"
         SourceInsideImages = "El origen debe estar dentro de {0}"
@@ -116,6 +133,14 @@ Add-LabTranslations @{
         CopyConfirmWord = "COPIER"
         SwmMissing = "Des fichiers SWM existent dans {0}, mais install.swm manque."
         NoPayload = "Je ne trouve pas install.wim, install.esd ni install*.swm dans {0}"
+        AskCopyInstallFromIso = "Trabajo\images ne contient pas install.*. Monter une ISO depuis Trabajo\ISOs et copier le install.* original maintenant?"
+        NoIsoFound = "Aucun fichier ISO trouve dans {0}."
+        ChooseIso = "Choisir l ISO a monter:"
+        MountingIso = "Montage ISO: {0}"
+        DismountingIso = "Demontage ISO: {0}"
+        IsoSourcesMissing = "L ISO montee ne contient pas de dossier sources: {0}"
+        IsoInstallMissing = "L ISO montee ne contient pas install.wim, install.esd ni install*.swm."
+        CopyingInstallFromIso = "Copie de install.* depuis ISO vers Trabajo\images..."
         ChooseSource = "Choisir la source install.*:"
         SourceNotFound = "La source n'existe pas: {0}"
         SourceInsideImages = "La source doit etre dans {0}"
@@ -163,6 +188,14 @@ Add-LabTranslations @{
         CopyConfirmWord = "COPIAZA"
         SwmMissing = "Exista fisiere SWM in {0}, dar lipseste install.swm."
         NoPayload = "Nu gasesc install.wim, install.esd sau install*.swm in {0}"
+        AskCopyInstallFromIso = "Trabajo\images nu contine install.*. Montez un ISO din Trabajo\ISOs si copiez install.* original acum?"
+        NoIsoFound = "Nu s-au gasit fisiere ISO in {0}."
+        ChooseIso = "Alege ISO pentru montare:"
+        MountingIso = "Montez ISO: {0}"
+        DismountingIso = "Demontez ISO: {0}"
+        IsoSourcesMissing = "ISO-ul montat nu contine folder sources: {0}"
+        IsoInstallMissing = "ISO-ul montat nu contine install.wim, install.esd sau install*.swm."
+        CopyingInstallFromIso = "Copiez install.* din ISO in Trabajo\images..."
         ChooseSource = "Alege sursa install.*:"
         SourceNotFound = "Sursa nu exista: {0}"
         SourceInsideImages = "Sursa trebuie sa fie in {0}"
@@ -210,6 +243,14 @@ Add-LabTranslations @{
         CopyConfirmWord = "KOPIEREN"
         SwmMissing = "SWM-Dateien sind in {0} vorhanden, aber install.swm fehlt."
         NoPayload = "Ich finde install.wim, install.esd oder install*.swm nicht in {0}"
+        AskCopyInstallFromIso = "Trabajo\images enthaelt kein install.*. Eine ISO aus Trabajo\ISOs mounten und das originale install.* jetzt kopieren?"
+        NoIsoFound = "Keine ISO-Dateien in {0} gefunden."
+        ChooseIso = "ISO zum Mounten waehlen:"
+        MountingIso = "ISO wird gemountet: {0}"
+        DismountingIso = "ISO wird demountet: {0}"
+        IsoSourcesMissing = "Die gemountete ISO enthaelt keinen sources-Ordner: {0}"
+        IsoInstallMissing = "Die gemountete ISO enthaelt kein install.wim, install.esd oder install*.swm."
+        CopyingInstallFromIso = "install.* wird aus ISO nach Trabajo\images kopiert..."
         ChooseSource = "install.* Quelle waehlen:"
         SourceNotFound = "Quelle existiert nicht: {0}"
         SourceInsideImages = "Die Quelle muss in {0} liegen"
@@ -384,11 +425,140 @@ function Get-InstallPayloadCandidates {
     return @($payloads.ToArray())
 }
 
+function Get-IsoCandidates {
+    if (-not (Test-Path -LiteralPath $IsosRoot -PathType Container)) {
+        return @()
+    }
+
+    return @(Get-ChildItem -LiteralPath $IsosRoot -Filter "*.iso" -File -ErrorAction SilentlyContinue | Sort-Object LastWriteTime -Descending)
+}
+
+function Select-IsoCandidate {
+    $isos = @(Get-IsoCandidates)
+    if ($isos.Count -eq 0) {
+        throw (LF "NoIsoFound" $IsosRoot)
+    }
+
+    Write-LabSection (L "ChooseIso")
+    for ($i = 0; $i -lt $isos.Count; $i++) {
+        Write-Host ("{0,2}. {1}  [{2}]" -f ($i + 1), $isos[$i].FullName, (Format-Bytes -Bytes ([UInt64]$isos[$i].Length)))
+    }
+
+    do {
+        $answer = Read-Host (L "Number")
+        $number = 0
+    } until ([int]::TryParse($answer, [ref]$number) -and $number -ge 1 -and $number -le $isos.Count)
+
+    return $isos[$number - 1]
+}
+
+function Mount-IsoForSources {
+    param([string]$IsoPath)
+
+    $mountedByScript = $false
+    try {
+        $image = Get-DiskImage -ImagePath $IsoPath -ErrorAction SilentlyContinue
+        if (-not $image -or -not $image.Attached) {
+            Write-LabSection (LF "MountingIso" $IsoPath)
+            Mount-DiskImage -ImagePath $IsoPath -ErrorAction Stop | Out-Null
+            $mountedByScript = $true
+            Start-Sleep -Seconds 1
+            $image = Get-DiskImage -ImagePath $IsoPath -ErrorAction Stop
+        }
+
+        $volume = @($image | Get-Volume -ErrorAction SilentlyContinue | Where-Object DriveLetter | Select-Object -First 1)
+        if (-not $volume) {
+            throw (LF "IsoSourcesMissing" $IsoPath)
+        }
+
+        $sources = "{0}:\sources" -f $volume.DriveLetter
+        if (-not (Test-Path -LiteralPath $sources -PathType Container)) {
+            throw (LF "IsoSourcesMissing" $sources)
+        }
+
+        return [pscustomobject]@{
+            IsoPath = $IsoPath
+            MountedByScript = $mountedByScript
+            Sources = $sources
+        }
+    }
+    catch {
+        if ($mountedByScript) {
+            Dismount-DiskImage -ImagePath $IsoPath -ErrorAction SilentlyContinue | Out-Null
+        }
+        throw
+    }
+}
+
+function Dismount-IsoForSources {
+    param([object]$MountInfo)
+
+    if ($MountInfo -and $MountInfo.MountedByScript) {
+        Write-LabSection (LF "DismountingIso" $MountInfo.IsoPath)
+        Dismount-DiskImage -ImagePath $MountInfo.IsoPath -ErrorAction SilentlyContinue | Out-Null
+    }
+}
+
+function Get-InstallPayloadFromIsoSources {
+    param([string]$SourcesRoot)
+
+    $wim = Get-Item -LiteralPath (Join-Path $SourcesRoot "install.wim") -ErrorAction SilentlyContinue
+    if ($wim) { return New-InstallPayload -Type "WIM" -SourceName "ISO\sources" -Files @($wim) }
+
+    $esd = Get-Item -LiteralPath (Join-Path $SourcesRoot "install.esd") -ErrorAction SilentlyContinue
+    if ($esd) { return New-InstallPayload -Type "ESD" -SourceName "ISO\sources" -Files @($esd) }
+
+    $swmFiles = @(Get-ChildItem -LiteralPath $SourcesRoot -File -Filter "install*.swm" -ErrorAction SilentlyContinue | Sort-Object Name)
+    if ($swmFiles.Count -gt 0) {
+        if (-not ($swmFiles | Where-Object { $_.Name -ieq "install.swm" })) {
+            throw (LF "SwmMissing" $SourcesRoot)
+        }
+        return New-InstallPayload -Type "SWM" -SourceName "ISO\sources" -Files $swmFiles
+    }
+
+    return $null
+}
+
+function Ensure-InstallPayloadFromIso {
+    if (-not (Confirm-LabYesNo -Question (L "AskCopyInstallFromIso") -Default $true)) {
+        return $false
+    }
+
+    $iso = Select-IsoCandidate
+    $mountInfo = $null
+    try {
+        $mountInfo = Mount-IsoForSources -IsoPath $iso.FullName
+        $payload = Get-InstallPayloadFromIsoSources -SourcesRoot $mountInfo.Sources
+        if (-not $payload) {
+            throw (L "IsoInstallMissing")
+        }
+
+        if (-not (Test-Path -LiteralPath $ImagesRoot -PathType Container)) {
+            New-Item -ItemType Directory -Path $ImagesRoot -Force | Out-Null
+        }
+
+        Write-LabSection (L "CopyingInstallFromIso")
+        foreach ($file in @($payload.Files)) {
+            Copy-LabFileWithProgress -Source $file.FullName -Destination (Join-Path $ImagesRoot $file.Name) -Activity (L "CopyingInstallFromIso") | Out-Null
+        }
+
+        return $true
+    }
+    finally {
+        Dismount-IsoForSources -MountInfo $mountInfo
+    }
+}
 function Resolve-SourcePayload {
     param([string]$SourcePath)
 
     if ([string]::IsNullOrWhiteSpace($SourcePath)) {
         $payloads = @(Get-InstallPayloadCandidates)
+        if ($payloads.Count -eq 0) {
+            if (Ensure-InstallPayloadFromIso) {
+                $payloads = @(Get-InstallPayloadCandidates)
+            }
+        }
+
         if ($payloads.Count -eq 0) {
             throw (LF "NoPayload" $ImagesRoot)
         }
@@ -673,3 +843,4 @@ foreach ($target in $targets) {
 Write-Host ""
 Write-LabOk (L "CopyDone")
 Pause-Exit
+
