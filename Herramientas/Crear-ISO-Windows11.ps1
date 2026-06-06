@@ -62,6 +62,14 @@ Add-LabTranslations @{
         NoLabel = "no label"
         OscdimgFailed = "oscdimg failed with exit code {0}."
         BaseMedia = "Base media: {0}"
+        LogPath = "Log: {0}"
+        CheckCustomImages = "Checking custom images in Trabajo\images"
+        NoCustomImages = "No boot.wim or install image was found in Trabajo\images. Create ISO cancelled. Add customized images first; this flow should not recreate the original ISO."
+        CustomBootFound = "Custom boot.wim: {0}"
+        CustomInstallFound = "Custom install image: {0}"
+        MissingBootUsesBase = "Trabajo\images\boot.wim is missing. If you continue, boot.wim from the base ISO will be used."
+        MissingInstallUsesBase = "Trabajo\images has no install image. If you continue, install.* from the base ISO will be used."
+        ContinueWithBaseImageQuestion = "Continue using missing image(s) from the base ISO?"
     }
     es = @{
         IsoTitle = "Crear ISO Windows 11 personalizada"
@@ -113,6 +121,14 @@ Add-LabTranslations @{
         NoLabel = "sin etiqueta"
         OscdimgFailed = "oscdimg fallo con codigo {0}."
         BaseMedia = "Medio base: {0}"
+        LogPath = "Log: {0}"
+        CheckCustomImages = "Comprobando imagenes personalizadas en Trabajo\images"
+        NoCustomImages = "No se encontro boot.wim ni imagen install en Trabajo\images. Creacion de ISO cancelada. Agrega imagenes personalizadas primero; este flujo no debe recrear la ISO original."
+        CustomBootFound = "boot.wim personalizado: {0}"
+        CustomInstallFound = "Imagen install personalizada: {0}"
+        MissingBootUsesBase = "Falta Trabajo\images\boot.wim. Si continuas, se usara boot.wim de la ISO base."
+        MissingInstallUsesBase = "Trabajo\images no tiene imagen install. Si continuas, se usara install.* de la ISO base."
+        ContinueWithBaseImageQuestion = "Continuar usando la imagen faltante desde la ISO base?"
     }
     fr = @{
         IsoTitle = "Creer une ISO Windows 11 personnalisee"
@@ -164,6 +180,14 @@ Add-LabTranslations @{
         NoLabel = "sans etiquette"
         OscdimgFailed = "oscdimg a echoue avec le code {0}."
         BaseMedia = "Media base: {0}"
+        LogPath = "Log: {0}"
+        CheckCustomImages = "Verification des images personnalisees dans Trabajo\images"
+        NoCustomImages = "Aucun boot.wim ni image install trouve dans Trabajo\images. Creation ISO annulee. Ajoutez d abord des images personnalisees; ce flux ne doit pas recreer l ISO originale."
+        CustomBootFound = "boot.wim personnalise: {0}"
+        CustomInstallFound = "Image install personnalisee: {0}"
+        MissingBootUsesBase = "Trabajo\images\boot.wim manque. Si vous continuez, boot.wim de l ISO de base sera utilise."
+        MissingInstallUsesBase = "Trabajo\images ne contient aucune image install. Si vous continuez, install.* de l ISO de base sera utilise."
+        ContinueWithBaseImageQuestion = "Continuer en utilisant les images manquantes depuis l ISO de base?"
     }
     ro = @{
         IsoTitle = "Creeaza ISO Windows 11 personalizata"
@@ -215,6 +239,14 @@ Add-LabTranslations @{
         NoLabel = "fara eticheta"
         OscdimgFailed = "oscdimg a esuat cu codul {0}."
         BaseMedia = "Mediu baza: {0}"
+        LogPath = "Log: {0}"
+        CheckCustomImages = "Verific imaginile personalizate in Trabajo\images"
+        NoCustomImages = "Nu am gasit boot.wim sau imagine install in Trabajo\images. Crearea ISO a fost anulata. Adauga mai intai imagini personalizate; acest flux nu trebuie sa recreeze ISO-ul original."
+        CustomBootFound = "boot.wim personalizat: {0}"
+        CustomInstallFound = "Imagine install personalizata: {0}"
+        MissingBootUsesBase = "Lipseste Trabajo\images\boot.wim. Daca continui, se va folosi boot.wim din ISO-ul de baza."
+        MissingInstallUsesBase = "Trabajo\images nu are imagine install. Daca continui, se va folosi install.* din ISO-ul de baza."
+        ContinueWithBaseImageQuestion = "Continui folosind imaginea lipsa din ISO-ul de baza?"
     }
     de = @{
         IsoTitle = "Benutzerdefinierte Windows 11 ISO erstellen"
@@ -266,6 +298,14 @@ Add-LabTranslations @{
         NoLabel = "kein Label"
         OscdimgFailed = "oscdimg ist mit Code {0} fehlgeschlagen."
         BaseMedia = "Basismedium: {0}"
+        LogPath = "Log: {0}"
+        CheckCustomImages = "Benutzerdefinierte Images in Trabajo\images werden geprueft"
+        NoCustomImages = "Kein boot.wim und kein install-Image in Trabajo\images gefunden. ISO-Erstellung abgebrochen. Fuegen Sie zuerst angepasste Images hinzu; dieser Ablauf soll die Original-ISO nicht neu erstellen."
+        CustomBootFound = "Benutzerdefiniertes boot.wim: {0}"
+        CustomInstallFound = "Benutzerdefiniertes install-Image: {0}"
+        MissingBootUsesBase = "Trabajo\images\boot.wim fehlt. Wenn Sie fortfahren, wird boot.wim aus der Basis-ISO verwendet."
+        MissingInstallUsesBase = "Trabajo\images enthaelt kein install-Image. Wenn Sie fortfahren, wird install.* aus der Basis-ISO verwendet."
+        ContinueWithBaseImageQuestion = "Mit fehlenden Images aus der Basis-ISO fortfahren?"
     }
 }
 
@@ -279,9 +319,31 @@ $LogsRoot = Join-Path $WorkRoot "Logs"
 $LogPath = Join-Path $LogsRoot ("Crear-ISO-Win11-{0}.log" -f (Get-Date -Format "yyyyMMdd-HHmmss"))
 $script:MountedIsoPath = $null
 
+$script:IsoLogReady = $false
+
+function Start-IsoLog {
+    Ensure-Directory -Path $LogsRoot
+    Set-Content -LiteralPath $LogPath -Value ("[{0}] Start Crear ISO Windows 11" -f (Get-Date -Format "yyyy-MM-dd HH:mm:ss")) -Encoding UTF8
+    $script:IsoLogReady = $true
+}
+
+function Write-IsoLog {
+    param([string]$Message)
+    if (-not $script:IsoLogReady) { return }
+    Add-Content -LiteralPath $LogPath -Value ("[{0}] {1}" -f (Get-Date -Format "yyyy-MM-dd HH:mm:ss"), $Message) -Encoding UTF8
+}
+
+function Write-IsoLogRaw {
+    param([string]$Line)
+    if (-not $script:IsoLogReady) { return }
+    Add-Content -LiteralPath $LogPath -Value $Line -Encoding UTF8
+}
+
 function Write-IsoSection {
     param([string]$Key)
-    Write-LabSection (L $Key)
+    $title = L $Key
+    Write-LabSection $title
+    Write-IsoLog ("== {0} ==" -f $title)
 }
 
 function Ensure-Directory {
@@ -317,7 +379,9 @@ function Clear-MediaFolderIfNeeded {
         throw (L "Cancelled")
     }
 
+    Write-IsoLog ("Cleaning Trabajo\media before ISO staging. Items: {0}" -f $existing.Count)
     foreach ($item in $existing) {
+        Write-IsoLog ("Remove media item: {0}" -f $item.FullName)
         Remove-Item -LiteralPath $item.FullName -Recurse -Force
     }
 }
@@ -325,7 +389,10 @@ function Clear-MediaFolderIfNeeded {
 function Clear-MediaFolderContents {
     Ensure-Directory -Path $MediaRoot
     Test-PreparedMediaPathSafe
-    foreach ($item in @(Get-ChildItem -LiteralPath $MediaRoot -Force -ErrorAction SilentlyContinue)) {
+    $items = @(Get-ChildItem -LiteralPath $MediaRoot -Force -ErrorAction SilentlyContinue)
+    Write-IsoLog ("Cleaning Trabajo\media after ISO flow. Items: {0}" -f $items.Count)
+    foreach ($item in $items) {
+        Write-IsoLog ("Remove media item: {0}" -f $item.FullName)
         Remove-Item -LiteralPath $item.FullName -Recurse -Force
     }
 }
@@ -465,6 +532,49 @@ function Get-InstallPayloadSet {
     throw (L "MissingInstall")
 }
 
+function Get-CustomImageStatus {
+    $boot = Get-Item -LiteralPath (Join-Path $ImagesRoot "boot.wim") -ErrorAction SilentlyContinue
+    $installSet = Get-InstallPayloadSet -SourceDirectory $ImagesRoot -AllowNone
+    return [pscustomobject]@{
+        Boot = $boot
+        InstallSet = $installSet
+    }
+}
+
+function Assert-CustomImagesForIso {
+    Write-IsoSection "CheckCustomImages"
+    $status = Get-CustomImageStatus
+    $hasBoot = $null -ne $status.Boot
+    $hasInstall = $null -ne $status.InstallSet
+
+    if (-not $hasBoot -and -not $hasInstall) {
+        throw (L "NoCustomImages")
+    }
+
+    if ($hasBoot) {
+        Write-LabOk (LF "CustomBootFound" (Get-DisplayPath $status.Boot.FullName))
+    }
+    else {
+        Write-Host (L "MissingBootUsesBase") -ForegroundColor Yellow
+        Write-IsoLog (L "MissingBootUsesBase")
+    }
+
+    if ($hasInstall) {
+        $installNames = ((@($status.InstallSet.Files) | ForEach-Object Name) -join ", ")
+        Write-LabOk (LF "CustomInstallFound" $installNames)
+    }
+    else {
+        Write-Host (L "MissingInstallUsesBase") -ForegroundColor Yellow
+        Write-IsoLog (L "MissingInstallUsesBase")
+    }
+
+    if (-not $hasBoot -or -not $hasInstall) {
+        if (-not (Confirm-LabYesNo -Question (L "ContinueWithBaseImageQuestion") -Default $false)) {
+            throw (L "Cancelled")
+        }
+    }
+}
+
 function Remove-WindowsImageFiles {
     param([string]$SourcesDirectory)
     foreach ($name in @("boot.wim", "boot.esd", "boot.swm", "install.wim", "install.esd")) {
@@ -484,7 +594,9 @@ function Copy-FileSimple {
     )
     $destinationDirectory = Split-Path -Parent $Destination
     Ensure-Directory -Path $destinationDirectory
-    Write-Host ("  {0} -> {1}" -f (Get-DisplayPath $Source), (Get-DisplayPath $Destination)) -ForegroundColor DarkGray
+    $copyLine = "  {0} -> {1}" -f (Get-DisplayPath $Source), (Get-DisplayPath $Destination)
+    Write-Host $copyLine -ForegroundColor DarkGray
+    Write-IsoLog $copyLine
     Copy-Item -LiteralPath $Source -Destination $Destination -Force
 }
 
@@ -511,8 +623,14 @@ function Invoke-RobocopyMirror {
         "/W:2"
     )
 
-    & robocopy @arguments
+    Write-IsoLog ("Robocopy command: robocopy {0}" -f ($arguments -join " "))
+    & robocopy @arguments 2>&1 | ForEach-Object {
+        $line = $_.ToString()
+        Write-Host $line
+        Write-IsoLogRaw $line
+    }
     $exitCode = $LASTEXITCODE
+    Write-IsoLog ("Robocopy exit code: {0}" -f $exitCode)
     if ($exitCode -ge 8) { throw (LF "RobocopyFailed" $exitCode) }
 }
 
@@ -531,14 +649,8 @@ function Prepare-BootImage {
         return
     }
 
-    if (Confirm-LabYesNo -Question (L "AskCopyBootFromIso") -Default $true) {
-        Copy-FileSimple -Source $isoBoot -Destination $labBoot
-        Write-Host (L "ReplacingBoot") -ForegroundColor Cyan
-        Copy-FileSimple -Source $labBoot -Destination $mediaBoot
-        return
-    }
-
     Write-Host (L "UsingIsoBoot") -ForegroundColor Yellow
+    Write-IsoLog (L "UsingIsoBoot")
 }
 
 function Prepare-InstallImage {
@@ -549,19 +661,10 @@ function Prepare-InstallImage {
     $labSet = Get-InstallPayloadSet -SourceDirectory $ImagesRoot -AllowNone
 
     if (-not $labSet) {
-        if (Confirm-LabYesNo -Question (L "AskCopyInstallFromIso") -Default $true) {
-            $isoSet = Get-InstallPayloadSet -SourceDirectory $isoSources
-            foreach ($file in @($isoSet.Files)) {
-                Copy-FileSimple -Source $file.FullName -Destination (Join-Path $ImagesRoot $file.Name)
-            }
-            $labSet = Get-InstallPayloadSet -SourceDirectory $ImagesRoot
-        }
-        else {
-            Write-Host (L "UsingIsoInstall") -ForegroundColor Yellow
-            return
-        }
+        Write-Host (L "UsingIsoInstall") -ForegroundColor Yellow
+        Write-IsoLog (L "UsingIsoInstall")
+        return
     }
-
     Write-Host (LF "UsingLabInstall" ((@($labSet.Files) | ForEach-Object Name) -join ', ')) -ForegroundColor Green
     Write-Host (L "ReplacingInstall") -ForegroundColor Cyan
 
@@ -673,20 +776,47 @@ function Invoke-Oscdimg {
 
     Write-IsoSection "CreatingIso"
     Write-Host $commandLine -ForegroundColor DarkGray
-    & $env:ComSpec /d /c $commandLine
-    $exitCode = $LASTEXITCODE
+    Write-IsoLog ("oscdimg command: {0}" -f $commandLine)
+
+    $previousErrorActionPreference = $ErrorActionPreference
+    try {
+        $ErrorActionPreference = "Continue"
+        $output = & $env:ComSpec /d /c $commandLine 2>&1
+        $exitCode = $LASTEXITCODE
+    }
+    finally {
+        $ErrorActionPreference = $previousErrorActionPreference
+    }
+
+    foreach ($entry in @($output)) {
+        $line = $entry.ToString()
+        Write-Host $line
+        Write-IsoLogRaw $line
+    }
+
+    Write-IsoLog ("oscdimg exit code: {0}" -f $exitCode)
     if ($exitCode -ne 0) { throw (LF "OscdimgFailed" $exitCode) }
 }
 
 try {
     foreach ($folder in @($WorkRoot, $IsoRoot, $ImagesRoot, $MediaRoot, $LogsRoot)) { Ensure-Directory -Path $folder }
+    Start-IsoLog
+    Write-IsoLog ("LabRoot: {0}" -f $LabRoot)
+    Write-IsoLog ("WorkRoot: {0}" -f $WorkRoot)
+    Write-IsoLog ("MediaRoot: {0}" -f $MediaRoot)
+    Write-IsoLog ("ImagesRoot: {0}" -f $ImagesRoot)
+    Write-IsoLog ("IsoRoot: {0}" -f $IsoRoot)
+    Write-IsoLog ("Language: {0}" -f $Language)
 
     Clear-Host
     Write-IsoSection "IsoTitle"
     Write-Host (L "LargeWimNote") -ForegroundColor Yellow
 
+    Assert-CustomImagesForIso
+
     $baseMediaRoot = Resolve-BaseMediaRoot
     Write-LabOk (LF "BaseMedia" $baseMediaRoot)
+    Write-IsoLog (LF "BaseMedia" $baseMediaRoot)
 
     Clear-MediaFolderIfNeeded
     Invoke-RobocopyMirror -Source $baseMediaRoot -Destination $MediaRoot
@@ -700,8 +830,10 @@ try {
     $oscdimg = Resolve-OscdimgPath
     if (-not $oscdimg) { throw (L "OscdimgMissing") }
     Write-LabOk (LF "OscdimgFound" $oscdimg)
+    Write-IsoLog (LF "OscdimgFound" $oscdimg)
 
     $outputIso = Resolve-OutputIsoPath
+    Write-IsoLog ("Output ISO: {0}" -f $outputIso)
     Invoke-Oscdimg -OscdimgPath $oscdimg -OutputIso $outputIso
 
     $finalIso = Get-Item -LiteralPath $outputIso -ErrorAction Stop
@@ -709,29 +841,43 @@ try {
     Write-Host (L "IsoCreated") -ForegroundColor Green
     Write-Host $finalIso.FullName -ForegroundColor Green
     Write-Host (LF "DoneSize" (Format-LabBytes ([UInt64]$finalIso.Length))) -ForegroundColor Green
+    Write-IsoLog ("SUCCESS: ISO created: {0} [{1}]" -f $finalIso.FullName, (Format-LabBytes ([UInt64]$finalIso.Length)))
+    Write-Host (LF "LogPath" $LogPath) -ForegroundColor DarkGray
 
     Write-Host ""
     if (Confirm-LabYesNo -Question (L "KeepMediaQuestion") -Default $false) {
         Write-Host (LF "MediaKept" $MediaRoot) -ForegroundColor Yellow
+        Write-IsoLog (LF "MediaKept" $MediaRoot)
     }
     else {
         Clear-MediaFolderContents
         Write-Host (L "MediaCleaned") -ForegroundColor Green
+        Write-IsoLog (L "MediaCleaned")
     }
 }
 catch {
     Write-Host ""
     Write-Host (LF "ErrorPrefix" $_.Exception.Message) -ForegroundColor Red
+    Write-IsoLog ("FAILED: {0}" -f $_.Exception.Message)
+    Write-IsoLogRaw ($_.ScriptStackTrace)
+    if ($script:IsoLogReady) {
+        Write-Host (LF "LogPath" $LogPath) -ForegroundColor DarkGray
+    }
 }
 finally {
     if ($script:MountedIsoPath) {
         Write-Host ""
         Write-Host (L "DismountingIso") -ForegroundColor Cyan
+        Write-IsoLog ("Dismounting ISO: {0}" -f $script:MountedIsoPath)
         Dismount-DiskImage -ImagePath $script:MountedIsoPath -ErrorAction SilentlyContinue
     }
+    Write-IsoLog "End Crear ISO Windows 11"
     Write-Host ""
     Read-Host (L "PressEnterExit") | Out-Null
 }
+
+
+
 
 
 
