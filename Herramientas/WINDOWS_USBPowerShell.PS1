@@ -957,9 +957,19 @@ function Invoke-DiskPartScript {
     Write-Step (LF "RunningDiskPart" $scriptPath) Cyan
     $output = & diskpart.exe /s $scriptPath 2>&1
     $output | Set-Content -LiteralPath $outputPath -Encoding UTF8
-    Add-Content -LiteralPath $LogPath -Value ($output | Out-String)
+    $outputText = ($output | Out-String)
+    Add-Content -LiteralPath $LogPath -Value $outputText
 
-    $failed = ($LASTEXITCODE -ne 0 -or ($output -match "DiskPart has encountered an error|Virtual Disk Service error|error"))
+    $failureText = $outputText
+    $harmlessPatterns = @(
+        "(?is)(Virtual Disk Service error:|Error del Servicio de disco virtual:)\s*(The disk is already online\.?|El disco ya est. en l.nea\.?)"
+    )
+    foreach ($pattern in $harmlessPatterns) {
+        $failureText = [regex]::Replace($failureText, $pattern, "")
+    }
+
+    $diskPartErrorPattern = "DiskPart has encountered an error|DiskPart ha encontrado un error|Virtual Disk Service error|Error del Servicio de disco virtual|Access is denied|Acceso denegado|No se puede|cannot|failed|fall[oó]"
+    $failed = ($LASTEXITCODE -ne 0 -or ($failureText -match $diskPartErrorPattern))
     if ($failed) {
         if ($NoThrow) {
             return [pscustomobject]@{
@@ -1314,3 +1324,4 @@ Write-Host ""
 Write-Host ("{0}: {1}" -f (L "Log"), $LogPath) -ForegroundColor Yellow
 Read-Host (L "PressEnterExit") | Out-Null
 exit
+

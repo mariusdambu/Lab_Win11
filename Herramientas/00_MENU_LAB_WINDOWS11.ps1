@@ -23,6 +23,7 @@ $Translations = @{
         CreateUsb = "Create Windows 11 USB"
         CopyInstall = "Copy install.* to USB"
         CopyBoot = "Copy boot.* to USB"
+        CreateIso = "Create custom Windows 11 ISO"
         Inventory = "View images, ISOs, packages and INF drivers"
         Disks = "View disks and volumes"
         Mounts = "View DISM mounts"
@@ -59,6 +60,7 @@ $Translations = @{
         CreateUsb = "Crear USB de Windows 11"
         CopyInstall = "Copiar install.* a USB"
         CopyBoot = "Copiar boot.* a USB"
+        CreateIso = "Crear ISO Windows 11 personalizada"
         Inventory = "Ver imagenes, ISOs, packages y drivers INF"
         Disks = "Ver discos y volumenes"
         Mounts = "Ver montajes DISM"
@@ -95,6 +97,7 @@ $Translations = @{
         CreateUsb = "Creer une cle USB Windows 11"
         CopyInstall = "Copier install.* vers USB"
         CopyBoot = "Copier boot.* vers USB"
+        CreateIso = "Creer une ISO Windows 11 personnalisee"
         Inventory = "Voir images, ISOs, packages et pilotes INF"
         Disks = "Voir disques et volumes"
         Mounts = "Voir montages DISM"
@@ -131,6 +134,7 @@ $Translations = @{
         CreateUsb = "Creeaza USB Windows 11"
         CopyInstall = "Copiaza install.* pe USB"
         CopyBoot = "Copiaza boot.* pe USB"
+        CreateIso = "Creeaza ISO Windows 11 personalizata"
         Inventory = "Vezi imagini, ISO-uri, packages si drivere INF"
         Disks = "Vezi discuri si volume"
         Mounts = "Vezi montari DISM"
@@ -167,6 +171,7 @@ $Translations = @{
         CreateUsb = "Windows 11 USB erstellen"
         CopyInstall = "install.* auf USB kopieren"
         CopyBoot = "boot.* auf USB kopieren"
+        CreateIso = "Benutzerdefinierte Windows 11 ISO erstellen"
         Inventory = "Images, ISOs, Packages und INF-Treiber anzeigen"
         Disks = "Datentraeger und Volumes anzeigen"
         Mounts = "DISM-Mounts anzeigen"
@@ -340,15 +345,16 @@ function Show-Menu {
     Write-MenuSection (T "CategoryBuild")
     Write-Host (" 4. " + (T "Assistant"))
     Write-Host (" 5. " + (T "CreateUsb"))
-    Write-Host (" 6. " + (T "CopyInstall"))
-    Write-Host (" 7. " + (T "CopyBoot"))
+    Write-Host (" 6. " + (T "CreateIso"))
+    Write-Host (" 7. " + (T "CopyInstall"))
+    Write-Host (" 8. " + (T "CopyBoot"))
     Write-MenuSection (T "CategoryInspect")
-    Write-Host (" 8. " + (T "Inventory"))
-    Write-Host (" 9. " + (T "Disks"))
-    Write-Host ("10. " + (T "Mounts"))
+    Write-Host (" 9. " + (T "Inventory"))
+    Write-Host ("10. " + (T "Disks"))
+    Write-Host ("11. " + (T "Mounts"))
     Write-MenuSection (T "CategoryFolders")
-    Write-Host ("11. " + (T "WorkFolder"))
-    Write-Host ("12. " + (T "HelpFolder"))
+    Write-Host ("12. " + (T "WorkFolder"))
+    Write-Host ("13. " + (T "HelpFolder"))
     Write-Host ""
     Write-Host (" 0. " + (T "Exit"))
     Write-Host ""
@@ -371,13 +377,14 @@ do {
             "3" { & (Join-Path $ScriptRoot "Copiar-Comando.ps1") -Language $Language }
             "4" { Invoke-LabScript (Join-Path $ScriptRoot "Modificar-InstallWim.ps1") }
             "5" { Invoke-LabScript (Join-Path $ScriptRoot "WINDOWS_USBPowerShell.PS1") }
-            "6" { & (Join-Path $ScriptRoot "copiar_install_wim.ps1") -Language $Language }
-            "7" { & (Join-Path $ScriptRoot "copiar_boot_wim.ps1") -Language $Language }
-            "8" { Show-LabFiles }
-            "9" { Show-DisksAndVolumes }
-            "10" { Invoke-LabScript (Join-Path $ScriptRoot "Ver-MontajesDism.ps1") }
-            "11" { Open-FileOrFolder $WorkRoot }
-            "12" { Open-FileOrFolder $HelpRoot }
+            "6" { Invoke-LabScript (Join-Path $ScriptRoot "Crear-ISO-Windows11.ps1") }
+            "7" { & (Join-Path $ScriptRoot "copiar_install_wim.ps1") -Language $Language }
+            "8" { & (Join-Path $ScriptRoot "copiar_boot_wim.ps1") -Language $Language }
+            "9" { Show-LabFiles }
+            "10" { Show-DisksAndVolumes }
+            "11" { Invoke-LabScript (Join-Path $ScriptRoot "Ver-MontajesDism.ps1") }
+            "12" { Open-FileOrFolder $WorkRoot }
+            "13" { Open-FileOrFolder $HelpRoot }
             "0" { return }
             default {
                 Write-Host (T "Invalid") -ForegroundColor Yellow
@@ -389,3 +396,5 @@ do {
         Pause-Lab
     }
 } while ($true)
+
+
