@@ -810,7 +810,7 @@ try {
 
     Clear-Host
     Write-IsoSection "IsoTitle"
-    Write-Host (L "LargeWimNote") -ForegroundColor Yellow
+    Write-LabWarning (L "LargeWimNote")
 
     Assert-CustomImagesForIso
 

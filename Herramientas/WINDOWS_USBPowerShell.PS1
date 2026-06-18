@@ -4,8 +4,8 @@ param(
     [string]$MediaPath,
     [Nullable[int]]$DiskNumber,
     [int]$BootSizeMB = 2048,
-    [string]$BootLabel = "WIN11BOOT",
-    [string]$InstallLabel = "WIN11EXFAT",
+    [string]$BootLabel = "Win11Boot",
+    [string]$InstallLabel = "Win11exFAT",
     [ValidateSet("exFAT", "NTFS")]
     [string]$InstallFileSystem = "exFAT",
     [switch]$CreatePartitionsOnly,
@@ -569,7 +569,13 @@ function Write-Step {
         [ConsoleColor]$Color = [ConsoleColor]::Gray
     )
 
-    Write-Host $Message -ForegroundColor $Color
+    switch ($Color) {
+        ([ConsoleColor]::Green) { Write-LabOk $Message; break }
+        ([ConsoleColor]::Yellow) { Write-LabWarning $Message; break }
+        ([ConsoleColor]::Red) { Write-LabError $Message; break }
+        ([ConsoleColor]::Cyan) { Write-LabInfo $Message Cyan; break }
+        default { Write-LabInfo $Message $Color; break }
+    }
     Add-Content -LiteralPath $LogPath -Value ("[{0}] {1}" -f (Get-Date -Format "yyyy-MM-dd HH:mm:ss"), $Message)
 }
 
@@ -725,7 +731,7 @@ function Resolve-InstallMedia {
     }
 
     Write-Host ""
-    Write-Host (L "MountingIso") -ForegroundColor Cyan
+    Write-LabInfo (L "MountingIso") Cyan
     Mount-DiskImage -ImagePath $Path | Out-Null
     $script:MountedIsoPath = $Path
     Start-Sleep -Seconds 2
@@ -1210,7 +1216,7 @@ function Copy-InstallPayloadFiles {
     New-Item -ItemType Directory -Path $sourcesDir -Force | Out-Null
 
     Write-Host ""
-    Write-Host (LF "CopyInstallFrom" $PayloadSet.Source $sourcesDir) -ForegroundColor Cyan
+    Write-LabInfo (LF "CopyInstallFrom" $PayloadSet.Source $sourcesDir) Cyan
     foreach ($file in @($PayloadSet.Files)) {
         $destinationFile = Join-Path $sourcesDir $file.Name
         Copy-LabFileWithProgress -Source $file.FullName -Destination $destinationFile -Activity (LF "CopyInstallFrom" $PayloadSet.Source $sourcesDir) | Out-Null
@@ -1224,7 +1230,7 @@ function Copy-InstallPayloadFiles {
             throw (LF "InstallCopySizeMismatch" $file.Name (Format-Bytes -Bytes ([UInt64]$file.Length)) (Format-Bytes -Bytes ([UInt64]$copiedFile.Length)))
         }
 
-        Write-Host (LF "InstallCopyDone" $file.Name $InstallFileSystem $destinationFile (Format-Bytes -Bytes ([UInt64]$copiedFile.Length))) -ForegroundColor Green
+        Write-LabOk (LF "InstallCopyDone" $file.Name $InstallFileSystem $destinationFile (Format-Bytes -Bytes ([UInt64]$copiedFile.Length)))
     }
 }
 
@@ -1237,9 +1243,9 @@ try {
         $bootImage = Get-BootImageFile -MediaRoot $mediaRoot
         $installPayload = Resolve-InstallPayloadSet -MediaRoot $mediaRoot
 
-        Write-Host (LF "InstallMedia" $mediaRoot) -ForegroundColor Green
-        Write-Host (LF "BootLine" $bootImage.Path $bootImage.Source) -ForegroundColor Green
-        Write-Host (LF "InstallLine" $installPayload.Source $installPayload.Type ((@($installPayload.Files) | ForEach-Object Name) -join ', ')) -ForegroundColor Green
+        Write-LabOk (LF "InstallMedia" $mediaRoot)
+        Write-LabOk (LF "BootLine" $bootImage.Path $bootImage.Source)
+        Write-LabOk (LF "InstallLine" $installPayload.Source $installPayload.Type ((@($installPayload.Files) | ForEach-Object Name) -join ', '))
     }
 
     $disk = Get-SelectedDisk
@@ -1273,7 +1279,7 @@ try {
 
     if ($CreatePartitionsOnly) {
         Write-Host ""
-        Write-Host (L "PartitionsCreated") -ForegroundColor Green
+        Write-LabOk (L "PartitionsCreated")
         Write-Host (LF "Fat32BootLine" $bootRoot)
         Write-Host (LF "InstallPartitionLine" $InstallFileSystem $installRoot)
         return
@@ -1282,7 +1288,7 @@ try {
     Copy-BootPartitionFiles -MediaRoot $mediaRoot -BootRoot $bootRoot -BootImagePath $bootImage.Path
 
     Write-Host ""
-    Write-Host (LF "CopyIsoSkeleton" $InstallFileSystem) -ForegroundColor Cyan
+    Write-LabInfo (LF "CopyIsoSkeleton" $InstallFileSystem) Cyan
     Invoke-RobocopyCopy -Source $mediaRoot -Destination $installRoot -ExcludeWindowsImages
 
     Copy-InstallPayloadFiles -PayloadSet $installPayload -InstallRoot $installRoot -InstallFileSystem $InstallFileSystem
@@ -1294,19 +1300,19 @@ try {
     }
 
     Write-Host ""
-    Write-Host (L "UsbReady") -ForegroundColor Green
-    Write-Host (L "UsbCopySummary") -ForegroundColor Green
+    Write-LabOk (L "UsbReady")
+    Write-LabOk (L "UsbCopySummary")
     Write-Host (LF "UsbBootWimCopied" $finalBootWim.FullName (Format-Bytes -Bytes ([UInt64]$finalBootWim.Length)))
     foreach ($file in @($finalInstallFiles)) {
         Write-Host (LF "UsbInstallCopied" $file.Name $InstallFileSystem $file.FullName (Format-Bytes -Bytes ([UInt64]$file.Length)))
     }
-    Write-Host (L "UsbPartitionsSummary") -ForegroundColor Green
+    Write-LabOk (L "UsbPartitionsSummary")
     Write-Host (LF "UsbBootLine" $bootRoot)
     Write-Host (LF "UsbInstallLine" $InstallFileSystem $installRoot)
 }
 catch {
     Write-Host ""
-    Write-Host (LF "ErrorPrefix" $_.Exception.Message) -ForegroundColor Red
+    Write-LabError (LF "ErrorPrefix" $_.Exception.Message)
     Write-Host ("{0}: {1}" -f (L "Log"), $LogPath) -ForegroundColor Yellow
     Add-Content -LiteralPath $LogPath -Value ("[{0}] ERROR: {1}" -f (Get-Date -Format "yyyy-MM-dd HH:mm:ss"), $_.Exception.Message)
     Add-Content -LiteralPath $LogPath -Value ($_.ScriptStackTrace | Out-String)
@@ -1314,7 +1320,7 @@ catch {
 finally {
     if ($MountedIsoPath) {
         Write-Host ""
-        Write-Host (L "DismountingIso") -ForegroundColor Cyan
+        Write-LabInfo (L "DismountingIso") Cyan
         Add-Content -LiteralPath $LogPath -Value ("[{0}] Desmontando ISO: {1}" -f (Get-Date -Format "yyyy-MM-dd HH:mm:ss"), $MountedIsoPath)
         Dismount-DiskImage -ImagePath $MountedIsoPath -ErrorAction SilentlyContinue
     }

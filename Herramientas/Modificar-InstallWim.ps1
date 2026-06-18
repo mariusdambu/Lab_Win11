@@ -1,4 +1,4 @@
-﻿#Requires -RunAsAdministrator
+#Requires -RunAsAdministrator
 [CmdletBinding()]
 param(
     [string]$ImageFile,
@@ -584,7 +584,7 @@ function Clear-ImageReadOnlyAttribute {
 
     try {
         $file.IsReadOnly = $false
-        Write-Host (LF "ReadOnlyCleared" $file.FullName) -ForegroundColor Yellow
+        Write-LabWarning (LF "ReadOnlyCleared" $file.FullName)
     }
     catch {
         throw (LF "ReadOnlyClearFailed" $file.FullName $_.Exception.Message)
@@ -900,8 +900,8 @@ function Offer-InstallWimExport {
 
     Write-Section (L "ExportInstallTitle")
     Write-Host (LF "ExportInstallUsedIndex" $SourceIndex)
-    Write-Host (L "ExportInstallCommand") -ForegroundColor Cyan
-    Write-Host $commandText -ForegroundColor Cyan
+    Write-LabInfo (L "ExportInstallCommand") Cyan
+    Write-LabCommand $commandText
     Write-Host ""
 
     if (Read-YesNo -Question (L "ExportInstallRunQuestion") -Default $false) {
@@ -924,14 +924,14 @@ function Offer-InstallWimExport {
     if (Read-YesNo -Question (L "ExportInstallCopyQuestion") -Default $true) {
         try {
             Set-Clipboard -Value $commandText
-            Write-Host (L "ExportInstallCopied") -ForegroundColor Green
+            Write-LabOk (L "ExportInstallCopied")
         }
         catch {
-            Write-Host (LF "ExportInstallCopyFailed" $_.Exception.Message) -ForegroundColor Yellow
+            Write-LabWarning (LF "ExportInstallCopyFailed" $_.Exception.Message)
         }
     }
     else {
-        Write-Host (L "ExportInstallSkipped") -ForegroundColor Yellow
+        Write-LabWarning (L "ExportInstallSkipped")
     }
 }
 
@@ -950,7 +950,7 @@ function Invoke-DismStep {
         Add-Content -LiteralPath $script:DismConsoleLogPath -Value $commandLine
     }
 
-    Write-Host $commandLine -ForegroundColor DarkGray
+    Write-LabCommand $commandLine
 
     $dismExe = Join-Path $env:SystemRoot "System32\dism.exe"
     if (-not (Test-Path -LiteralPath $dismExe -PathType Leaf)) {
@@ -971,7 +971,7 @@ function Invoke-DismStep {
 
     if ($exitCode -ne 0) {
         if ($outputLines.Count -gt 0) {
-            Write-Host (L "DismErrorTail") -ForegroundColor Yellow
+            Write-LabWarning (L "DismErrorTail")
             foreach ($line in @($outputLines | Select-Object -Last 14)) {
                 Write-Host ("  {0}" -f $line) -ForegroundColor Yellow
             }

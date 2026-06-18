@@ -12,6 +12,9 @@ $LabRoot = Split-Path -Parent $ScriptRoot
 $WorkRoot = Join-Path $LabRoot "Trabajo"
 $HelpRoot = Join-Path $LabRoot "Ayuda"
 
+. (Join-Path $ScriptRoot "Lab-Idioma.ps1")
+Initialize-LabLanguage -Language $Language | Out-Null
+
 $Translations = @{
     en = @{
         Title = "WIN11 DEPLOYMENT LAB - {0}"
@@ -227,17 +230,13 @@ function Pause-Lab {
 function Write-MenuSection {
     param([string]$Title)
 
-    Write-Host ""
-    Write-Host ("-- {0}" -f $Title) -ForegroundColor Cyan
+    Write-LabSubsection $Title
 }
 
 function Write-PageTitle {
     param([string]$Title)
 
-    Write-Host ""
-    Write-Host ("=" * 72) -ForegroundColor DarkGray
-    Write-Host $Title -ForegroundColor Cyan
-    Write-Host ("=" * 72) -ForegroundColor DarkGray
+    Write-LabSection $Title
 }
 
 function Assert-Path {
@@ -272,9 +271,11 @@ function Open-LocalizedHelpText {
 function Invoke-LabScript {
     param([string]$Path)
     Assert-Path $Path
-    Write-Host (TF "Launching" $Path) -ForegroundColor Cyan
+    Write-LabInfo (TF "Launching" $Path)
     $windowsPowerShell = Join-Path $env:SystemRoot "System32\WindowsPowerShell\v1.0\powershell.exe"
-    & $windowsPowerShell -NoProfile -ExecutionPolicy RemoteSigned -File $Path -Language $Language
+    $windowTitle = "Lab_Win11 - {0}" -f ([IO.Path]::GetFileNameWithoutExtension($Path))
+    $command = 'title {0} && color 07 && "{1}" -NoProfile -ExecutionPolicy RemoteSigned -File "{2}" -Language "{3}"' -f $windowTitle, $windowsPowerShell, $Path, $Language
+    Start-Process -FilePath $env:ComSpec -ArgumentList @('/d', '/c', $command) -WorkingDirectory $LabRoot | Out-Null
 }
 
 function Show-LabFiles {
@@ -378,8 +379,8 @@ do {
             "4" { Invoke-LabScript (Join-Path $ScriptRoot "Modificar-InstallWim.ps1") }
             "5" { Invoke-LabScript (Join-Path $ScriptRoot "WINDOWS_USBPowerShell.PS1") }
             "6" { Invoke-LabScript (Join-Path $ScriptRoot "Crear-ISO-Windows11.ps1") }
-            "7" { & (Join-Path $ScriptRoot "copiar_install_wim.ps1") -Language $Language }
-            "8" { & (Join-Path $ScriptRoot "copiar_boot_wim.ps1") -Language $Language }
+            "7" { Invoke-LabScript (Join-Path $ScriptRoot "copiar_install_wim.ps1") }
+            "8" { Invoke-LabScript (Join-Path $ScriptRoot "copiar_boot_wim.ps1") }
             "9" { Show-LabFiles }
             "10" { Show-DisksAndVolumes }
             "11" { Invoke-LabScript (Join-Path $ScriptRoot "Ver-MontajesDism.ps1") }
@@ -396,5 +397,4 @@ do {
         Pause-Lab
     }
 } while ($true)
-
 

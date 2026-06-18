@@ -1,4 +1,5 @@
 @echo off
+color 07
 setlocal EnableExtensions
 
 set "LABROOT=%~dp0"
@@ -31,3 +32,4 @@ if not "%LAB_EXIT%"=="0" (
 )
 
 exit /b %LAB_EXIT%
+

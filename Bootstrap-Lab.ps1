@@ -10,6 +10,11 @@ $WorkRoot = Join-Path $LabRoot "Trabajo"
 $Starter = Join-Path $ToolsRoot "Start-Lab.ps1"
 $Menu = Join-Path $ToolsRoot "00_MENU_LAB_WINDOWS11.ps1"
 $WindowsPowerShell = Join-Path $env:SystemRoot "System32\WindowsPowerShell\v1.0\powershell.exe"
+$LanguageHelpers = Join-Path $ToolsRoot "Lab-Idioma.ps1"
+if (Test-Path -LiteralPath $LanguageHelpers -PathType Leaf) {
+    . $LanguageHelpers
+    Set-LabConsoleStyle
+}
 
 function Test-LabAdministrator {
     $identity = [Security.Principal.WindowsIdentity]::GetCurrent()
@@ -27,22 +32,20 @@ try {
     }
 
     if (-not (Test-LabAdministrator)) {
-        $arguments = '-NoProfile -ExecutionPolicy RemoteSigned -File "{0}"' -f $PSCommandPath
-        Start-Process -FilePath $WindowsPowerShell -ArgumentList $arguments -Verb RunAs | Out-Null
+        $commandProcessor = Join-Path $env:SystemRoot "System32\cmd.exe"
+        $command = 'title Lab_Win11 && color 07 && "{0}" -NoProfile -ExecutionPolicy RemoteSigned -File "{1}"' -f $WindowsPowerShell, $PSCommandPath
+        Start-Process -FilePath $commandProcessor -ArgumentList @('/d', '/c', $command) -Verb RunAs | Out-Null
         exit 0
     }
 
     Clear-Host
-    Write-Host ("=" * 72) -ForegroundColor DarkGray
-    Write-Host "Lab_Win11 bootstrap" -ForegroundColor Cyan
-    Write-Host ("=" * 72) -ForegroundColor DarkGray
-    Write-Host ""
+    Write-LabSection "Windows 11 Deployment Lab"
 
-    Write-Host "Unblocking downloaded lab files..." -ForegroundColor Cyan
+    Write-LabPhase "Startup checks"
     Get-ChildItem -LiteralPath $LabRoot -Recurse -File -Include *.ps1,*.cmd,*.html,*.txt -ErrorAction SilentlyContinue |
         Unblock-File -ErrorAction SilentlyContinue
 
-    Write-Host "Validating lab structure..." -ForegroundColor Cyan
+    Write-LabInfo "Validating lab structure..."
     $requiredPaths = @(
         $ToolsRoot,
         $HelpRoot,
@@ -56,7 +59,7 @@ try {
         }
     }
 
-    Write-Host "Validating Windows tools..." -ForegroundColor Cyan
+    Write-LabInfo "Validating Windows tools..."
     $systemTools = @(
         (Join-Path $env:SystemRoot "System32\dism.exe"),
         (Join-Path $env:SystemRoot "System32\diskpart.exe"),
@@ -68,14 +71,15 @@ try {
         }
     }
 
-    Write-Host "Starting Lab_Win11..." -ForegroundColor Green
+    Write-LabOk "Startup checks completed. Opening lab menu..."
     Write-Host ""
     & $Starter
     exit 0
 }
 catch {
     Write-Host ""
-    Write-Host ("ERROR: {0}" -f $_.Exception.Message) -ForegroundColor Red
+    Write-LabError $_.Exception.Message
     Pause-LabBootstrap
     exit 1
 }
+

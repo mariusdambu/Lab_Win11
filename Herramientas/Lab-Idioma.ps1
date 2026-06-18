@@ -231,6 +231,61 @@ function Confirm-LabYesNo {
     }
 }
 
+function Set-LabConsoleStyle {
+    try {
+        [Console]::BackgroundColor = [ConsoleColor]::Black
+        [Console]::ForegroundColor = [ConsoleColor]::Gray
+    }
+    catch {
+    }
+
+    try {
+        $rawUi = $Host.UI.RawUI
+        $rawUi.BackgroundColor = [ConsoleColor]::Black
+        $rawUi.ForegroundColor = [ConsoleColor]::Gray
+    }
+    catch {
+    }
+}
+
+function Get-LabConsoleWidth {
+    try {
+        $width = [int]$Host.UI.RawUI.WindowSize.Width
+        if ($width -lt 50) { return 50 }
+        if ($width -gt 140) { return 140 }
+        return ($width - 1)
+    }
+    catch {
+        return 72
+    }
+}
+
+function New-LabSeparator {
+    param(
+        [string]$Character = "=",
+        [object]$Width = $null
+    )
+
+    if ([string]::IsNullOrEmpty($Character)) {
+        $Character = "="
+    }
+
+    if ($null -ne $Width -and $Width -ne "") {
+        try {
+            $targetWidth = [int]$Width
+        }
+        catch {
+            $targetWidth = Get-LabConsoleWidth
+        }
+    }
+    else {
+        $targetWidth = Get-LabConsoleWidth
+    }
+
+    if ($targetWidth -lt 20) { $targetWidth = 20 }
+    return ($Character.Substring(0, 1) * $targetWidth)
+}
+
 function Write-LabSection {
     param(
         [string]$Title,
@@ -238,9 +293,9 @@ function Write-LabSection {
     )
 
     Write-Host ""
-    Write-Host ("=" * 72) -ForegroundColor DarkGray
+    Write-Host (New-LabSeparator "=") -ForegroundColor DarkGray
     Write-Host $Title -ForegroundColor $Color
-    Write-Host ("=" * 72) -ForegroundColor DarkGray
+    Write-Host (New-LabSeparator "=") -ForegroundColor DarkGray
 }
 
 function Write-LabSubsection {
@@ -250,13 +305,54 @@ function Write-LabSubsection {
     )
 
     Write-Host ""
-    Write-Host ("-- {0}" -f $Title) -ForegroundColor $Color
+    Write-Host (New-LabSeparator "-") -ForegroundColor DarkGray
+    Write-Host $Title -ForegroundColor $Color
+}
+
+function Write-LabInfo {
+    param(
+        [string]$Message,
+        [ConsoleColor]$Color = [ConsoleColor]::Gray
+    )
+
+    Write-Host ("[INFO] {0}" -f $Message) -ForegroundColor $Color
 }
 
 function Write-LabOk {
     param([string]$Message)
 
-    Write-Host ("OK  {0}" -f $Message) -ForegroundColor Green
+    Write-Host ("[OK] {0}" -f $Message) -ForegroundColor Green
+}
+
+function Write-LabWarning {
+    param([string]$Message)
+
+    Write-Host ("[WARN] {0}" -f $Message) -ForegroundColor Yellow
+}
+
+function Write-LabError {
+    param([string]$Message)
+
+    Write-Host ("[ERROR] {0}" -f $Message) -ForegroundColor Red
+}
+
+function Write-LabCommand {
+    param([string]$Command)
+
+    Write-Host "[CMD]" -ForegroundColor DarkGray
+    Write-Host $Command -ForegroundColor DarkGray
+}
+
+function Write-LabPrompt {
+    param([string]$Message)
+
+    Write-Host ("[?] {0}" -f $Message) -ForegroundColor Yellow
+}
+
+function Write-LabPhase {
+    param([string]$Title)
+
+    Write-LabSection -Title $Title -Color Cyan
 }
 
 function Format-LabBytes {
@@ -319,5 +415,8 @@ function Copy-LabFileWithProgress {
     return $destinationItem
 }
 
+Set-LabConsoleStyle
+
 Set-Alias -Name L -Value Get-LabText -Scope Script
 Set-Alias -Name LF -Value Format-LabText -Scope Script
+
