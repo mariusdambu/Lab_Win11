@@ -1,4 +1,4 @@
-#Requires -RunAsAdministrator
+﻿#Requires -RunAsAdministrator
 [CmdletBinding()]
 param(
     [string]$MediaPath,
@@ -1011,14 +1011,32 @@ function Invoke-DiskCleanWithRetry {
 
         $result = Invoke-DiskPartScript -Name ("clean-disk{0}-try{1}" -f $Number, $attempt) -NoThrow -Lines @(
             "select disk $Number",
-            "online disk noerr",
             "attributes disk clear readonly",
             "clean",
             "rescan",
             "exit"
         )
 
-        if ($result.Success) {
+        # DiskPart may return a nonzero exit code for a harmless condition even
+        # when clean succeeds. Confirm the disk state before retrying or failing.
+        Update-Disk -Number $Number -ErrorAction SilentlyContinue
+        $diskAfterClean = Get-Disk -Number $Number -ErrorAction SilentlyContinue
+        $cleanVerified = $false
+        if ($null -ne $diskAfterClean -and $diskAfterClean.PartitionStyle.ToString() -in @("RAW", "MBR", "GPT")) {
+            try {
+                $partitionsAfterClean = @(Get-Partition -DiskNumber $Number -ErrorAction Stop)
+                $cleanVerified = ($partitionsAfterClean.Count -eq 0)
+            }
+            catch {
+                $cleanVerified = $false
+            }
+        }
+
+        $diskPartOutput = Get-Content -LiteralPath $result.OutputPath -Raw -ErrorAction SilentlyContinue
+        $cleanReportedSuccess = ($diskPartOutput -match '(?im)^\s*DiskPart succeeded in cleaning the disk\.?\s*$' -or
+            $diskPartOutput -match '(?im)^\s*DiskPart ha limpiado el disco correctamente\.?\s*$')
+
+        if ($cleanVerified -or $cleanReportedSuccess) {
             return
         }
 
