@@ -1,119 +1,133 @@
+[ English ](#english) | [ Español ](#español)
+
+## English
+
 # Lab Win11
 
-Windows 11 deployment lab for preparing install images and USB media.
+A Windows 11 deployment lab for servicing installation images, creating bootable USB media and building customized ISOs.
 
-Official repository: `https://github.com/mariusdambu/Lab_Win11`
+Official repository: [mariusdambu/Lab_Win11](https://github.com/mariusdambu/Lab_Win11)
 
-## First Use
+### The lab at a glance
 
-1. Download the ZIP from the official GitHub repository.
-2. Extract the ZIP to a local folder, for example `C:\Lab_Win11`.
-3. Open the extracted folder.
-4. Right-click `start_lab.cmd` and choose **Run as administrator**.
-5. Accept the Windows UAC prompt.
-6. Choose your language.
-7. Put your working files under `Trabajo`:
-   - `Trabajo\ISOs` for Windows ISO files
-   - `Trabajo\images` for `boot.wim`, `install.wim`, `install.esd` or `install*.swm`
-   - `Trabajo\Drivers` for extracted INF drivers
-   - `Trabajo\packages` for CAB/MSU packages
+- Create hybrid UEFI/GPT USB media with a FAT32 boot partition and an exFAT/NTFS installation partition for large files.
+- Service `install.wim` and `boot.wim` with DISM, including model-specific drivers, packages and optimized image export.
+- Create customized bootable Windows 11 ISOs and copy images directly to USB, including SWM splitting for FAT32 targets.
+- Optionally use the portable `RapidDeploy_Toolkit` during corporate OOBE provisioning.
 
-The lab uses Windows PowerShell 5.1, DISM and standard Windows deployment tools.
-`start_lab.cmd` calls `Bootstrap-Lab.ps1`, which handles the initial elevation and then launches the lab menu.
+### Project map
 
-During the first startup, the lab validates its structure, checks required Windows tools and unblocks the lab files that Windows may have marked as downloaded from the Internet.
+- `00_MENU_LAB_WINDOWS11.ps1` — multilingual interactive control panel for the lab.
+- `Herramientas/Modificar-InstallWim.ps1` — DISM servicing workflow for `install.wim` and `boot.wim`; supports drivers in `Trabajo/Drivers/install` and `Trabajo/Drivers/boot`, package integration and optimized export.
+- `Herramientas/WINDOWS_USBPowerShell.PS1` — creates hybrid UEFI/GPT USB media with a FAT32 boot partition and an exFAT/NTFS installation partition.
+- `Herramientas/Crear-ISO-Windows11.ps1` — creates customized bootable ISOs with `oscdimg`.
+- `Herramientas/copiar_install_wim.ps1` and `Herramientas/copiar_boot_wim.ps1` — copy installation and boot images to USB targets, with SWM splitting when FAT32 requires it.
+- `RapidDeploy_Toolkit/` — a **100% optional** OOBE toolkit for corporate Windows Autopilot, Microsoft Intune and Microsoft Entra ID deployments. It includes diagnostics, Autopilot hardware-hash capture, time resynchronization, manual MDM check-in, disk utilities and model-based WIM selection.
+- `Ayuda/` — quick guides and copy-ready commands.
+- `Trabajo/` — local workspace for ISOs, images, drivers, packages, mount data and logs. Deployment payloads and temporary files are excluded from Git.
 
-If Windows Smart App Control or SmartScreen shows a warning, verify that the ZIP came from the official GitHub repository before continuing. Do not disable Smart App Control, Defender or SmartScreen to use this lab.
+### RapidDeploy Toolkit: optional OOBE tools
 
-## Important
+The toolkit is intended for corporate provisioning at the Windows first-run setup screen (OOBE), opened with **Shift + F10**. It can capture the Autopilot hardware hash through `MDM_DevDetail_Ext01`, save it with a Group Tag, show enrollment diagnostics, resynchronize time through NTP and request an MDM check-in with `DeviceEnroller.exe`.
 
-Real deployment payload is intentionally ignored by Git:
+It is **100% optional**. If you only prepare a standard Windows 11 ISO or USB for personal or home use, you can ignore it completely. To use it, copy the entire contents of `RapidDeploy_Toolkit` to the root of the USB drive or another partition accessible in OOBE, open Command Prompt with **Shift + F10**, switch to that drive and run `menu.cmd`.
 
-- ISO files
-- WIM/ESD/SWM images
-- driver packs
-- packages
-- logs
-- temporary mount contents
-- private local sync helpers
+The toolkit's disk wipe actions target **Disk 0**. DiskPart `clean` removes partition information; it does not securely overwrite or sanitize the drive. Verify the target and back up any required data before using those actions.
 
-The repository contains the lab, not your private deployment payload.
+### SelectModel.cmd: Zero-Copy WIM switching
 
-## Location
+Windows Setup expects its active installation image at `sources\install.wim`. In a mixed corporate fleet, each hardware model—such as an HP EliteBook, Lenovo ThinkPad or Dell Latitude—may need its own WIM with the appropriate drivers and configuration.
 
-Use this lab from:
+`RapidDeploy_Toolkit\SelectModel.cmd` switches which model image Windows Setup sees without copying the image data. It uses the native Windows `move` command to return the current `sources\install.wim` to that model's folder, then moves the selected model's `install.wim` into `sources\install.wim`. Both locations are on the same USB volume, so this is a filesystem move/rename that updates directory metadata rather than copying a 10–15 GB file. It is normally completed in under a second, although the exact time depends on the USB device and filesystem. The folder for the active model is empty while its image is in `sources`.
+
+Keep `sources` and all model folders on the same volume. FAT32 cannot store a single file larger than 4 GiB; use the lab's exFAT/NTFS installation partition for a full-size WIM, or split the image if FAT32 is required.
+
+Example USB layout (the active model's folder is empty while its WIM is in `sources`):
 
 ```text
-folder where the ZIP was extracted
+USB_ROOT:\
+├── sources\
+│   └── install.wim                 # Active image used by Windows Setup
+├── HP_EliteBook_840_G10\
+│   └── install.wim                 # Image ready to select
+├── Lenovo_ThinkPad_T14\
+│                                    # Empty while this model is active
+├── scripts\                        # Toolkit utilities
+├── SelectModel.cmd                 # Model image manager
+└── menu.cmd                        # OOBE toolkit launcher (Shift + F10)
 ```
 
-## Optional enterprise OOBE toolkit
+### Requirements and first use
 
-`RapidDeploy_Toolkit` is a portable, **100% optional** set of OOBE tools for enterprise Windows Autopilot, Intune and Entra ID provisioning. It supports hardware-hash capture with Group Tags, local diagnostics, time resynchronization and a manual MDM check-in. Copy its contents to the root of an OOBE-accessible USB/partition and run `menu.cmd` from Command Prompt opened with **Shift + F10**. Personal/home Windows 11 ISO or USB preparation does not require it.
+- Windows 10 or Windows 11, Windows PowerShell 5.1 and administrator rights for the lab's disk and image operations.
+- DISM is included with Windows. `oscdimg` must be available to create customized ISO files.
+- Download the ZIP from this repository, extract it to a local folder and run `start_lab.cmd` as administrator. Choose a language in the launcher.
+- Place working files under `Trabajo`: ISO files in `Trabajo/ISOs`, image files in `Trabajo/images`, extracted INF drivers in `Trabajo/Drivers`, and CAB/MSU packages in `Trabajo/packages`.
+- The repository contains the tools and documentation, not private deployment payloads. ISO/WIM/ESD/SWM files, driver packs, packages, logs and temporary mount contents are excluded from Git.
 
-Read [`RapidDeploy_Toolkit/README.md`](RapidDeploy_Toolkit/README.md) before use. Its disk-wipe actions are destructive and always target Disk 0; the confirmation prompt does not change the target.
+---
 
-## Project map (EN)
+## Español
 
-- `00_MENU_LAB_WINDOWS11.ps1` — multilingual interactive lab control panel.
-- `Herramientas\Modificar-InstallWim.ps1` — DISM servicing workflow for `install.wim` and `boot.wim`, including driver injection from `Trabajo\Drivers\install` and `Trabajo\Drivers\boot`, package integration and optimized export.
-- `Herramientas\WINDOWS_USBPowerShell.PS1` — creates a hybrid UEFI/GPT USB with a FAT32 boot partition and an exFAT/NTFS installation partition for large files.
-- `Herramientas\Crear-ISO-Windows11.ps1` — builds customized bootable Windows ISOs with `oscdimg`.
-- `Herramientas\copiar_install_wim.ps1` / `Herramientas\copiar_boot_wim.ps1` — copy install/boot images directly to USB targets, including SWM splitting for FAT32.
-- `RapidDeploy_Toolkit\` — **100% optional** OOBE (`Shift + F10`) toolkit for corporate Autopilot/Intune/Entra ID provisioning, hardware-hash capture, NTP resynchronization, diagnostics, MDM check-in and multi-model Zero-Copy WIM switching.
+# Lab Win11
 
-## Mapa del proyecto (ES)
+Laboratorio de despliegue de Windows 11 para preparar imágenes de instalación, crear memorias USB arrancables y generar ISO personalizadas.
+
+Repositorio oficial: [mariusdambu/Lab_Win11](https://github.com/mariusdambu/Lab_Win11)
+
+### El laboratorio de un vistazo
+
+- Crea memorias USB híbridas UEFI/GPT con una partición de arranque FAT32 y otra de instalación exFAT/NTFS para archivos grandes.
+- Modifica `install.wim` y `boot.wim` mediante DISM, con controladores por modelo, integración de paquetes y exportación optimizada.
+- Genera ISO personalizadas arrancables de Windows 11 y copia imágenes directamente a USB, incluida la división SWM cuando FAT32 lo requiere.
+- Permite usar de forma opcional el módulo portátil `RapidDeploy_Toolkit` durante el aprovisionamiento empresarial en OOBE.
+
+### Mapa del proyecto
 
 - `00_MENU_LAB_WINDOWS11.ps1` — panel interactivo multilingüe del laboratorio.
-- `Herramientas\Modificar-InstallWim.ps1` — flujo DISM para `install.wim` y `boot.wim`, inyección de controladores desde `Trabajo\Drivers\install` y `Trabajo\Drivers\boot`, integración de paquetes y exportación optimizada.
-- `Herramientas\WINDOWS_USBPowerShell.PS1` — crea un USB híbrido UEFI/GPT con partición de arranque FAT32 y partición de instalación exFAT/NTFS para archivos grandes.
-- `Herramientas\Crear-ISO-Windows11.ps1` — genera ISO de Windows personalizadas y arrancables con `oscdimg`.
-- `Herramientas\copiar_install_wim.ps1` / `Herramientas\copiar_boot_wim.ps1` — copian imágenes install/boot directamente a USB, con división SWM para FAT32.
-- `RapidDeploy_Toolkit\` — módulo **100 % opcional** de OOBE (`Mayús + F10`) para Autopilot/Intune/Entra ID, captura de hash, resincronización NTP, diagnóstico, sincronización MDM y cambio Zero-Copy de WIM por modelo.
+- `Herramientas/Modificar-InstallWim.ps1` — flujo DISM para `install.wim` y `boot.wim`; admite controladores en `Trabajo/Drivers/install` y `Trabajo/Drivers/boot`, integración de paquetes y exportación optimizada.
+- `Herramientas/WINDOWS_USBPowerShell.PS1` — crea memorias USB híbridas UEFI/GPT con partición de arranque FAT32 y partición de instalación exFAT/NTFS.
+- `Herramientas/Crear-ISO-Windows11.ps1` — genera ISO personalizadas arrancables con `oscdimg`.
+- `Herramientas/copiar_install_wim.ps1` y `Herramientas/copiar_boot_wim.ps1` — copian imágenes de instalación y arranque a USB, con división SWM si el destino FAT32 la necesita.
+- `RapidDeploy_Toolkit/` — módulo **100 % opcional** para OOBE empresarial con Windows Autopilot, Microsoft Intune y Microsoft Entra ID. Incluye diagnóstico, captura del hash de hardware de Autopilot, resincronización horaria, solicitud manual de sincronización MDM, utilidades de disco y selección de WIM por modelo.
+- `Ayuda/` — guías rápidas y comandos listos para copiar.
+- `Trabajo/` — espacio local para ISO, imágenes, controladores, paquetes, montajes y registros. Los archivos de despliegue y temporales están excluidos de Git.
 
-## Présentation du projet (FR)
+### RapidDeploy Toolkit: módulo opcional para OOBE
 
-- `00_MENU_LAB_WINDOWS11.ps1` — panneau de contrôle interactif multilingue du laboratoire.
-- `Herramientas\Modificar-InstallWim.ps1` — flux DISM pour `install.wim` et `boot.wim`, injection de pilotes depuis `Trabajo\Drivers\install` et `Trabajo\Drivers\boot`, intégration de paquets et export optimisé.
-- `Herramientas\WINDOWS_USBPowerShell.PS1` — crée une clé UEFI/GPT hybride avec une partition de démarrage FAT32 et une partition d’installation exFAT/NTFS pour les gros fichiers.
-- `Herramientas\Crear-ISO-Windows11.ps1` — crée des ISO Windows personnalisées et amorçables avec `oscdimg`.
-- `Herramientas\copiar_install_wim.ps1` / `Herramientas\copiar_boot_wim.ps1` — copient les images install/boot directement vers une clé USB, avec fractionnement SWM pour FAT32.
-- `RapidDeploy_Toolkit\` — module OOBE (`Maj + F10`) **100 % facultatif** pour Autopilot/Intune/Entra ID, capture du hash, synchronisation NTP, diagnostics, synchronisation MDM et échange Zero-Copy des WIM par modèle.
+El módulo está pensado para el aprovisionamiento corporativo durante la configuración inicial de Windows (OOBE), que se abre con **Mayús + F10**. Puede capturar el hash de hardware de Autopilot mediante `MDM_DevDetail_Ext01`, guardarlo con una etiqueta de grupo, mostrar diagnósticos de inscripción, resincronizar la hora mediante NTP y solicitar una sincronización MDM con `DeviceEnroller.exe`.
 
-## Structura proiectului (RO)
+Es **100 % opcional**. Si solo preparas una ISO o una memoria USB estándar de Windows 11 para uso personal o doméstico, puedes ignorarlo por completo. Para utilizarlo, copia el contenido íntegro de `RapidDeploy_Toolkit` a la raíz del USB o a otra partición accesible desde OOBE, abre la consola con **Mayús + F10**, cambia a esa unidad y ejecuta `menu.cmd`.
 
-- `00_MENU_LAB_WINDOWS11.ps1` — panoul interactiv multilingv al laboratorului.
-- `Herramientas\Modificar-InstallWim.ps1` — flux DISM pentru `install.wim` și `boot.wim`, injectarea driverelor din `Trabajo\Drivers\install` și `Trabajo\Drivers\boot`, integrarea pachetelor și exportul optimizat.
-- `Herramientas\WINDOWS_USBPowerShell.PS1` — creează un USB hibrid UEFI/GPT cu partiție de pornire FAT32 și partiție de instalare exFAT/NTFS pentru fișiere mari.
-- `Herramientas\Crear-ISO-Windows11.ps1` — creează imagini ISO Windows personalizate și bootabile cu `oscdimg`.
-- `Herramientas\copiar_install_wim.ps1` / `Herramientas\copiar_boot_wim.ps1` — copiază imaginile install/boot direct pe USB, cu împărțire SWM pentru FAT32.
-- `RapidDeploy_Toolkit\` — modul OOBE (`Shift + F10`) **100% opțional** pentru Autopilot/Intune/Entra ID, capturarea hash-ului, resincronizare NTP, diagnosticare, sincronizare MDM și schimbarea Zero-Copy a imaginilor WIM după model.
+Las funciones de borrado del módulo siempre actúan sobre el **Disco 0**. DiskPart `clean` elimina la información de particiones; no sobrescribe ni sanitiza de forma segura la unidad. Verifica el destino y respalda los datos necesarios antes de usar esas funciones.
 
-## Projektübersicht (DE)
+### SelectModel.cmd: cambio de WIM sin copiar datos
 
-- `00_MENU_LAB_WINDOWS11.ps1` — mehrsprachiges interaktives Steuerungsmenü des Labors.
-- `Herramientas\Modificar-InstallWim.ps1` — DISM-Ablauf für `install.wim` und `boot.wim` mit Treiberintegration aus `Trabajo\Drivers\install` und `Trabajo\Drivers\boot`, Paketintegration und optimiertem Export.
-- `Herramientas\WINDOWS_USBPowerShell.PS1` — erstellt einen hybriden UEFI/GPT-USB-Datenträger mit FAT32-Startpartition und exFAT-/NTFS-Installationspartition für große Dateien.
-- `Herramientas\Crear-ISO-Windows11.ps1` — erstellt angepasste, startfähige Windows-ISOs mit `oscdimg`.
-- `Herramientas\copiar_install_wim.ps1` / `Herramientas\copiar_boot_wim.ps1` — kopieren Installations-/Startabbilder direkt auf USB, einschließlich SWM-Aufteilung für FAT32.
-- `RapidDeploy_Toolkit\` — **100 % optionales** OOBE-Toolkit (Umschalt + F10) für Autopilot/Intune/Entra ID, Hardwarehash-Erfassung, NTP-Zeitsynchronisierung, Diagnose, MDM-Abgleich und Zero-Copy-WIM-Wechsel nach Modell.
+El instalador de Windows espera encontrar la imagen activa en `sources\install.wim`. En una flota empresarial con distintos equipos, cada modelo —por ejemplo, HP EliteBook, Lenovo ThinkPad o Dell Latitude— puede necesitar su propio WIM con los controladores y la configuración correspondientes.
 
-## Zero-Copy WIM model switching (EN)
+`RapidDeploy_Toolkit\SelectModel.cmd` cambia la imagen que utilizará el instalador sin copiar sus datos. Usa el comando nativo de Windows `move` para devolver el `sources\install.wim` actual a la carpeta de su modelo y después mueve el `install.wim` del modelo elegido a `sources\install.wim`. Como ambas ubicaciones están en el mismo volumen USB, el sistema de archivos actualiza los metadatos de directorio en vez de copiar un archivo de 10–15 GB. Normalmente termina en menos de un segundo, aunque el tiempo exacto depende del USB y del sistema de archivos. La carpeta del modelo activo queda vacía mientras su imagen está en `sources`.
 
-Windows Setup reads the active image from `sources\install.wim`, while each hardware model may require a different customized WIM. `RapidDeploy_Toolkit\SelectModel.cmd` returns the active WIM to its model folder and moves the chosen model's WIM into `sources` using Windows `move`. Both paths stay on the same USB volume, so the filesystem changes the directory entry instead of copying the multi-gigabyte image. The model folder is empty while that model is active. Keep all paths on one volume; FAT32 cannot store a single file larger than 4 GiB.
+Mantén `sources` y todas las carpetas de modelo en el mismo volumen. FAT32 no admite un archivo individual superior a 4 GiB; usa la partición de instalación exFAT/NTFS del laboratorio para un WIM completo o divide la imagen si necesitas FAT32.
 
-## Cambio Zero-Copy de WIM por modelo (ES)
+Ejemplo de estructura USB (la carpeta del modelo activo queda vacía mientras su WIM está en `sources`):
 
-Windows Setup lee la imagen activa desde `sources\install.wim`, aunque cada modelo puede necesitar un WIM personalizado distinto. `RapidDeploy_Toolkit\SelectModel.cmd` devuelve el WIM activo a su carpeta de modelo y mueve el WIM elegido a `sources` mediante `move`. Como ambas rutas están en el mismo volumen USB, el sistema de archivos actualiza la entrada sin copiar la imagen de varios GB. La carpeta del modelo queda vacía mientras ese modelo está activo. Mantén las rutas en un mismo volumen; FAT32 no admite un archivo individual superior a 4 GiB.
+```text
+USB_ROOT:\
+├── sources\
+│   └── install.wim                 # Imagen activa que utiliza Windows Setup
+├── HP_EliteBook_840_G10\
+│   └── install.wim                 # Imagen lista para seleccionar
+├── Lenovo_ThinkPad_T14\
+│                                    # Vacía mientras este modelo está activo
+├── scripts\                        # Utilidades del módulo
+├── SelectModel.cmd                 # Administrador de imágenes por modelo
+└── menu.cmd                        # Lanzador OOBE (Mayús + F10)
+```
 
-## Échange Zero-Copy des WIM par modèle (FR)
+### Requisitos y primeros pasos
 
-Windows Setup lit l’image active dans `sources\install.wim`, alors que chaque modèle peut nécessiter un WIM personnalisé différent. `RapidDeploy_Toolkit\SelectModel.cmd` remet le WIM actif dans son dossier de modèle et déplace le WIM choisi vers `sources` avec `move`. Les deux chemins étant sur le même volume USB, le système de fichiers met à jour l’entrée sans recopier l’image de plusieurs Go. Le dossier du modèle reste vide tant que ce modèle est actif. Gardez tous les chemins sur un seul volume ; FAT32 ne peut pas stocker un fichier unique de plus de 4 Gio.
-
-## Schimbarea Zero-Copy a imaginilor WIM după model (RO)
-
-Windows Setup citește imaginea activă din `sources\install.wim`, iar fiecare model poate necesita un WIM personalizat diferit. `RapidDeploy_Toolkit\SelectModel.cmd` mută WIM-ul activ înapoi în folderul modelului și mută WIM-ul ales în `sources` folosind `move`. Ambele căi fiind pe același volum USB, sistemul de fișiere actualizează intrarea fără să copieze imaginea de mai mulți GB. Folderul modelului rămâne gol cât timp modelul este activ. Păstrează toate căile pe același volum; FAT32 nu poate stoca un singur fișier mai mare de 4 GiB.
-
-## Zero-Copy-WIM-Wechsel nach Modell (DE)
-
-Windows Setup liest das aktive Abbild aus `sources\install.wim`, während jedes Hardwaremodell ein eigenes angepasstes WIM benötigen kann. `RapidDeploy_Toolkit\SelectModel.cmd` legt das aktive WIM in seinen Modellordner zurück und verschiebt das ausgewählte WIM mit `move` nach `sources`. Da beide Pfade auf demselben USB-Volume liegen, ändert das Dateisystem den Verzeichniseintrag, statt das mehrere Gigabyte große Abbild zu kopieren. Der Ordner des aktiven Modells bleibt leer. Alle Pfade müssen auf demselben Volume liegen; FAT32 kann keine einzelne Datei über 4 GiB speichern.
+- Windows 10 o Windows 11, Windows PowerShell 5.1 y permisos de administrador para las operaciones de disco e imágenes del laboratorio.
+- DISM viene incluido en Windows. Para generar ISO personalizadas, `oscdimg` debe estar disponible.
+- Descarga el ZIP de este repositorio, extráelo en una carpeta local y ejecuta `start_lab.cmd` como administrador. Elige el idioma en el lanzador.
+- Coloca los archivos de trabajo en `Trabajo`: las ISO en `Trabajo/ISOs`, las imágenes en `Trabajo/images`, los controladores INF extraídos en `Trabajo/Drivers` y los paquetes CAB/MSU en `Trabajo/packages`.
+- El repositorio contiene las herramientas y la documentación, no los archivos privados de despliegue. Las ISO, imágenes WIM/ESD/SWM, paquetes de controladores, paquetes de instalación, registros y montajes temporales están excluidos de Git.
