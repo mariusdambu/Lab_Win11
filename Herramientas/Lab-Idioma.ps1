@@ -13,6 +13,10 @@ $script:LabTranslations = @{
         ErrorPrefix = "ERROR: {0}"
         Log = "Log"
         YesText = "YES"
+        NoShort = "N"
+        CommandLabel = "CMD"
+        WarningLabel = "WARN"
+        ErrorLabel = "ERROR"
         NoText = "NO"
         Low = "LOW"
         Medium = "MEDIUM"
@@ -28,8 +32,8 @@ $script:LabTranslations = @{
         LanguageGerman = "German"
     }
     es = @{
-        PressEnterContinue = "Pulsa ENTER para continuar"
-        PressEnterExit = "Pulsa ENTER para salir"
+        PressEnterContinue = "Pulsa INTRO para continuar"
+        PressEnterExit = "Pulsa INTRO para salir"
         Option = "Opcion"
         Number = "Numero"
         InvalidNumber = "Numero no valido."
@@ -37,8 +41,12 @@ $script:LabTranslations = @{
         YesNoInvalid = "Responde S o N."
         Cancelled = "Cancelado."
         ErrorPrefix = "ERROR: {0}"
-        Log = "Log"
+        Log = "Registro"
         YesText = "SI"
+        NoShort = "N"
+        CommandLabel = "COMANDO"
+        WarningLabel = "AVISO"
+        ErrorLabel = "ERROR"
         NoText = "NO"
         Low = "BAJO"
         Medium = "MEDIO"
@@ -54,8 +62,8 @@ $script:LabTranslations = @{
         LanguageGerman = "Aleman"
     }
     fr = @{
-        PressEnterContinue = "Appuyez sur ENTREE pour continuer"
-        PressEnterExit = "Appuyez sur ENTREE pour quitter"
+        PressEnterContinue = "Appuyez sur ENTRÉE pour continuer"
+        PressEnterExit = "Appuyez sur ENTRÉE pour quitter"
         Option = "Option"
         Number = "Numero"
         InvalidNumber = "Numero invalide."
@@ -65,6 +73,10 @@ $script:LabTranslations = @{
         ErrorPrefix = "ERREUR: {0}"
         Log = "Journal"
         YesText = "OUI"
+        NoShort = "N"
+        CommandLabel = "COMMANDE"
+        WarningLabel = "AVERTISSEMENT"
+        ErrorLabel = "ERREUR"
         NoText = "NON"
         Low = "FAIBLE"
         Medium = "MOYEN"
@@ -80,8 +92,8 @@ $script:LabTranslations = @{
         LanguageGerman = "Allemand"
     }
     ro = @{
-        PressEnterContinue = "Apasa ENTER pentru a continua"
-        PressEnterExit = "Apasa ENTER pentru iesire"
+        PressEnterContinue = "Apasă ENTER pentru a continua"
+        PressEnterExit = "Apasă ENTER pentru ieșire"
         Option = "Optiune"
         Number = "Numar"
         InvalidNumber = "Numar invalid."
@@ -89,8 +101,12 @@ $script:LabTranslations = @{
         YesNoInvalid = "Raspunde D sau N."
         Cancelled = "Anulat."
         ErrorPrefix = "EROARE: {0}"
-        Log = "Log"
+        Log = "Jurnal"
         YesText = "DA"
+        NoShort = "N"
+        CommandLabel = "COMANDĂ"
+        WarningLabel = "AVERTIZARE"
+        ErrorLabel = "EROARE"
         NoText = "NU"
         Low = "SCAZUT"
         Medium = "MEDIU"
@@ -106,8 +122,8 @@ $script:LabTranslations = @{
         LanguageGerman = "Germana"
     }
     de = @{
-        PressEnterContinue = "ENTER druecken zum Fortfahren"
-        PressEnterExit = "ENTER druecken zum Beenden"
+        PressEnterContinue = "EINGABETASTE drücken zum Fortfahren"
+        PressEnterExit = "EINGABETASTE drücken zum Beenden"
         Option = "Option"
         Number = "Nummer"
         InvalidNumber = "Ungueltige Nummer."
@@ -117,6 +133,10 @@ $script:LabTranslations = @{
         ErrorPrefix = "FEHLER: {0}"
         Log = "Protokoll"
         YesText = "JA"
+        NoShort = "N"
+        CommandLabel = "BEFEHL"
+        WarningLabel = "WARNUNG"
+        ErrorLabel = "FEHLER"
         NoText = "NEIN"
         Low = "NIEDRIG"
         Medium = "MITTEL"
@@ -220,7 +240,13 @@ function Confirm-LabYesNo {
     }
     $yesKey = $yesKeys[$language]
     if (-not $yesKey) { $yesKey = "Y" }
-    $suffix = if ($Default) { "[{0}/n]" -f $yesKey } else { "[{0}/N]" -f $yesKey.ToLowerInvariant() }
+    $enterKeys = @{ en = "ENTER"; es = "INTRO"; fr = "ENTRÉE"; ro = "ENTER"; de = "EINGABE" }
+    $enterKey = $enterKeys[$language]
+    $suffix = if ($Default) {
+        "[{0} = {1} / {2}]" -f $enterKey, $yesKey, (L "NoShort").ToLowerInvariant()
+    } else {
+        "[{0} = {1} / {2}]" -f $enterKey, (L "NoShort").ToUpperInvariant(), $yesKey.ToLowerInvariant()
+    }
 
     while ($true) {
         $answer = (Read-Host "$Question $suffix").Trim()
@@ -327,19 +353,19 @@ function Write-LabOk {
 function Write-LabWarning {
     param([string]$Message)
 
-    Write-Host ("[WARN] {0}" -f $Message) -ForegroundColor Yellow
+    Write-Host ("[{0}] {1}" -f (Get-LabText "WarningLabel"), $Message) -ForegroundColor Yellow
 }
 
 function Write-LabError {
     param([string]$Message)
 
-    Write-Host ("[ERROR] {0}" -f $Message) -ForegroundColor Red
+    Write-Host ("[{0}] {1}" -f (Get-LabText "ErrorLabel"), $Message) -ForegroundColor Red
 }
 
 function Write-LabCommand {
     param([string]$Command)
 
-    Write-Host "[CMD]" -ForegroundColor DarkGray
+    Write-Host ("[{0}]" -f (Get-LabText "CommandLabel")) -ForegroundColor DarkGray
     Write-Host $Command -ForegroundColor DarkGray
 }
 

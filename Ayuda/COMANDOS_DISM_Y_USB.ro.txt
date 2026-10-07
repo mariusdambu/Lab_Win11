@@ -55,7 +55,7 @@ Dism /Image:"C:\Lab_Win11\Trabajo\offline" /Get-DriverInfo /Driver:oem1.inf
 Dism /Online /Export-Driver /Destination:"C:\Lab_Win11\Trabajo\ExportedDrivers"
 
 
-4) Packages si functii
+4) Pachete și caracteristici
 ----------------------
 Dism /Image:"C:\Lab_Win11\Trabajo\offline" /Add-Package /PackagePath:"C:\Lab_Win11\Trabajo\packages"
 

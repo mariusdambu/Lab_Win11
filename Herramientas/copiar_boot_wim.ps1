@@ -48,7 +48,7 @@ Add-LabTranslations @{
         None = "None."
         NoValidTargets = "There is no valid destination for boot.* of {0}."
         DestPrompt = "Destinations: letters or numbers separated by comma ({0}A = all)"
-        DefaultOne = "ENTER = {0}, "
+        DefaultOne = "ENTER = {0}:, "
         NoDestination = "No destination drive was specified."
         InvalidDestNumber = "Invalid destination number: {0}"
         InvalidDest = "Invalid destination: {0}"
@@ -101,7 +101,7 @@ Add-LabTranslations @{
         None = "Ninguno."
         NoValidTargets = "No hay ningun destino valido para boot.* de {0}."
         DestPrompt = "Destinos: letras o numeros separados por coma ({0}A = todos)"
-        DefaultOne = "ENTER = {0}, "
+        DefaultOne = "INTRO = {0}:, "
         NoDestination = "No se indico ninguna unidad destino."
         InvalidDestNumber = "Numero de destino no valido: {0}"
         InvalidDest = "Destino no valido: {0}"
@@ -140,7 +140,7 @@ Add-LabTranslations @{
     }
     ro = @{
         CopyConfirmWord = "COPIAZA"; NoBootPayload = "Nu gasesc boot.wim, boot.esd sau boot*.swm in {0}"
-        AskCopyBootFromIso = "Trabajo\images nu contine boot.*. Montez un ISO din Trabajo\ISOs si copiez boot.wim original acum?"
+        AskCopyBootFromIso = "Trabajo\images nu conține boot.*. Montează un ISO din Trabajo\ISOs și copiază boot.wim original acum?"
         NoIsoFound = "Nu s-au gasit fisiere ISO in {0}."
         ChooseIso = "Alege ISO pentru montare:"
         MountingIso = "Montez ISO: {0}"
@@ -176,7 +176,7 @@ Add-LabTranslations @{
         FilesLabel = "Fichiers"
         TotalSizeLabel = "Taille totale"
         NoValidTargets = "Aucune destination valide pour boot.* de {0}."
-        DefaultOne = "ENTREE = {0}, "
+        DefaultOne = "ENTRÉE = {0}:, "
         NoDestination = "Aucune unite destination indiquee."
         InvalidDestNumber = "Numero de destination invalide: {0}"
         InvalidDest = "Destination invalide: {0}"
@@ -209,7 +209,7 @@ Add-LabTranslations @{
         FilesLabel = "Fisiere"
         TotalSizeLabel = "Dimensiune totala"
         NoValidTargets = "Nu exista destinatie valida pentru boot.* de {0}."
-        DefaultOne = "ENTER = {0}, "
+        DefaultOne = "ENTER = {0}:, "
         NoDestination = "Nu s-a indicat nicio unitate destinatie."
         InvalidDestNumber = "Numar destinatie invalid: {0}"
         InvalidDest = "Destinatie invalida: {0}"
@@ -242,7 +242,7 @@ Add-LabTranslations @{
         FilesLabel = "Dateien"
         TotalSizeLabel = "Gesamtgroesse"
         NoValidTargets = "Kein gueltiges Ziel fuer boot.* mit {0}."
-        DefaultOne = "ENTER = {0}, "
+        DefaultOne = "EINGABE = {0}:, "
         NoDestination = "Kein Ziellaufwerk angegeben."
         InvalidDestNumber = "Ungueltige Zielnummer: {0}"
         InvalidDest = "Ungueltiges Ziel: {0}"
@@ -367,6 +367,9 @@ function Select-IsoCandidate {
     $isos = @(Get-IsoCandidates)
     if ($isos.Count -eq 0) {
         throw (LF "NoIsoFound" $IsosRoot)
+    }
+    if ($isos.Count -eq 1) {
+        return $isos[0]
     }
 
     Write-LabSection (L "ChooseIso")
@@ -578,7 +581,7 @@ function Resolve-DestinationSelection {
     if ([string]::IsNullOrWhiteSpace($raw)) { throw (L "NoDestination") }
     $selected = New-Object System.Collections.Generic.List[string]
     foreach ($part in ($raw -split "[,; ]+")) {
-        $token = $part.Trim().TrimEnd(":").ToUpperInvariant()
+        $token = $part.Trim().TrimEnd(":\/").ToUpperInvariant()
         if ([string]::IsNullOrWhiteSpace($token)) { continue }
         if ($token -in @("A", "ALL", "TODOS", "TOUT", "TOUS", "TOATE", "ALLE")) {
             foreach ($row in $ValidRows) { if (-not $selected.Contains($row.Letra)) { $selected.Add($row.Letra) } }

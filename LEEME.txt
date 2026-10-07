@@ -26,8 +26,9 @@ Normal flow:
 3. Use option 1 for the searchable HTML command library, or option 3 for quick console copy.
 4. Use option 4 to service install.wim with the assistant.
 5. Use option 5 to create the Windows 11 USB.
-6. Use option 6 to copy install.* to one or several valid USB targets.
-7. Use option 7 to copy boot.* to one or several valid USB targets.
+6. Use option 6 to create a custom Windows 11 ISO.
+7. Use option 7 to copy install.* to one or several valid USB targets.
+8. Use option 8 to copy boot.* to one or several valid USB targets.
 
 Warning:
 Destructive USB actions require typed confirmation before a disk is erased.

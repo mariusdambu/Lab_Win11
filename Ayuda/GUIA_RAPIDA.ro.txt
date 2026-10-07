@@ -7,7 +7,7 @@ C:\Lab_Win11\start_lab.cmd
 
 Limba: ENTER sau 1 Engleza, 2 Spaniola, 3 Franceza, 4 Romana, 5 Germana
 
-Cel mai util: optiunea 1 HTML, optiunea 3 copiere consola, optiunea 4 asistent install.wim, optiunea 5 creare USB, optiunea 6 copiere install.* pe USB, optiunea 7 copiere boot.* pe USB.
+Cel mai util: optiunea 1 HTML, optiunea 3 copiere consola, optiunea 4 asistent install.wim, optiunea 5 creare USB, optiunea 6 creare ISO Windows 11 personalizata, optiunea 7 copiere install.* pe USB, optiunea 8 copiere boot.* pe USB.
 
 Foldere: images doar boot.* si install.* (.wim/.esd/.swm); ISOs doar .iso; Drivers; packages; offline.
 

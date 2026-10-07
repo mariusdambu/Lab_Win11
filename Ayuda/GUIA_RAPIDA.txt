@@ -5,10 +5,10 @@ Abre:
 C:\Lab_Win11\start_lab.cmd
 
 Idioma:
-- ENTER o 1: English
-- 2: Espanol
-- 3: Francais
-- 4: Romana
+- INTRO o 1: Inglés
+- 2: Español
+- 3: Francés
+- 4: Rumano
 - 5: Deutsch
 
 Lo mas comodo:
@@ -17,8 +17,9 @@ Lo mas comodo:
 - Opcion 3: copiador de comandos desde consola.
 - Opcion 4: asistente seguro para modificar install.wim.
 - Opcion 5: crear USB Windows 11 con seleccion de disco.
-- Opcion 6: copiar install.* a una o varias unidades.
-- Opcion 7: copiar boot.* a una o varias unidades.
+- Opcion 6: crear una ISO personalizada de Windows 11.
+- Opcion 7: copiar install.* a una o varias unidades.
+- Opcion 8: copiar boot.* a una o varias unidades.
 
 Carpetas de trabajo:
 - C:\Lab_Win11\Trabajo\images  -> solo boot.* e install.* (.wim/.esd/.swm)

@@ -5,9 +5,9 @@ Ouvrir:
 
 C:\Lab_Win11\start_lab.cmd
 
-Langue: ENTREE ou 1 Anglais, 2 Espagnol, 3 Francais, 4 Roumain, 5 Allemand
+Langue: ENTRÉE ou 1 Anglais, 2 Espagnol, 3 Francais, 4 Roumain, 5 Allemand
 
-Le plus utile: option 1 HTML, option 3 copie console, option 4 assistant install.wim, option 5 creer USB, option 6 copier install.* vers USB, option 7 copier boot.* vers USB.
+Le plus utile: option 1 HTML, option 3 copie console, option 4 assistant install.wim, option 5 creer USB, option 6 creer une ISO Windows 11 personnalisee, option 7 copier install.* vers USB, option 8 copier boot.* vers USB.
 
 Dossiers: images seulement boot.* et install.* (.wim/.esd/.swm); ISOs seulement .iso; Drivers; packages; offline.
 

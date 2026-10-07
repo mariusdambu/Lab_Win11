@@ -159,7 +159,7 @@ Add-LabTranslations @{
         SourceMountedIso = "ISO montada"
         SourceLabImages = "Trabajo\images"
         BootSelectionTitle = "Origenes boot.wim disponibles:"
-        BootSelectionPrompt = "Opcion boot (ENTER = {0})"
+        BootSelectionPrompt = "Opcion de arranque (INTRO = {0})"
         BootSelectionInvalid = "Opcion boot no valida."
         BootCopiesAs = "se copia como sources\boot.wim"
         SwmMissing = "Hay SWM en {0}, pero falta install.swm. Deben estar install.swm, install2.swm, etc."
@@ -184,7 +184,7 @@ Add-LabTranslations @{
         CleanManualTitle = "Windows sigue sin poder limpiar el USB automaticamente."
         CleanManualHelp1 = "Puedes desconectar/conectar el USB o limpiarlo manualmente con Administracion de discos/DiskPart."
         CleanManualHelp2 = "No cierres esta ventana. Cuando el USB este preparado, vuelve aqui."
-        CleanManualPrompt = "Pulsa ENTER para comprobar el USB y continuar"
+        CleanManualPrompt = "Pulsa INTRO para comprobar el USB y continuar"
         CleaningDisk = "Limpiando disco {0}..."
         StateAfterClean = "Estado tras clean: {0}"
         InitGpt = "Inicializando disco {0} como GPT para UEFI..."
@@ -265,7 +265,7 @@ Add-LabTranslations @{
         SourceMountedIso = "ISO montee"
         SourceLabImages = "Trabajo\images"
         BootSelectionTitle = "Sources boot.wim disponibles:"
-        BootSelectionPrompt = "Option boot (ENTREE = {0})"
+        BootSelectionPrompt = "Option de démarrage (ENTRÉE = {0})"
         BootSelectionInvalid = "Option boot invalide."
         BootCopiesAs = "copie comme sources\boot.wim"
         SwmMissing = "Il y a du SWM dans {0}, mais install.swm manque. Les fichiers doivent etre install.swm, install2.swm, etc."
@@ -290,7 +290,7 @@ Add-LabTranslations @{
         CleanManualTitle = "Windows ne peut toujours pas nettoyer la cle USB automatiquement."
         CleanManualHelp1 = "Vous pouvez debrancher/rebrancher la cle USB ou la nettoyer manuellement avec Gestion des disques/DiskPart."
         CleanManualHelp2 = "Ne fermez pas cette fenetre. Quand la cle USB est prete, revenez ici."
-        CleanManualPrompt = "Appuyez sur ENTREE pour verifier la cle USB et continuer"
+        CleanManualPrompt = "Appuyez sur ENTRÉE pour vérifier la clé USB et continuer"
         CleaningDisk = "Nettoyage du disque {0}..."
         StateAfterClean = "Etat apres clean: {0}"
         InitGpt = "Initialisation du disque {0} en GPT pour UEFI..."
@@ -334,7 +334,7 @@ Add-LabTranslations @{
         UsbBootLine = "  Demarrage FAT32: {0}"
         UsbInstallLine = "  Installateur {0}: {1}"
         DismountingIso = "Demontage de l'ISO..."
-        PressEnterExit = "Appuyez sur ENTREE pour quitter"
+        PressEnterExit = "Appuyez sur ENTRÉE pour quitter"
         DiskColNumber = "Numero"
         DiskColName = "Nom"
         DiskColSize = "Taille"
@@ -370,7 +370,7 @@ Add-LabTranslations @{
         SourceMountedIso = "ISO montat"
         SourceLabImages = "Trabajo\images"
         BootSelectionTitle = "Surse boot.wim disponibile:"
-        BootSelectionPrompt = "Optiune boot (ENTER = {0})"
+        BootSelectionPrompt = "Opțiune de pornire (ENTER = {0})"
         BootSelectionInvalid = "Optiune boot nevalida."
         BootCopiesAs = "se copiaza ca sources\boot.wim"
         SwmMissing = "Exista SWM in {0}, dar lipseste install.swm. Trebuie sa fie install.swm, install2.swm, etc."
@@ -395,7 +395,7 @@ Add-LabTranslations @{
         CleanManualTitle = "Windows inca nu poate curata USB-ul automat."
         CleanManualHelp1 = "Poti scoate/reconecta USB-ul sau il poti curata manual cu Disk Management/DiskPart."
         CleanManualHelp2 = "Nu inchide aceasta fereastra. Cand USB-ul este gata, revino aici."
-        CleanManualPrompt = "Apasa ENTER pentru a verifica USB-ul si a continua"
+        CleanManualPrompt = "Apasă ENTER pentru a verifica USB-ul și a continua"
         CleaningDisk = "Curat discul {0}..."
         StateAfterClean = "Stare dupa clean: {0}"
         InitGpt = "Initializez discul {0} ca GPT pentru UEFI..."
@@ -439,7 +439,7 @@ Add-LabTranslations @{
         UsbBootLine = "  Boot FAT32: {0}"
         UsbInstallLine = "  Instalator {0}: {1}"
         DismountingIso = "Demontez ISO..."
-        PressEnterExit = "Apasa ENTER pentru iesire"
+        PressEnterExit = "Apasă ENTER pentru ieșire"
         DiskColNumber = "Numar"
         DiskColName = "Nume"
         DiskColSize = "Dimensiune"
@@ -475,7 +475,7 @@ Add-LabTranslations @{
         SourceMountedIso = "Gemountete ISO"
         SourceLabImages = "Trabajo\images"
         BootSelectionTitle = "Verfuegbare boot.wim Quellen:"
-        BootSelectionPrompt = "Boot-Option (ENTER = {0})"
+        BootSelectionPrompt = "Startoption (EINGABE = {0})"
         BootSelectionInvalid = "Ungueltige Boot-Option."
         BootCopiesAs = "wird als sources\boot.wim kopiert"
         SwmMissing = "In {0} gibt es SWM, aber install.swm fehlt. Es muessen install.swm, install2.swm usw. vorhanden sein."
@@ -500,7 +500,7 @@ Add-LabTranslations @{
         CleanManualTitle = "Windows kann den USB-Datentraeger weiterhin nicht automatisch bereinigen."
         CleanManualHelp1 = "Sie koennen den USB-Datentraeger neu einstecken oder manuell mit Datentraegerverwaltung/DiskPart bereinigen."
         CleanManualHelp2 = "Schliessen Sie dieses Fenster nicht. Wenn der USB-Datentraeger bereit ist, kommen Sie hierher zurueck."
-        CleanManualPrompt = "Druecken Sie ENTER, um den USB-Datentraeger erneut zu pruefen und fortzufahren"
+        CleanManualPrompt = "Druecken Sie EINGABE, um den USB-Datentraeger erneut zu pruefen und fortzufahren"
         CleaningDisk = "Datentraeger {0} wird bereinigt..."
         StateAfterClean = "Status nach clean: {0}"
         InitGpt = "Datentraeger {0} wird als GPT fuer UEFI initialisiert..."
@@ -544,7 +544,7 @@ Add-LabTranslations @{
         UsbBootLine = "  FAT32 Boot: {0}"
         UsbInstallLine = "  {0} Installer: {1}"
         DismountingIso = "ISO wird unmountet..."
-        PressEnterExit = "ENTER druecken zum Beenden"
+        PressEnterExit = "EINGABETASTE druecken zum Beenden"
         DiskColNumber = "Nummer"
         DiskColName = "Name"
         DiskColSize = "Groesse"
@@ -655,7 +655,12 @@ function Select-IsoPath {
         })
     }
 
-    foreach ($iso in @(Get-IsoCandidates | Sort-Object LastWriteTime -Descending)) {
+    $isoCandidates = @(Get-IsoCandidates | Sort-Object LastWriteTime -Descending)
+    if ($isoCandidates.Count -eq 1) {
+        return $isoCandidates[0].FullName
+    }
+
+    foreach ($iso in $isoCandidates) {
         $options.Add([pscustomobject]@{
             Kind = "ISO"
             Value = $iso.FullName
@@ -888,7 +893,9 @@ function Show-DiskTable {
 }
 
 function Get-SelectedDisk {
-    if (-not $PSBoundParameters.ContainsKey("DiskNumber") -or $null -eq $DiskNumber) {
+    param([Nullable[int]]$Number = $DiskNumber)
+
+    if ($null -eq $Number) {
         Write-Section (L "DisksAvailable")
         Show-DiskTable
         $answer = Read-Host (L "DiskNumberPrompt")
@@ -896,12 +903,13 @@ function Get-SelectedDisk {
         if (-not [int]::TryParse($answer, [ref]$parsed)) {
             throw (L "InvalidDiskNumber")
         }
-        $script:DiskNumber = $parsed
+        $Number = $parsed
+        $script:DiskNumber = $Number
     }
 
-    $disk = Get-Disk -Number $DiskNumber -ErrorAction Stop
+    $disk = Get-Disk -Number $Number -ErrorAction Stop
     if ($disk.IsBoot -or $disk.IsSystem) {
-        throw (LF "RefuseSystemDisk" $DiskNumber)
+        throw (LF "RefuseSystemDisk" $Number)
     }
 
     return $disk

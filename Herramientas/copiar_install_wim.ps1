@@ -63,7 +63,7 @@ Add-LabTranslations @{
         CancelNoCopy = "Cancelled. Nothing was copied."
         CopyingTo = "Copying install.* to {0}..."
         CopyDone = "Copy completed."
-        DefaultOne = "ENTER = {0}, "
+        DefaultOne = "ENTER = {0}:, "
         ColNum = "No"
         ColLetter = "Letter"
         ColLabel = "Label"
@@ -118,7 +118,7 @@ Add-LabTranslations @{
         CancelNoCopy = "Cancelado. No he copiado nada."
         CopyingTo = "Copiando install.* a {0}..."
         CopyDone = "Copia completada."
-        DefaultOne = "ENTER = {0}, "
+        DefaultOne = "INTRO = {0}:, "
         ColNum = "Num"
         ColLetter = "Letra"
         ColLabel = "Etiqueta"
@@ -173,7 +173,7 @@ Add-LabTranslations @{
         CancelNoCopy = "Annule. Rien n'a ete copie."
         CopyingTo = "Copie de install.* vers {0}..."
         CopyDone = "Copie terminee."
-        DefaultOne = "ENTREE = {0}, "
+        DefaultOne = "ENTRÉE = {0}:, "
         ColNum = "No"
         ColLetter = "Lettre"
         ColLabel = "Etiquette"
@@ -188,7 +188,7 @@ Add-LabTranslations @{
         CopyConfirmWord = "COPIAZA"
         SwmMissing = "Exista fisiere SWM in {0}, dar lipseste install.swm."
         NoPayload = "Nu gasesc install.wim, install.esd sau install*.swm in {0}"
-        AskCopyInstallFromIso = "Trabajo\images nu contine install.*. Montez un ISO din Trabajo\ISOs si copiez install.* original acum?"
+        AskCopyInstallFromIso = "Trabajo\images nu conține install.*. Montează un ISO din Trabajo\ISOs și copiază install.* original acum?"
         NoIsoFound = "Nu s-au gasit fisiere ISO in {0}."
         ChooseIso = "Alege ISO pentru montare:"
         MountingIso = "Montez ISO: {0}"
@@ -228,7 +228,7 @@ Add-LabTranslations @{
         CancelNoCopy = "Anulat. Nu am copiat nimic."
         CopyingTo = "Copiez install.* in {0}..."
         CopyDone = "Copiere finalizata."
-        DefaultOne = "ENTER = {0}, "
+        DefaultOne = "ENTER = {0}:, "
         ColNum = "Nr"
         ColLetter = "Litera"
         ColLabel = "Eticheta"
@@ -283,7 +283,7 @@ Add-LabTranslations @{
         CancelNoCopy = "Abgebrochen. Es wurde nichts kopiert."
         CopyingTo = "Kopiere install.* nach {0}..."
         CopyDone = "Kopie abgeschlossen."
-        DefaultOne = "ENTER = {0}, "
+        DefaultOne = "EINGABE = {0}:, "
         ColNum = "Nr"
         ColLetter = "Buchstabe"
         ColLabel = "Label"
@@ -437,6 +437,9 @@ function Select-IsoCandidate {
     $isos = @(Get-IsoCandidates)
     if ($isos.Count -eq 0) {
         throw (LF "NoIsoFound" $IsosRoot)
+    }
+    if ($isos.Count -eq 1) {
+        return $isos[0]
     }
 
     Write-LabSection (L "ChooseIso")
@@ -619,7 +622,8 @@ function Get-ExistingInstallFiles {
 function Get-InstallTargetCheck {
     param(
         [object]$Volume,
-        [UInt64]$SourceSize
+        [UInt64]$SourceSize,
+        [object[]]$SourceFiles
     )
 
     $root = "$($Volume.DriveLetter):\"
@@ -630,6 +634,7 @@ function Get-InstallTargetCheck {
     $usableFree = [UInt64]($Volume.SizeRemaining + $existingSize)
     $fileSystem = ([string]$Volume.FileSystem).ToUpperInvariant()
     $driveType = [string]$Volume.DriveType
+    $hasFat32OversizedFile = @($SourceFiles | Where-Object { [UInt64]$_.Length -ge 4GB }).Count -gt 0
 
     $reason = $null
     if ($driveType -eq "CD-ROM") {
@@ -641,7 +646,7 @@ function Get-InstallTargetCheck {
     elseif ([string]::IsNullOrWhiteSpace($fileSystem)) {
         $reason = L "ReasonNoFs"
     }
-    elseif (($fileSystem -eq "FAT32" -or $fileSystem -eq "FAT") -and $SourceSize -ge 4GB) {
+    elseif (($fileSystem -eq "FAT32" -or $fileSystem -eq "FAT") -and $hasFat32OversizedFile) {
         $reason = L "ReasonFat32"
     }
     elseif ($usableFree -lt $SourceSize) {
@@ -658,11 +663,11 @@ function Get-InstallTargetCheck {
 }
 
 function Get-DestinationRows {
-    param([UInt64]$SourceSize)
+    param([UInt64]$SourceSize, [object[]]$SourceFiles)
 
     $index = 1
     foreach ($volume in @(Get-LabVolumeInfo | Sort-Object DriveLetter)) {
-        $check = Get-InstallTargetCheck -Volume $volume -SourceSize $SourceSize
+        $check = Get-InstallTargetCheck -Volume $volume -SourceSize $SourceSize -SourceFiles $SourceFiles
         $appearsRelevant = ($volume.DriveType -eq "Removable" -or $check.HasSources -or $volume.DriveType -eq "CD-ROM")
         if (-not $appearsRelevant) {
             continue
@@ -707,7 +712,7 @@ function Resolve-DestinationSelection {
 
     $selected = New-Object System.Collections.Generic.List[string]
     foreach ($part in ($raw -split "[,; ]+")) {
-        $token = $part.Trim().TrimEnd(":").ToUpperInvariant()
+        $token = $part.Trim().TrimEnd(":\/").ToUpperInvariant()
         if ([string]::IsNullOrWhiteSpace($token)) { continue }
 
         if ($token -in @("A", "ALL", "TODOS", "TOUT", "TOUS", "TOATE", "ALLE")) {
@@ -743,7 +748,7 @@ Write-Host ("  {0}: {1}" -f (L "TypeLabel"), $payload.Type)
 Write-Host ("  {0}: {1}" -f (L "FilesLabel"), $payload.Names)
 Write-Host ("  {0}: {1}" -f (L "TotalSizeLabel"), (Format-Bytes -Bytes $payload.TotalSize))
 
-$destinationRows = @(Get-DestinationRows -SourceSize $payload.TotalSize)
+$destinationRows = @(Get-DestinationRows -SourceSize $payload.TotalSize -SourceFiles @($payload.Files))
 $validRows = @($destinationRows | Where-Object Valido)
 $invalidRows = @($destinationRows | Where-Object { -not $_.Valido })
 
@@ -790,7 +795,7 @@ $targets = foreach ($letter in $letters) {
     $volume = $volumeByLetter[$letter]
     $root = "$letter`:\"
     $sourcesDir = Join-Path $root "sources"
-    $check = Get-InstallTargetCheck -Volume $volume -SourceSize $payload.TotalSize
+    $check = Get-InstallTargetCheck -Volume $volume -SourceSize $payload.TotalSize -SourceFiles @($payload.Files)
     if (-not $check.IsValid) {
         throw (LF "DriveNotValid" $root $check.Reason)
     }

@@ -42,7 +42,7 @@ Dism /Unmount-Image /MountDir:"C:\Lab_Win11\Trabajo\offline" /Commit /CheckInteg
 Dism /Unmount-Image /MountDir:"C:\Lab_Win11\Trabajo\offline" /Discard
 
 
-3) Drivers
+3) Controladores
 ----------
 Dism /Image:"C:\Lab_Win11\Trabajo\offline" /Add-Driver /Driver:"C:\Lab_Win11\Trabajo\Drivers" /Recurse /ForceUnsigned
 
@@ -55,7 +55,7 @@ Dism /Image:"C:\Lab_Win11\Trabajo\offline" /Get-DriverInfo /Driver:oem1.inf
 Dism /Online /Export-Driver /Destination:"C:\Lab_Win11\Trabajo\ExportedDrivers"
 
 
-4) Paquetes y caracteristicas
+4) Paquetes y características
 -----------------------------
 Dism /Image:"C:\Lab_Win11\Trabajo\offline" /Add-Package /PackagePath:"C:\Lab_Win11\Trabajo\packages"
 

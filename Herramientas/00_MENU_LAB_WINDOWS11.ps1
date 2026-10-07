@@ -10,6 +10,7 @@ $env:LAB_WIN11_LANG = $Language
 $ScriptRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
 $LabRoot = Split-Path -Parent $ScriptRoot
 $WorkRoot = Join-Path $LabRoot "Trabajo"
+$OfflineRoot = Join-Path $WorkRoot "offline"
 $HelpRoot = Join-Path $LabRoot "Ayuda"
 
 . (Join-Path $ScriptRoot "Lab-Idioma.ps1")
@@ -43,7 +44,8 @@ $Translations = @{
         NoFiles = "No matching files were found."
         DisksHeader = "Physical disks"
         VolumesHeader = "Volumes"
-        MountsHeader = "DISM mounted images"
+        OfflineCleanupWarning = "A broken or orphaned DISM mount was detected for Trabajo\offline."
+        OfflineCleanupCommand = "Review it and run: dism /Cleanup-Mountpoints"
         TypeImage = "Image"
         TypeIso = "ISO"
         TypePackage = "Package"
@@ -71,7 +73,7 @@ $Translations = @{
         HelpFolder = "Abrir carpeta Ayuda"
         Exit = "Salir"
         Prompt = "Opcion"
-        PressEnter = "Pulsa ENTER para continuar"
+        PressEnter = "Pulsa INTRO para continuar"
         NotFound = "No existe: {0}"
         Invalid = "Opcion no valida."
         Launching = "Lanzando: {0}"
@@ -80,7 +82,8 @@ $Translations = @{
         NoFiles = "No se encontraron archivos."
         DisksHeader = "Discos fisicos"
         VolumesHeader = "Volumenes"
-        MountsHeader = "Imagenes montadas con DISM"
+        OfflineCleanupWarning = "Se detecto un montaje DISM roto o huerfano en Trabajo\offline."
+        OfflineCleanupCommand = "Revisalo y ejecuta: dism /Cleanup-Mountpoints"
         TypeImage = "Imagen"
         TypeIso = "ISO"
         TypePackage = "Package"
@@ -108,7 +111,7 @@ $Translations = @{
         HelpFolder = "Ouvrir le dossier Aide"
         Exit = "Quitter"
         Prompt = "Option"
-        PressEnter = "Appuyez sur ENTREE pour continuer"
+        PressEnter = "Appuyez sur ENTRÉE pour continuer"
         NotFound = "Introuvable: {0}"
         Invalid = "Option invalide."
         Launching = "Lancement: {0}"
@@ -117,7 +120,8 @@ $Translations = @{
         NoFiles = "Aucun fichier correspondant."
         DisksHeader = "Disques physiques"
         VolumesHeader = "Volumes"
-        MountsHeader = "Images montees avec DISM"
+        OfflineCleanupWarning = "Un montage DISM casse ou orphelin a ete detecte dans Trabajo\offline."
+        OfflineCleanupCommand = "Verifiez puis lancez: dism /Cleanup-Mountpoints"
         TypeImage = "Image"
         TypeIso = "ISO"
         TypePackage = "Package"
@@ -145,7 +149,7 @@ $Translations = @{
         HelpFolder = "Deschide folderul Ayuda"
         Exit = "Iesire"
         Prompt = "Optiune"
-        PressEnter = "Apasa ENTER pentru a continua"
+        PressEnter = "Apasă ENTER pentru a continua"
         NotFound = "Nu exista: {0}"
         Invalid = "Optiune invalida."
         Launching = "Pornire: {0}"
@@ -154,7 +158,8 @@ $Translations = @{
         NoFiles = "Nu s-au gasit fisiere."
         DisksHeader = "Discuri fizice"
         VolumesHeader = "Volume"
-        MountsHeader = "Imagini montate cu DISM"
+        OfflineCleanupWarning = "A fost detectata o montare DISM defecta sau orfana in Trabajo\offline."
+        OfflineCleanupCommand = "Verificati si rulati: dism /Cleanup-Mountpoints"
         TypeImage = "Imagine"
         TypeIso = "ISO"
         TypePackage = "Package"
@@ -182,7 +187,7 @@ $Translations = @{
         HelpFolder = "Ordner Ayuda oeffnen"
         Exit = "Beenden"
         Prompt = "Option"
-        PressEnter = "ENTER druecken zum Fortfahren"
+        PressEnter = "EINGABETASTE drücken zum Fortfahren"
         NotFound = "Nicht gefunden: {0}"
         Invalid = "Ungueltige Option."
         Launching = "Starte: {0}"
@@ -191,7 +196,8 @@ $Translations = @{
         NoFiles = "Keine passenden Dateien gefunden."
         DisksHeader = "Physische Datentraeger"
         VolumesHeader = "Volumes"
-        MountsHeader = "Mit DISM gemountete Images"
+        OfflineCleanupWarning = "Ein defekter oder verwaister DISM-Mount wurde in Trabajo\offline erkannt."
+        OfflineCleanupCommand = "Pruefen und ausfuehren: dism /Cleanup-Mountpoints"
         TypeImage = "Image"
         TypeIso = "ISO"
         TypePackage = "Package"
@@ -336,9 +342,58 @@ function Show-DismMounts {
     Pause-Lab
 }
 
+function Test-LabOfflineMountNeedsCleanup {
+    $expectedMountPath = [System.IO.Path]::GetFullPath($OfflineRoot).TrimEnd([char]92)
+    try {
+        $mountedInfo = @(& dism.exe /English /Get-MountedImageInfo 2>&1)
+        $dismExitCode = $LASTEXITCODE
+    }
+    catch {
+        return $false
+    }
+    if ($dismExitCode -ne 0) { return $false }
+
+    $mountedInfoText = $mountedInfo -join [Environment]::NewLine
+    $mountBlocks = [regex]::Split($mountedInfoText, '(?m)(?=^[ \t]*Mount Dir[ \t]*:)')
+    foreach ($block in $mountBlocks) {
+        $mountMatch = [regex]::Match($block, '(?im)^[ \t]*Mount Dir[ \t]*:[ \t]*(.+?)\s*$')
+        if (-not $mountMatch.Success) { continue }
+
+        $mountPath = $mountMatch.Groups[1].Value.Trim()
+        try {
+            $resolvedMountPath = [System.IO.Path]::GetFullPath($mountPath).TrimEnd([char]92)
+        }
+        catch {
+            continue
+        }
+        if (-not $resolvedMountPath.Equals($expectedMountPath, [System.StringComparison]::OrdinalIgnoreCase)) {
+            continue
+        }
+
+        $statusMatch = [regex]::Match($block, '(?im)^[ \t]*Status[ \t]*:[ \t]*(.+?)\s*$')
+        if (-not $statusMatch.Success) { return $true }
+        return ($statusMatch.Groups[1].Value.Trim() -notmatch '^(?i:ok|mounted)$')
+    }
+
+    if (Test-Path -LiteralPath $OfflineRoot -PathType Container) {
+        $placeholders = @(".gitkeep", "README.md", "README.txt", "README_OFFLINE.txt")
+        $remainingItems = @(Get-ChildItem -LiteralPath $OfflineRoot -Force -ErrorAction SilentlyContinue |
+            Where-Object { $_.Name -notin $placeholders })
+        return ($remainingItems.Count -gt 0)
+    }
+
+    return $false
+}
+
 function Show-Menu {
     Clear-Host
     Write-PageTitle (TF "Title" $LabRoot)
+    if ($script:OfflineCleanupNeeded) {
+        Write-Host ""
+        Write-Host (T "OfflineCleanupWarning") -ForegroundColor Yellow
+        Write-Host (T "OfflineCleanupCommand") -ForegroundColor Yellow
+        Write-Host ""
+    }
     Write-MenuSection (T "CategoryHelp")
     Write-Host (" 1. " + (T "HelpHtml"))
     Write-Host (" 2. " + (T "HelpTxt"))
@@ -360,6 +415,8 @@ function Show-Menu {
     Write-Host (" 0. " + (T "Exit"))
     Write-Host ""
 }
+
+$script:OfflineCleanupNeeded = Test-LabOfflineMountNeedsCleanup
 
 do {
     Show-Menu

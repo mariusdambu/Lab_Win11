@@ -40,6 +40,7 @@ Add-LabTranslations @{
         ImageInformation = "Image information"
         ViewInstallIndexes = "View install.wim indexes"
         MountIndexPrompt = "Index to mount"
+        MountIndexPromptDefault = "Index to mount [ENTER = {0} (Windows 11 Pro)]"
         InvalidIndex = "Invalid index."
         InjectDriversQuestion = "Inject {0} INF drivers from Trabajo\Drivers?"
         InjectPackagesQuestion = "Inject {0} packages from Trabajo\packages?"
@@ -83,7 +84,7 @@ Add-LabTranslations @{
         CannotContinueMounted = "Cannot continue because an image is still mounted in {0}."
         ImportBootQuestion = "No boot.wim is ready in Trabajo\images. Copy boot.wim from ISO/media now?"
         BootInfo = "boot.wim information"
-        BootIndexPrompt = "boot.wim index to mount [2]"
+        BootIndexPrompt = "boot.wim index to mount [ENTER = 2]"
         InvalidBootIndex = "Invalid boot.wim index."
         MountBoot = "Mount boot.wim"
         InjectBootDriversQuestion = "Inject {0} INF drivers into boot.wim from Trabajo\Drivers?"
@@ -142,6 +143,7 @@ Add-LabTranslations @{
         ImageInformation = "Informacion de la imagen"
         ViewInstallIndexes = "Ver indices de install.wim"
         MountIndexPrompt = "Indice que quieres montar"
+        MountIndexPromptDefault = "Indice que quieres montar [INTRO = {0} (Windows 11 Pro)]"
         InvalidIndex = "Indice no valido."
         InjectDriversQuestion = "Injectar {0} drivers INF desde Trabajo\Drivers?"
         InjectPackagesQuestion = "Injectar {0} packages desde Trabajo\packages?"
@@ -169,7 +171,7 @@ Add-LabTranslations @{
         Completed = "Terminado"
         MaybeMounted = "La imagen puede seguir montada en {0}."
         ManualCommitDiscard = "Puedes revisar y luego usar Commit o Discard desde el menu de comandos."
-        ManualPromptIntro = "Prompt manual de PowerShell abierto en esta ventana elevada."
+        ManualPromptIntro = "Consola interactiva de PowerShell abierta en esta ventana con permisos elevados."
         ManualPromptExit = "Escribe exit cuando quieras cerrar esta ventana."
         BootWimMissing = "No se encontro boot.wim en {0}. Se omite el paso boot.wim."
         BootNoDrivers = "No se encontraron drivers INF. Aun puedes montar boot.wim para cambios manuales."
@@ -185,7 +187,7 @@ Add-LabTranslations @{
         CannotContinueMounted = "No puedo continuar porque una imagen sigue montada en {0}."
         ImportBootQuestion = "No hay boot.wim listo en Trabajo\images. Copiar boot.wim desde ISO/medio ahora?"
         BootInfo = "Informacion de boot.wim"
-        BootIndexPrompt = "Indice de boot.wim a montar [2]"
+        BootIndexPrompt = "Indice de boot.wim a montar [INTRO = 2]"
         InvalidBootIndex = "Indice de boot.wim no valido."
         MountBoot = "Montar boot.wim"
         InjectBootDriversQuestion = "Injectar {0} drivers INF en boot.wim desde Trabajo\Drivers?"
@@ -244,6 +246,7 @@ Add-LabTranslations @{
         ImageInformation = "Informations de l'image"
         ViewInstallIndexes = "Voir les index de install.wim"
         MountIndexPrompt = "Index a monter"
+        MountIndexPromptDefault = "Index a monter [ENTRÉE = {0} (Windows 11 Pro)]"
         InvalidIndex = "Index invalide."
         InjectDriversQuestion = "Injecter {0} pilotes INF depuis Trabajo\Drivers?"
         InjectPackagesQuestion = "Injecter {0} packages depuis Trabajo\packages?"
@@ -271,7 +274,7 @@ Add-LabTranslations @{
         Completed = "Termine"
         MaybeMounted = "L'image peut encore etre montee dans {0}."
         ManualCommitDiscard = "Vous pouvez verifier puis utiliser Commit ou Discard depuis le menu de commandes."
-        ManualPromptIntro = "Invite PowerShell manuel ouvert dans cette fenetre elevee."
+        ManualPromptIntro = "Console PowerShell interactive ouverte dans cette fenetre avec des privileges eleves."
         ManualPromptExit = "Tapez exit quand vous voulez fermer cette fenetre."
         BootWimMissing = "boot.wim introuvable dans {0}. Etape boot.wim ignoree."
         BootNoDrivers = "Aucun pilote INF trouve. Vous pouvez quand meme monter boot.wim pour des changements manuels."
@@ -287,7 +290,7 @@ Add-LabTranslations @{
         CannotContinueMounted = "Impossible de continuer car une image est encore montee dans {0}."
         ImportBootQuestion = "Aucun boot.wim pret dans Trabajo\images. Copier boot.wim depuis ISO/media maintenant?"
         BootInfo = "Informations de boot.wim"
-        BootIndexPrompt = "Index boot.wim a monter [2]"
+        BootIndexPrompt = "Index boot.wim a monter [ENTRÉE = 2]"
         InvalidBootIndex = "Index boot.wim invalide."
         MountBoot = "Monter boot.wim"
         InjectBootDriversQuestion = "Injecter {0} pilotes INF dans boot.wim depuis Trabajo\Drivers?"
@@ -346,6 +349,7 @@ Add-LabTranslations @{
         ImageInformation = "Informatii imagine"
         ViewInstallIndexes = "Vezi indexurile install.wim"
         MountIndexPrompt = "Indexul de montat"
+        MountIndexPromptDefault = "Indexul de montat [ENTER = {0} (Windows 11 Pro)]"
         InvalidIndex = "Index invalid."
         InjectDriversQuestion = "Injecteaza {0} drivere INF din Trabajo\Drivers?"
         InjectPackagesQuestion = "Injecteaza {0} packages din Trabajo\packages?"
@@ -373,7 +377,7 @@ Add-LabTranslations @{
         Completed = "Terminat"
         MaybeMounted = "Imaginea poate fi inca montata in {0}."
         ManualCommitDiscard = "Poti verifica si apoi folosi Commit sau Discard din meniul de comenzi."
-        ManualPromptIntro = "Prompt PowerShell manual deschis in aceasta fereastra elevata."
+        ManualPromptIntro = "Consola PowerShell interactiva deschisa in aceasta fereastra cu privilegii ridicate."
         ManualPromptExit = "Tasteaza exit cand vrei sa inchizi fereastra."
         BootWimMissing = "boot.wim nu a fost gasit in {0}. Pasul boot.wim este omis."
         BootNoDrivers = "Nu s-au gasit drivere INF. Tot poti monta boot.wim pentru modificari manuale."
@@ -389,7 +393,7 @@ Add-LabTranslations @{
         CannotContinueMounted = "Nu pot continua deoarece o imagine este inca montata in {0}."
         ImportBootQuestion = "Nu exista boot.wim pregatit in Trabajo\images. Copiezi boot.wim din ISO/media acum?"
         BootInfo = "Informatii boot.wim"
-        BootIndexPrompt = "Index boot.wim de montat [2]"
+        BootIndexPrompt = "Index boot.wim de montat [ENTER = 2]"
         InvalidBootIndex = "Index boot.wim invalid."
         MountBoot = "Monteaza boot.wim"
         InjectBootDriversQuestion = "Injecteaza {0} drivere INF in boot.wim din Trabajo\Drivers?"
@@ -448,6 +452,7 @@ Add-LabTranslations @{
         ImageInformation = "Image-Informationen"
         ViewInstallIndexes = "Indexe von install.wim anzeigen"
         MountIndexPrompt = "Zu mountender Index"
+        MountIndexPromptDefault = "Zu mountender Index [EINGABE = {0} (Windows 11 Pro)]"
         InvalidIndex = "Ungueltiger Index."
         InjectDriversQuestion = "{0} INF-Treiber aus Trabajo\Drivers injizieren?"
         InjectPackagesQuestion = "{0} Packages aus Trabajo\packages injizieren?"
@@ -491,7 +496,7 @@ Add-LabTranslations @{
         CannotContinueMounted = "Fortfahren nicht moeglich, weil ein Image noch in {0} gemountet ist."
         ImportBootQuestion = "Kein boot.wim in Trabajo\images bereit. boot.wim jetzt aus ISO/Medium kopieren?"
         BootInfo = "boot.wim-Informationen"
-        BootIndexPrompt = "Zu mountender boot.wim Index [2]"
+        BootIndexPrompt = "Zu mountender boot.wim Index [EINGABE = 2]"
         InvalidBootIndex = "Ungueltiger boot.wim Index."
         MountBoot = "boot.wim mounten"
         InjectBootDriversQuestion = "{0} INF-Treiber aus Trabajo\Drivers in boot.wim injizieren?"
@@ -672,12 +677,19 @@ function Get-MountedInstallMediaCandidates {
 }
 
 function Select-InstallMediaPath {
+    $mountedMedia = @(Get-MountedInstallMediaCandidates)
+    $isoCandidates = @(Get-IsoCandidates)
+
+    if ($mountedMedia.Count -eq 0 -and $isoCandidates.Count -eq 1) {
+        return $isoCandidates[0].FullName
+    }
+
     $options = New-Object System.Collections.Generic.List[object]
-    foreach ($mounted in @(Get-MountedInstallMediaCandidates)) {
+    foreach ($mounted in $mountedMedia) {
         $options.Add($mounted)
     }
 
-    foreach ($iso in @(Get-IsoCandidates)) {
+    foreach ($iso in $isoCandidates) {
         $options.Add([pscustomobject]@{
             Value = $iso.FullName
             Text = (LF "LabIsoText" $iso.FullName (Format-Bytes -Bytes ([UInt64]$iso.Length)))
@@ -694,12 +706,16 @@ function Select-InstallMediaPath {
         Write-Host (L "MountedIsoHint") -ForegroundColor Yellow
 
         $answer = Read-Host (L "MediaPrompt")
+        if ([string]::IsNullOrWhiteSpace($answer)) {
+            return $options[0].Value
+        }
+
         $number = 0
         if ([int]::TryParse($answer, [ref]$number) -and $number -ge 1 -and $number -le $options.Count) {
             return $options[$number - 1].Value
         }
 
-        if (-not [string]::IsNullOrWhiteSpace($answer) -and $answer.Trim() -ne "0") {
+        if ($answer.Trim() -ne "0") {
             return $answer
         }
     }
@@ -1017,12 +1033,56 @@ function Select-ImageFile {
     }
 }
 
-function Get-LabDriverCount {
-    if (-not (Test-Path -LiteralPath $DriversRoot -PathType Container)) {
-        return 0
+function Get-LabDriverSelection {
+    param([ValidateSet("install", "boot")][string]$Target)
+
+    $targetRoot = Join-Path $DriversRoot $Target
+    if (Test-Path -LiteralPath $targetRoot -PathType Container) {
+        $targetFiles = @(Get-ChildItem -LiteralPath $targetRoot -Recurse -File -Filter "*.inf" -ErrorAction SilentlyContinue)
+        if ($targetFiles.Count -gt 0) {
+            return [pscustomobject]@{
+                Path = $targetRoot
+                Count = $targetFiles.Count
+            }
+        }
     }
 
-    return @(Get-ChildItem -LiteralPath $DriversRoot -Recurse -File -Filter "*.inf" -ErrorAction SilentlyContinue).Count
+    $rootFiles = if (Test-Path -LiteralPath $DriversRoot -PathType Container) {
+        @(Get-ChildItem -LiteralPath $DriversRoot -Recurse -File -Filter "*.inf" -ErrorAction SilentlyContinue)
+    } else {
+        @()
+    }
+
+    return [pscustomobject]@{
+        Path = $DriversRoot
+        Count = $rootFiles.Count
+    }
+}
+
+function Get-LabDriverCount {
+    return (Get-LabDriverSelection -Target "boot").Count
+}
+
+function Get-WindowsProIndex {
+    param([string]$ImagePath)
+
+    try {
+        if (-not (Get-Command Get-WindowsImage -ErrorAction SilentlyContinue)) {
+            return $null
+        }
+
+        $proImage = @(Get-WindowsImage -ImagePath $ImagePath -ErrorAction Stop |
+            Where-Object { $_.ImageName -ceq "Windows 11 Pro" } |
+            Select-Object -First 1)
+        if ($proImage.Count -gt 0) {
+            return [int]$proImage[0].ImageIndex
+        }
+    }
+    catch {
+        return $null
+    }
+
+    return $null
 }
 
 function Test-OfflineRootMounted {
@@ -1179,6 +1239,9 @@ function Invoke-BootWimDriverFlow {
         return "SKIPPED"
     }
 
+    $driverSelection = Get-LabDriverSelection -Target "boot"
+    $DriverCount = $driverSelection.Count
+
     Write-Section (L "BootFlowTitle")
 
     $doBootDrivers = $false
@@ -1216,7 +1279,7 @@ function Invoke-BootWimDriverFlow {
         Invoke-DismStep -Title (L "InjectBootDrivers") -Arguments @(
             "/Image:$OfflineRoot",
             "/Add-Driver",
-            "/Driver:$DriversRoot",
+            "/Driver:$($driverSelection.Path)",
             "/Recurse",
             "/ForceUnsigned",
             "/LogPath:$LogPath",
@@ -1292,11 +1355,8 @@ function Invoke-InstallWimFlow {
 
     $selectedImage = Select-ImageFile
     Clear-ImageReadOnlyAttribute -Path $selectedImage
-    $driverCount = if (Test-Path -LiteralPath $DriversRoot -PathType Container) {
-        @(Get-ChildItem -LiteralPath $DriversRoot -Recurse -File -Filter "*.inf" -ErrorAction SilentlyContinue).Count
-    } else {
-        0
-    }
+    $driverSelection = Get-LabDriverSelection -Target "install"
+    $driverCount = $driverSelection.Count
     $packageCount = if (Test-Path -LiteralPath $PackagesRoot -PathType Container) {
         @(Get-ChildItem -LiteralPath $PackagesRoot -Recurse -File -ErrorAction SilentlyContinue | Where-Object { $_.Extension -in @(".cab", ".msu") }).Count
     } else {
@@ -1311,8 +1371,19 @@ function Invoke-InstallWimFlow {
     )
 
     if ($null -eq $Index) {
+        $preferredIndex = Get-WindowsProIndex -ImagePath $selectedImage
         while ($true) {
-            $answer = Read-Host (L "MountIndexPrompt")
+            $prompt = if ($null -ne $preferredIndex) {
+                LF "MountIndexPromptDefault" $preferredIndex
+            } else {
+                L "MountIndexPrompt"
+            }
+            $answer = Read-Host $prompt
+            if ([string]::IsNullOrWhiteSpace($answer) -and $null -ne $preferredIndex) {
+                $Index = [int]$preferredIndex
+                break
+            }
+
             $parsed = 0
             if ([int]::TryParse($answer, [ref]$parsed) -and $parsed -ge 1) {
                 $Index = $parsed
@@ -1338,7 +1409,7 @@ function Invoke-InstallWimFlow {
     Write-Host ("{0,-8}: {1}" -f (L "DismConsoleLog"), $script:DismConsoleLogPath)
     Write-Host ""
 
-    if (-not (Read-YesNo -Question (L "StartNowQuestion") -Default $false)) {
+    if (-not (Read-YesNo -Question (L "StartNowQuestion") -Default $true)) {
         Write-Host (L "Cancelled") -ForegroundColor Yellow
         return "CANCELLED"
     }
@@ -1360,7 +1431,7 @@ function Invoke-InstallWimFlow {
         Invoke-DismStep -Title (L "InjectDrivers") -Arguments @(
             "/Image:$OfflineRoot",
             "/Add-Driver",
-            "/Driver:$DriversRoot",
+            "/Driver:$($driverSelection.Path)",
             "/Recurse",
             "/ForceUnsigned",
             "/LogPath:$LogPath",
@@ -1436,18 +1507,18 @@ function Invoke-InstallWimFlow {
 
     if ($finalAction -eq "SAVE") {
         if ($RunBootAfter) {
-            [void](Invoke-BootContinuation -DriverCount $driverCount -LogPath $LogPath -AskBeforeStart $false)
+            [void](Invoke-BootContinuation -DriverCount (Get-LabDriverCount) -LogPath $LogPath -AskBeforeStart $false)
         }
         elseif ($OfferBootAfter) {
-            [void](Invoke-BootContinuation -DriverCount $driverCount -LogPath $LogPath -AskBeforeStart $true)
+            [void](Invoke-BootContinuation -DriverCount (Get-LabDriverCount) -LogPath $LogPath -AskBeforeStart $true)
         }
         return "SAVE"
     } elseif ($finalAction -eq "DISCARD") {
         if ($RunBootAfter) {
-            [void](Invoke-BootContinuation -DriverCount $driverCount -LogPath $LogPath -AskBeforeStart $false)
+            [void](Invoke-BootContinuation -DriverCount (Get-LabDriverCount) -LogPath $LogPath -AskBeforeStart $false)
         }
         elseif ($OfferBootAfter) {
-            [void](Invoke-BootContinuation -DriverCount $driverCount -LogPath $LogPath -AskBeforeStart $true)
+            [void](Invoke-BootContinuation -DriverCount (Get-LabDriverCount) -LogPath $LogPath -AskBeforeStart $true)
         }
         return "DISCARD"
     } elseif ($finalAction -eq "MOUNTED") {
