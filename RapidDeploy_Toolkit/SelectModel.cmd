@@ -21,12 +21,24 @@ set "EXCLUDE_LIST=boot efi sources support scripts getautopilot hardwareids lab_
 
 :MAIN_MENU
 cls
+if not exist "%SOURCES%\." (
+    echo %C_GRAY%------------------------------------------------------------------------------------%C_RESET%
+    echo   %C_RED%[X] ERROR: Required Windows media folder "sources" was not found.%C_RESET%
+    echo   %C_YELLOW%[!] Check the integrity of this Windows 11 installation media.%C_RESET%
+    echo %C_GRAY%------------------------------------------------------------------------------------%C_RESET%
+    echo.
+    pause
+    exit /b 1
+)
+
 echo %C_GRAY%------------------------------------------------------------------------------------%C_RESET%
 echo  %C_BOLD%%C_WHITE%RAPIDDEPLOY WORKBENCH%C_RESET% %C_GRAY%^|%C_RESET% %C_CYAN%WIM Image Manager%C_RESET%
 echo %C_GRAY%------------------------------------------------------------------------------------%C_RESET%
 echo.
 
 :: 1. Scan available empty folders
+for /f "tokens=1 delims==" %%V in ('set EMPTY_DIR_ 2^>nul') do set "%%V="
+for /f "tokens=1 delims==" %%V in ('set EMPTY_NAME_ 2^>nul') do set "%%V="
 set "EMPTY_COUNT=0"
 for /d %%D in ("%ROOT%*") do (
     set "IS_EXCLUDED="
@@ -74,6 +86,7 @@ echo   %C_CYAN%[3]%C_RESET% Return to Main Menu
 echo.
 echo %C_GRAY%------------------------------------------------------------------------------------%C_RESET%
 
+set "OPT="
 set /p "OPT= >> Select an option [1-3]: "
 
 if "%OPT%"=="1" goto RETURN_IMAGE_MANUALLY
@@ -123,6 +136,7 @@ for /l %%i in (1,1,%EMPTY_COUNT%) do (
 echo.
 echo %C_GRAY%------------------------------------------------------------------------------------%C_RESET%
 :ASK_EMPTY_FOLDER
+set "ECHOICE="
 set /p "ECHOICE= >> Select target folder [1-%EMPTY_COUNT%] or [C]ancel: "
 if /i "%ECHOICE%"=="C" goto MAIN_MENU
 
@@ -162,6 +176,7 @@ if exist "%SOURCES%\%WIM_NAME%" (
     echo   %C_YELLOW%[!] WARNING: An active image already exists in sources.%C_RESET%
     echo   You must return it before activating another model.
     echo.
+    set "CONFIRM="
     set /p "CONFIRM= >> Manage image return now? (Y/N): "
     if /i "!CONFIRM!"=="Y" (
         goto RETURN_IMAGE_MANUALLY
@@ -172,6 +187,8 @@ if exist "%SOURCES%\%WIM_NAME%" (
     )
 )
 
+for /f "tokens=1 delims==" %%V in ('set MODEL_ 2^>nul') do set "%%V="
+for /f "tokens=1 delims==" %%V in ('set NAME_ 2^>nul') do set "%%V="
 set "COUNT=0"
 echo  Available models with ready image:
 echo.
@@ -202,6 +219,7 @@ if %COUNT%==0 (
 echo.
 echo %C_GRAY%------------------------------------------------------------------------------------%C_RESET%
 :ASK_MODEL_SELECTION
+set "CHOICE="
 set /p "CHOICE= >> Enter model number to activate [1-%COUNT%] or [C]ancel: "
 if /i "%CHOICE%"=="C" goto MAIN_MENU
 

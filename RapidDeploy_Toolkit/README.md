@@ -106,3 +106,113 @@ Die Hash-CSV wird im Ordner `HardwareIDs` neben dem Toolkit gespeichert. Sie ent
 Beide Löschfunktionen zielen auf **Datenträger 0**, wie in `scripts\clean_disk0.txt` festgelegt. Die schnelle Löschfunktion fragt nicht nach; die bestätigte Variante verlangt die Eingabe von `ERASE`. Beide führen DiskPart `clean` aus und konvertieren Datenträger 0 zu GPT. `clean` entfernt die Partitionsinformationen; es **überschreibt die Daten nicht sicher und löscht den Datenträger nicht gemäß einem Sanitization-Verfahren**. Prüfen Sie vorab, dass Datenträger 0 tatsächlich gelöscht werden darf, und sichern Sie benötigte Daten. Die Bestätigung ändert das Ziel nicht.
 
 Das Toolkit ist für Windows-OOBE vorgesehen. Die Hash-Erfassung benötigt Windows/OOBE und funktioniert möglicherweise nicht in einer einfachen WinPE-Umgebung. Zeit- und MDM-Funktionen benötigen Netzwerkzugriff, Windows-Dienste und einen passenden Registrierungsstatus.
+
+## Zero-Copy model image switching
+
+Windows Setup expects its active operating-system image at `\sources\install.wim`. In a corporate fleet, different hardware models (for example, HP EliteBook, Lenovo ThinkPad, and Dell Latitude) may need separate WIM images with model-specific drivers and configuration.
+
+`SelectModel.cmd` keeps each model image in a folder at the USB root and uses the native Windows `move` command to exchange it with `sources\install.wim`. When a different model is selected, the current image is returned to its model folder and the selected image is moved into `sources`. Because both paths are on the same USB volume, this is a filesystem move/rename: it does not copy the 8–15 GB image contents. The change is normally near-instant, although actual timing depends on the filesystem and device. Keep the model folders and `sources` on the same volume. FAT32 cannot hold a single file larger than 4 GiB; use the lab's exFAT/NTFS installation partition for full-size WIM files, or split the image when FAT32 is required.
+
+Example layout (the active model's folder is empty while its WIM is in `sources`):
+
+```text
+USB_ROOT:\
+├── sources\
+│   └── install.wim          # Active image consumed by Windows Setup
+├── HP_EliteBook_840_G10\
+│   └── install.wim          # Image waiting for selection
+├── Lenovo_ThinkPad_T14\
+│                            # Empty while this model is active
+├── scripts\                 # Toolkit utilities
+└── menu.cmd                 # OOBE launcher (Shift + F10)
+```
+
+The model-selection menu returns the currently active WIM to its model folder before placing the selected WIM at the standard Setup path. It switches which image Setup sees; it does not duplicate images.
+
+## Sélection des images par modèle sans copie
+
+Le programme d’installation Windows attend l’image active à l’emplacement `\sources\install.wim`. Dans un parc d’entreprise, chaque modèle (HP EliteBook, Lenovo ThinkPad, Dell Latitude, etc.) peut nécessiter une image WIM avec ses propres pilotes et réglages.
+
+`SelectModel.cmd` conserve les images dans des dossiers de modèles à la racine de la clé et utilise la commande Windows native `move` pour échanger l’image avec `sources\install.wim`. Lorsqu’un autre modèle est choisi, l’image active retourne dans son dossier, puis l’image choisie est déplacée vers `sources`. Comme les deux chemins se trouvent sur le même volume USB, le système de fichiers déplace/renomme l’entrée sans recopier les 8 à 15 Go de données. L’opération est généralement presque instantanée, selon le système de fichiers et le périphérique. Les dossiers des modèles et `sources` doivent rester sur le même volume. FAT32 ne peut pas contenir un fichier unique de plus de 4 Gio ; utilisez la partition d’installation exFAT/NTFS du laboratoire pour les grands fichiers WIM, ou fractionnez l’image si FAT32 est nécessaire.
+
+Exemple d’organisation (le dossier du modèle actif est vide tant que son WIM se trouve dans `sources`) :
+
+```text
+USB_ROOT:\
+├── sources\
+│   └── install.wim          # Image active utilisée par Windows Setup
+├── HP_EliteBook_840_G10\
+│   └── install.wim          # Image en attente de sélection
+├── Lenovo_ThinkPad_T14\
+│                            # Vide lorsque ce modèle est actif
+├── scripts\                 # Outils du toolkit
+└── menu.cmd                 # Lanceur OOBE (Maj + F10)
+```
+
+Le menu remet d’abord l’image active dans son dossier de modèle, puis place l’image choisie à l’emplacement standard de Windows Setup. Il change l’image visible par le programme d’installation sans la dupliquer.
+
+## Cambio de imagen por modelo sin copiar datos
+
+El instalador de Windows busca la imagen activa en `\sources\install.wim`. En una flota empresarial, cada modelo (HP EliteBook, Lenovo ThinkPad, Dell Latitude, etc.) puede necesitar una imagen WIM con sus propios controladores y ajustes.
+
+`SelectModel.cmd` guarda las imágenes en carpetas por modelo en la raíz del USB y usa el comando nativo de Windows `move` para intercambiarla con `sources\install.wim`. Al elegir otro modelo, devuelve la imagen activa a su carpeta y mueve la seleccionada a `sources`. Como ambas rutas están en el mismo volumen USB, el sistema de archivos cambia la ubicación/nombre sin copiar los 8–15 GB de contenido. Normalmente es casi instantáneo, aunque depende del sistema de archivos y del dispositivo. Las carpetas de modelos y `sources` deben estar en el mismo volumen. FAT32 no admite un archivo individual superior a 4 GiB; para WIM grandes usa la partición de instalación exFAT/NTFS del laboratorio o divide la imagen si necesitas FAT32.
+
+Ejemplo (la carpeta del modelo activo queda vacía mientras su WIM está en `sources`):
+
+```text
+USB_ROOT:\
+├── sources\
+│   └── install.wim          # Imagen activa que usa Windows Setup
+├── HP_EliteBook_840_G10\
+│   └── install.wim          # Imagen pendiente de selección
+├── Lenovo_ThinkPad_T14\
+│                            # Vacía mientras este modelo está activo
+├── scripts\                 # Utilidades del toolkit
+└── menu.cmd                 # Lanzador de OOBE (Mayús + F10)
+```
+
+El menú devuelve la imagen activa a su carpeta y mueve la elegida a la ruta estándar del instalador. Así cambia la imagen que verá Setup sin duplicar archivos.
+
+## Selectarea imaginii după model fără copiere
+
+Programul de instalare Windows caută imaginea activă la `\sources\install.wim`. Într-o flotă de companie, fiecare model (HP EliteBook, Lenovo ThinkPad, Dell Latitude etc.) poate avea nevoie de o imagine WIM cu drivere și setări proprii.
+
+`SelectModel.cmd` păstrează imaginile în folderele modelelor de la rădăcina stickului și folosește comanda Windows `move` pentru a le schimba cu `sources\install.wim`. La selectarea altui model, imaginea activă revine în folderul ei, iar imaginea selectată este mutată în `sources`. Deoarece ambele căi sunt pe același volum USB, sistemul de fișiere mută sau redenumește intrarea fără să copieze cei 8–15 GB de date. Operația este de obicei aproape instantanee, în funcție de sistemul de fișiere și dispozitiv. Folderele modelelor și `sources` trebuie să rămână pe același volum. FAT32 nu poate stoca un fișier individual mai mare de 4 GiB; folosește partiția de instalare exFAT/NTFS a laboratorului pentru WIM-uri mari sau împarte imaginea dacă este necesar FAT32.
+
+Exemplu (folderul modelului activ este gol cât timp WIM-ul său se află în `sources`):
+
+```text
+USB_ROOT:\
+├── sources\
+│   └── install.wim          # Imaginea activă folosită de Windows Setup
+├── HP_EliteBook_840_G10\
+│   └── install.wim          # Imaginea care așteaptă selecția
+├── Lenovo_ThinkPad_T14\
+│                            # Gol cât timp acest model este activ
+├── scripts\                 # Utilitare toolkit
+└── menu.cmd                 # Lansator OOBE (Shift + F10)
+```
+
+Meniul mută imaginea activă în folderul modelului, apoi mută imaginea selectată la calea standard Windows Setup. Schimbă imaginea folosită de programul de instalare fără să creeze o copie.
+
+## Zero-Copy-Auswahl des Modellabbilds
+
+Windows Setup erwartet das aktive Abbild unter `\sources\install.wim`. In einer heterogenen Unternehmensflotte benötigt jedes Modell (HP EliteBook, Lenovo ThinkPad, Dell Latitude usw.) möglicherweise ein eigenes WIM mit passenden Treibern und Einstellungen.
+
+`SelectModel.cmd` speichert die Abbilder in Modellordnern im Stammverzeichnis des USB-Laufwerks und verwendet den nativen Windows-Befehl `move`, um ein Abbild mit `sources\install.wim` auszutauschen. Bei der Auswahl eines anderen Modells wird das aktive Abbild in seinen Modellordner zurückgelegt und das ausgewählte Abbild nach `sources` verschoben. Da beide Pfade auf demselben USB-Datenträger liegen, verschiebt bzw. benennt das Dateisystem den Eintrag um, ohne die 8–15 GB zu kopieren. Das geht normalerweise nahezu sofort; Dateisystem und Gerät beeinflussen die Dauer. Modellordner und `sources` müssen auf demselben Volume liegen. FAT32 unterstützt keine einzelne Datei über 4 GiB. Verwenden Sie für große WIM-Dateien die exFAT-/NTFS-Installationspartition des Labors oder teilen Sie das Abbild, wenn FAT32 erforderlich ist.
+
+Beispiel (der Ordner des aktiven Modells ist leer, solange dessen WIM in `sources` liegt):
+
+```text
+USB_ROOT:\
+├── sources\
+│   └── install.wim          # Aktives Abbild für Windows Setup
+├── HP_EliteBook_840_G10\
+│   └── install.wim          # Noch nicht ausgewähltes Abbild
+├── Lenovo_ThinkPad_T14\
+│                            # Leer, solange dieses Modell aktiv ist
+├── scripts\                 # Toolkit-Werkzeuge
+└── menu.cmd                 # OOBE-Starter (Umschalt + F10)
+```
+
+Das Menü legt zuerst das aktive Abbild in seinen Modellordner zurück und verschiebt anschließend das gewählte Abbild an den Standardpfad von Windows Setup. So wird das für Setup sichtbare Abbild gewechselt, ohne es zu duplizieren.

@@ -39,3 +39,13 @@ Modulo opcional RapidDeploy_Toolkit:
 - Si solo preparas medios estandar para uso personal/domestico, puedes ignorarlo.
 - Sus opciones de borrado siempre apuntan al Disco 0; revisa la guia antes de usarlas.
 - Guia completa multilingue: RapidDeploy_Toolkit\README.md
+
+Componentes principales:
+- 00_MENU_LAB_WINDOWS11.ps1: panel interactivo multilingüe.
+- Herramientas\Modificar-InstallWim.ps1: mantenimiento DISM de install.wim y boot.wim, controladores por subcarpetas install/boot, paquetes y exportación optimizada.
+- Herramientas\WINDOWS_USBPowerShell.PS1: USB híbrido UEFI/GPT con FAT32 de arranque y exFAT/NTFS para archivos grandes.
+- Herramientas\Crear-ISO-Windows11.ps1: creación de ISO personalizada arrancable mediante oscdimg.
+- Herramientas\copiar_install_wim.ps1 y copiar_boot_wim.ps1: copia directa a USB y división SWM para FAT32.
+- RapidDeploy_Toolkit: módulo opcional para OOBE empresarial, Autopilot/Intune/Entra ID y selección Zero-Copy de WIM por modelo.
+
+La selección Zero-Copy usa SelectModel.cmd para mover install.wim dentro del mismo volumen USB entre sources\install.wim y la carpeta del modelo. No duplica ni vuelve a copiar la imagen de varios GB. La carpeta del modelo activo queda vacía mientras su imagen está en sources. Todas las rutas deben estar en el mismo volumen; FAT32 no admite archivos individuales de más de 4 GiB.

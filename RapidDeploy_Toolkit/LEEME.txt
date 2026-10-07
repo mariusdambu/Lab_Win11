@@ -17,3 +17,9 @@ Las opciones de borrado actuan siempre sobre el Disco 0. La opcion rapida no pid
 La captura del hash requiere Windows/OOBE; puede no funcionar en WinPE basico. Las funciones de hora y MDM necesitan red y el contexto de aprovisionamiento adecuado.
 
 Consulta README.md para la guia completa en EN, ES, FR, RO y DE.
+
+CAMBIO DE IMAGEN WIM POR MODELO (ZERO-COPY)
+Windows Setup busca la imagen activa en sources\install.wim. En flotas con varios modelos, SelectModel.cmd permite conservar un install.wim distinto por modelo (por ejemplo, HP EliteBook, Lenovo ThinkPad o Dell Latitude).
+El menú usa el comando nativo move en el mismo volumen USB: devuelve el WIM activo a su carpeta de modelo y mueve el seleccionado a sources\install.wim. No copia los 8–15 GB; normalmente el cambio es casi instantáneo, según el sistema de archivos y el USB. La carpeta del modelo activo queda vacía mientras su imagen está en sources. Mantén todas las carpetas en el mismo volumen. FAT32 no admite un archivo individual mayor de 4 GiB; usa exFAT/NTFS para WIM grandes o divide la imagen si necesitas FAT32.
+
+Ejemplo: sources\install.wim contiene la imagen activa; HP_EliteBook_840_G10\install.wim espera selección; Lenovo_ThinkPad_T14\ queda vacía cuando ese modelo está activo.

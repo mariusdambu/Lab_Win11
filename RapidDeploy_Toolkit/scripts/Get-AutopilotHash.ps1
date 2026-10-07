@@ -86,7 +86,7 @@ try {
     Write-Host ("  {0,-20}: {1}" -f "Model", $model)
     Write-Host ("  {0,-20}: {1}{2}{3}" -f "Serial Number", $C_CYAN, $rawSerial, $C_RESET)
     if (-not [string]::IsNullOrWhiteSpace($GroupTag)) {
-        Write-Host ("  Group Tag : {0}" -f $GroupTag.Trim())
+        Write-Host ("  {0,-20}: {1}" -f "Group Tag", $GroupTag.Trim())
     }
     Write-Host ("  {0,-20}: {1}" -f "CSV File Path", $csvPath)
     Write-Host ("  {0,-20}: {1} characters" -f "Hash Length", $hardwareHash.Length)

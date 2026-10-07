@@ -18,6 +18,9 @@ set "ROOT=%~dp0"
 set "WIPE_DONE=0"
 
 :MAIN_MENU
+set "OPT="
+set "GCHOICE="
+set "GTAG="
 cls
 echo %C_GRAY%------------------------------------------------------------------------------------%C_RESET%
 echo  %C_BOLD%%C_WHITE%RAPIDDEPLOY WORKBENCH%C_RESET% %C_GRAY%^|%C_RESET% %C_CYAN%OOBE Provisioning Toolkit%C_RESET%
@@ -27,9 +30,9 @@ echo   %C_BOLD%DEPLOYMENT ^& DIAGNOSTICS%C_RESET%                    %C_GRAY%^|%
 echo   %C_CYAN%[1]%C_RESET% Capture Autopilot Hash (Offline)        %C_GRAY%^|%C_RESET%  %C_CYAN%[6]%C_RESET% Show Physical Disks
 echo   %C_CYAN%[2]%C_RESET% Run Autopilot Diagnostics               %C_GRAY%^|%C_RESET%  %C_CYAN%[7]%C_RESET% Open DiskPart Console
 echo   %C_CYAN%[3]%C_RESET% WIM Image Manager (SelectModel)         %C_GRAY%^|%C_RESET%  %C_CYAN%[8]%C_RESET% Open PowerShell Console
-echo   %C_CYAN%[4]%C_RESET% %C_RED%QUICK Wipe Disk 0 (Direct)%C_RESET%              %C_GRAY%^|%C_RESET%  %C_CYAN%[9]%C_RESET% Open Wi-Fi Settings
+echo  %C_GRAY%---------------------------------------------+-------------------------------------%C_RESET%
 echo   %C_BOLD%DISK MANAGEMENT%C_RESET%                             %C_GRAY%^|%C_RESET%  %C_BOLD%CONNECTIVITY ^& INFO%C_RESET%
-echo   %C_CYAN%[4]%C_RESET% Shared-Workstation                     %C_GRAY%^|%C_RESET%   %C_CYAN%[8]%C_RESET% CAD-Engineering
+echo   %C_CYAN%[4]%C_RESET% %C_RED%QUICK Wipe Disk 0 (Direct)%C_RESET%              %C_GRAY%^|%C_RESET%  %C_CYAN%[9]%C_RESET% Open Wi-Fi Settings
 echo   %C_CYAN%[5]%C_RESET% SAFE Wipe Disk 0 (Prompt ERASE)         %C_GRAY%^|%C_RESET%  %C_CYAN%[0]%C_RESET% Show Network / IP Config
 echo                                               %C_GRAY%^|%C_RESET%  %C_CYAN%[S]%C_RESET% Show Serial Number
 echo                                               %C_GRAY%^|%C_RESET%  %C_CYAN%[M]%C_RESET% Trigger MDM Sync
@@ -37,7 +40,6 @@ echo %C_GRAY%-------------------------------------------------------------------
 echo   %C_CYAN%[T]%C_RESET% Sync Time   %C_CYAN%[R]%C_RESET% %C_YELLOW%Restart%C_RESET%   %C_CYAN%[X]%C_RESET% %C_RED%Shutdown%C_RESET%   %C_CYAN%[Q]%C_RESET% Exit to CMD
 echo %C_GRAY%------------------------------------------------------------------------------------%C_RESET%
 
-set "OPT="
 set /p "OPT= >> Select an option: "
 
 if not defined OPT goto MAIN_MENU
@@ -63,6 +65,9 @@ echo   %C_YELLOW%[!] Invalid option.%C_RESET%
 timeout /t 2 >nul
 goto MAIN_MENU
 :CAPTURAR_HWID
+set "OPT="
+set "GCHOICE="
+set "GTAG="
 cls
 echo %C_GRAY%------------------------------------------------------------------------------------%C_RESET%
 echo  %C_BOLD%%C_WHITE%RAPIDDEPLOY WORKBENCH%C_RESET% %C_GRAY%^|%C_RESET% %C_CYAN%Autopilot Group Tag Selection%C_RESET%
@@ -78,8 +83,6 @@ echo   %C_CYAN%[C]%C_RESET% Custom Group Tag (Type manually) %C_GRAY%^|%C_RESET%
 echo %C_GRAY%------------------------------------------------------------------------------------%C_RESET%
 echo.
 
-set "GCHOICE="
-set "GTAG="
 set /p "GCHOICE= >> Select preset [1-8], [C]ustom or press Enter to skip: "
 
 if "%GCHOICE%"=="1" set "GTAG=Standard-Desktop"
@@ -268,7 +271,7 @@ echo %C_GRAY%-------------------------------------------------------------------
 echo  %C_YELLOW%Restarting system immediately...%C_RESET%
 echo %C_GRAY%------------------------------------------------------------------------------------%C_RESET%
 shutdown /r /f /t 0
-exit /b
+exit /b 0
 
 :APAGAR
 cls
@@ -276,7 +279,7 @@ echo %C_GRAY%-------------------------------------------------------------------
 echo  %C_RED%Shutting down system immediately...%C_RESET%
 echo %C_GRAY%------------------------------------------------------------------------------------%C_RESET%
 shutdown /s /f /t 0
-exit /b
+exit /b 0
 
 :SALIR
 cls
