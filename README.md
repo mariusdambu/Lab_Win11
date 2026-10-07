@@ -42,10 +42,23 @@ Windows Setup looks for its active installation image at `sources\install.wim`. 
 
 Keep `sources` and every model folder on the same volume. FAT32 cannot store a single file larger than 4 GiB. Use the lab's exFAT/NTFS installation partition for a full-size WIM, or split the image if FAT32 is required.
 
-Example USB root layout (the active model's folder is empty while its WIM is in `sources`):
+### USB partitions and execution stages
+
+USB media created by `Herramientas/WINDOWS_USBPowerShell.PS1` has two GPT partitions: FAT32 for UEFI boot files, and exFAT or NTFS for Windows installation files. Keep `sources\install.wim`, all model folders, and `SelectModel.cmd` on the **installation partition**. Run `SelectModel.cmd` from that partition so `move` stays within one volume; do not place model WIMs on the FAT32 boot partition.
 
 ```text
-USB_ROOT:\
+USB (GPT)
+├── Partition 1 — FAT32 (boot): EFI\, sources\boot.wim
+└── Partition 2 — exFAT/NTFS (installation): sources\install.wim, model folders, SelectModel.cmd, menu.cmd
+```
+
+Use `SelectModel.cmd` in **WinPE**, during initial Windows Setup and before installing Windows, to switch the installation image. Use `menu.cmd` in **OOBE**, after Windows is installed: press **Shift + F10** to open Command Prompt, then run the menu from the USB installation partition. OOBE tools include Autopilot hardware-hash capture through `Get-AutopilotHash.ps1`, NTP time synchronization, network commands, and diagnostics.
+
+Do not leave `sources\install.wim` empty when you intend to start the standard assisted Windows installer. Setup must find its base image there; return or select the intended WIM before starting the installation wizard.
+Contents of the installation partition root: (the active model's folder is empty while its WIM is in `sources`):
+
+```text
+INSTALL_PARTITION_ROOT:\
 ├── sources\
 │   └── install.wim                 # Active image used by Windows Setup
 ├── HP_EliteBook_840_G10\
@@ -109,10 +122,23 @@ El instalador de Windows busca la imagen activa en `sources\install.wim`. En una
 
 Mantén `sources` y todas las carpetas de modelo en el mismo volumen. FAT32 no admite un archivo individual superior a 4 GiB. Usa la partición de instalación exFAT/NTFS del laboratorio para un WIM completo o divide la imagen si necesitas FAT32.
 
-Ejemplo de la raíz USB (la carpeta del modelo activo queda vacía mientras su WIM está en `sources`):
+### Particiones USB y fases de uso
+
+Los medios creados con `Herramientas/WINDOWS_USBPowerShell.PS1` tienen dos particiones GPT: FAT32 para los archivos de arranque UEFI y exFAT o NTFS para los archivos de instalación de Windows. Mantén `sources\install.wim`, todas las carpetas de modelo y `SelectModel.cmd` en la **partición de instalación**. Ejecuta `SelectModel.cmd` desde esa partición para que `move` opere dentro de un solo volumen; no guardes los WIM de modelo en la partición FAT32 de arranque.
 
 ```text
-USB_ROOT:\
+USB (GPT)
+├── Partición 1 — FAT32 (arranque): EFI\, sources\boot.wim
+└── Partición 2 — exFAT/NTFS (instalación): sources\install.wim, carpetas de modelo, SelectModel.cmd, menu.cmd
+```
+
+Usa `SelectModel.cmd` en **WinPE**, durante el inicio del instalador de Windows y antes de instalar Windows, para cambiar la imagen de instalación. Usa `menu.cmd` en **OOBE**, después de instalar Windows: pulsa **Mayús + F10** para abrir la consola de comandos y ejecuta el menú desde la partición de instalación USB. Las herramientas de OOBE incluyen captura del hash de hardware de Autopilot con `Get-AutopilotHash.ps1`, sincronización horaria NTP, comandos de red y diagnósticos.
+
+No dejes vacío `sources\install.wim` si vas a iniciar el instalador asistido estándar de Windows. El instalador debe encontrar allí la imagen base; devuelve o selecciona el WIM deseado antes de iniciar el asistente de instalación.
+Contenido de la raíz de la partición de instalación: (la carpeta del modelo activo queda vacía mientras su WIM está en `sources`):
+
+```text
+INSTALL_PARTITION_ROOT:\
 ├── sources\
 │   └── install.wim                 # Imagen activa del instalador de Windows
 ├── HP_EliteBook_840_G10\
@@ -176,10 +202,23 @@ Le programme d’installation Windows recherche l’image active dans `sources\i
 
 Conservez `sources` et tous les dossiers de modèles sur le même volume. FAT32 ne peut pas stocker un fichier unique de plus de 4 Gio. Pour un WIM complet, utilisez la partition d’installation exFAT/NTFS du laboratoire ou fractionnez l’image si FAT32 est nécessaire.
 
-Exemple de racine USB (le dossier du modèle actif est vide tant que son WIM se trouve dans `sources`) :
+### Partitions USB et phases d’utilisation
+
+Les supports créés avec `Herramientas/WINDOWS_USBPowerShell.PS1` comportent deux partitions GPT : FAT32 pour les fichiers de démarrage UEFI, et exFAT ou NTFS pour les fichiers d’installation Windows. Gardez `sources\install.wim`, tous les dossiers de modèles et `SelectModel.cmd` sur la **partition d’installation**. Lancez `SelectModel.cmd` depuis cette partition afin que `move` reste sur le même volume ; ne placez pas les WIM des modèles sur la partition de démarrage FAT32.
 
 ```text
-USB_ROOT:\
+Clé USB (GPT)
+├── Partition 1 — FAT32 (démarrage) : EFI\, sources\boot.wim
+└── Partition 2 — exFAT/NTFS (installation) : sources\install.wim, dossiers de modèles, SelectModel.cmd, menu.cmd
+```
+
+Utilisez `SelectModel.cmd` dans **WinPE**, pendant le démarrage initial du programme d’installation Windows et avant l’installation de Windows, pour changer l’image d’installation. Utilisez `menu.cmd` dans **OOBE**, après l’installation de Windows : appuyez sur **Maj + F10** pour ouvrir l’invite de commandes, puis lancez le menu depuis la partition d’installation USB. Les outils OOBE comprennent la capture du hash matériel Autopilot avec `Get-AutopilotHash.ps1`, la synchronisation horaire NTP, des commandes réseau et des diagnostics.
+
+Ne laissez pas `sources\install.wim` vide si vous comptez lancer l’assistant d’installation Windows standard. L’assistant Windows doit y trouver l’image de base ; remettez ou sélectionnez le WIM voulu avant de démarrer l’assistant.
+Contenu de la racine de la partition d’installation : (le dossier du modèle actif est vide tant que son WIM se trouve dans `sources`) :
+
+```text
+INSTALL_PARTITION_ROOT:\
 ├── sources\
 │   └── install.wim                 # Image active utilisée par le programme d’installation Windows
 ├── HP_EliteBook_840_G10\
@@ -223,7 +262,7 @@ Depozitul oficial: [mariusdambu/Lab_Win11](https://github.com/mariusdambu/Lab_Wi
 - `Herramientas/Crear-ISO-Windows11.ps1` — creează imagini ISO personalizate și bootabile cu `oscdimg`.
 - `Herramientas/copiar_install_wim.ps1` — copiază imaginile de instalare pe USB și împarte fișierele WIM în SWM când FAT32 impune acest lucru.
 - `Herramientas/copiar_boot_wim.ps1` — copiază imaginile de pornire pe memorii USB.
-- `RapidDeploy_Toolkit/` — utilitare OOBE opționale pentru aprovizionare pentru companii cu Autopilot, Intune și Entra ID.
+- `RapidDeploy_Toolkit/` — utilitare OOBE opționale pentru aprovizionarea companiilor cu Autopilot, Intune și Entra ID.
 - `Ayuda/` — ghiduri rapide și comenzi gata de copiat.
 - `Trabajo/` — spațiu local pentru imagini ISO, imagini Windows, drivere, pachete, montări și jurnale.
 
@@ -243,10 +282,23 @@ Programul de instalare Windows caută imaginea activă la `sources\install.wim`.
 
 Păstrează `sources` și toate folderele modelelor pe același volum. FAT32 nu poate stoca un singur fișier mai mare de 4 GiB. Pentru un WIM complet, folosește partiția de instalare exFAT/NTFS a laboratorului sau împarte imaginea dacă ai nevoie de FAT32.
 
-Exemplu de structură în rădăcina USB (folderul modelului activ este gol cât timp WIM-ul său se află în `sources`):
+### Partiții USB și etapele de utilizare
+
+Mediile create cu `Herramientas/WINDOWS_USBPowerShell.PS1` au două partiții GPT: FAT32 pentru fișierele de pornire UEFI și exFAT sau NTFS pentru fișierele de instalare Windows. Păstrează `sources\install.wim`, toate folderele modelelor și `SelectModel.cmd` pe **partiția de instalare**. Rulează `SelectModel.cmd` de pe această partiție pentru ca `move` să rămână pe același volum; nu păstra WIM-urile modelelor pe partiția FAT32 de pornire.
 
 ```text
-USB_ROOT:\
+USB (GPT)
+├── Partiția 1 — FAT32 (pornire): EFI\, sources\boot.wim
+└── Partiția 2 — exFAT/NTFS (instalare): sources\install.wim, folderele modelelor, SelectModel.cmd, menu.cmd
+```
+
+Folosește `SelectModel.cmd` în **WinPE**, la pornirea inițială a programului de instalare Windows și înainte de instalarea Windows, pentru a schimba imaginea de instalare. Folosește `menu.cmd` în **OOBE**, după instalarea Windows: apasă **Shift + F10** pentru a deschide linia de comandă, apoi pornește meniul de pe partiția USB de instalare. Instrumentele OOBE includ capturarea hash-ului hardware Autopilot cu `Get-AutopilotHash.ps1`, resincronizarea orei prin NTP, comenzi de rețea și diagnosticare.
+
+Nu lăsa `sources\install.wim` gol dacă vrei să pornești programul standard de instalare asistată a Windows. Programul de instalare trebuie să găsească acolo imaginea de bază; readu sau selectează WIM-ul dorit înainte de a porni expertul de instalare.
+Conținutul rădăcinii partiției de instalare: (folderul modelului activ este gol cât timp WIM-ul său se află în `sources`):
+
+```text
+INSTALL_PARTITION_ROOT:\
 ├── sources\
 │   └── install.wim                 # Imaginea activă folosită de programul de instalare Windows
 ├── HP_EliteBook_840_G10\
@@ -310,10 +362,23 @@ Windows-Installationsprogramm erwartet das aktive Installationsabbild unter `sou
 
 `sources` und alle Modellordner müssen auf demselben Volume liegen. FAT32 kann keine einzelne Datei über 4 GiB speichern. Verwenden Sie für ein vollständiges WIM die exFAT-/NTFS-Installationspartition des Labors oder teilen Sie das Abbild, wenn FAT32 erforderlich ist.
 
-Beispiel für das USB-Stammverzeichnis (der Ordner des aktiven Modells ist leer, solange sein WIM in `sources` liegt):
+### USB-Partitionen und Einsatzphasen
+
+Mit `Herramientas/WINDOWS_USBPowerShell.PS1` erstellte Medien besitzen zwei GPT-Partitionen: FAT32 für UEFI-Startdateien und exFAT oder NTFS für Windows-Installationsdateien. Bewahren Sie `sources\install.wim`, alle Modellordner und `SelectModel.cmd` auf der **Installationspartition** auf. Starten Sie `SelectModel.cmd` von dieser Partition, damit `move` auf demselben Volume bleibt; speichern Sie die Modell-WIMs nicht auf der FAT32-Startpartition.
 
 ```text
-USB_ROOT:\
+USB (GPT)
+├── Partition 1 — FAT32 (Start): EFI\, sources\boot.wim
+└── Partition 2 — exFAT/NTFS (Installation): sources\install.wim, Modellordner, SelectModel.cmd, menu.cmd
+```
+
+Verwenden Sie `SelectModel.cmd` in **WinPE** während des anfänglichen Starts des Windows-Installationsprogramms und vor der Windows-Installation, um das Installationsabbild zu wechseln. Verwenden Sie `menu.cmd` in **OOBE** nach der Windows-Installation: Öffnen Sie mit **Umschalt + F10** die Eingabeaufforderung und starten Sie das Menü von der USB-Installationspartition. Zu den OOBE-Werkzeugen gehören die Autopilot-Hardwarehash-Erfassung mit `Get-AutopilotHash.ps1`, NTP-Zeitsynchronisierung, Netzwerkbefehle und Diagnosen.
+
+Lassen Sie `sources\install.wim` nicht leer, wenn Sie das normale geführte Windows-Installationsprogramm starten möchten. Das Installationsprogramm muss dort das Basisabbild finden; legen Sie das gewünschte WIM zurück oder wählen Sie es aus, bevor Sie den Installationsassistenten starten.
+Inhalt des Stammverzeichnisses der Installationspartition: (der Ordner des aktiven Modells ist leer, solange sein WIM in `sources` liegt):
+
+```text
+INSTALL_PARTITION_ROOT:\
 ├── sources\
 │   └── install.wim                 # Aktives Abbild für das Windows-Installationsprogramm
 ├── HP_EliteBook_840_G10\

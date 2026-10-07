@@ -49,3 +49,8 @@ Componentes principales:
 - RapidDeploy_Toolkit: módulo opcional para OOBE empresarial, Autopilot/Intune/Entra ID y selección Zero-Copy de WIM por modelo.
 
 La selección Zero-Copy usa SelectModel.cmd para mover install.wim dentro del mismo volumen USB entre sources\install.wim y la carpeta del modelo. No duplica ni vuelve a copiar la imagen de varios GB. La carpeta del modelo activo queda vacía mientras su imagen está en sources. Todas las rutas deben estar en el mismo volumen; FAT32 no admite archivos individuales de más de 4 GiB.
+
+USB HIBRIDO Y FASES WINPE/OOBE
+WINDOWS_USBPowerShell.PS1 crea dos particiones GPT: FAT32 para el arranque UEFI y exFAT/NTFS para los archivos de instalación. SelectModel.cmd y las carpetas de modelo deben estar en esta segunda partición, junto a sources\install.wim. Ejecuta allí SelectModel.cmd para que move cambie la imagen dentro del mismo volumen.
+Usa SelectModel.cmd en WinPE, antes de instalar Windows. Tras la instalación, usa menu.cmd en OOBE (Mayús + F10) para capturar el hash de Autopilot con Get-AutopilotHash.ps1, sincronizar la hora NTP, ejecutar comandos de red y consultar diagnósticos.
+No dejes sources\install.wim vacío si vas a iniciar el instalador asistido estándar de Windows: Setup necesita encontrar allí una imagen base.

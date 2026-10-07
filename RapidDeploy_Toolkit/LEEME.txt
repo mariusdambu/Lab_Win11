@@ -4,7 +4,7 @@ RAPIDDEPLOY TOOLKIT - GUIA RAPIDA
 Este modulo es 100% opcional. Esta pensado para OOBE y para aprovisionamiento empresarial con Windows Autopilot, Intune y Entra ID. Si solo preparas una ISO o un USB de Windows 11 para uso domestico, puedes ignorarlo.
 
 USO DESDE OOBE
-1. Copia el contenido integro de RapidDeploy_Toolkit directamente a la raiz del USB o de otra particion accesible desde OOBE. menu.cmd debe quedar en esa raiz.
+1. Copia el contenido integro de RapidDeploy_Toolkit directamente a la raiz de la particion de instalacion exFAT/NTFS o de otra particion accesible desde OOBE. menu.cmd debe quedar en esa raiz.
 2. En la pantalla de configuracion inicial de Windows pulsa Mayus + F10 para abrir la consola.
 3. Cambia a la unidad del USB (por ejemplo, E:) y ejecuta menu.cmd.
 4. El menu permite capturar el hardware hash con Group Tag, ver diagnosticos Autopilot, resincronizar hora, solicitar sincronizacion MDM y usar otras herramientas de despliegue.
@@ -23,3 +23,8 @@ Windows Setup busca la imagen activa en sources\install.wim. En flotas con vario
 El menú usa el comando nativo move en el mismo volumen USB: devuelve el WIM activo a su carpeta de modelo y mueve el seleccionado a sources\install.wim. No copia los 8–15 GB; normalmente el cambio es casi instantáneo, según el sistema de archivos y el USB. La carpeta del modelo activo queda vacía mientras su imagen está en sources. Mantén todas las carpetas en el mismo volumen. FAT32 no admite un archivo individual mayor de 4 GiB; usa exFAT/NTFS para WIM grandes o divide la imagen si necesitas FAT32.
 
 Ejemplo: sources\install.wim contiene la imagen activa; HP_EliteBook_840_G10\install.wim espera selección; Lenovo_ThinkPad_T14\ queda vacía cuando ese modelo está activo.
+
+USB HIBRIDO Y FASES DE USO
+El USB creado con WINDOWS_USBPowerShell.PS1 tiene dos particiones GPT: FAT32 para el arranque UEFI y exFAT/NTFS para los archivos de instalación. Guarda sources\install.wim, las carpetas de modelo y SelectModel.cmd en la partición exFAT/NTFS y ejecuta allí el selector para que move opere en el mismo volumen.
+Antes de instalar Windows, usa SelectModel.cmd en WinPE para elegir la imagen. Una vez instalado Windows, usa menu.cmd en OOBE (Mayús + F10) para capturar el hash de Autopilot con Get-AutopilotHash.ps1, sincronizar la hora NTP, ejecutar comandos de red y consultar diagnósticos.
+No dejes sources\install.wim vacío si vas a iniciar el instalador asistido estándar de Windows: necesita encontrar allí una imagen base.
