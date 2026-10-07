@@ -32,3 +32,10 @@ Normal flow:
 
 Warning:
 Destructive USB actions require typed confirmation before a disk is erased.
+
+Modulo opcional RapidDeploy_Toolkit:
+- Es 100% opcional y esta destinado a OOBE y aprovisionamiento empresarial con Autopilot, Intune y Entra ID.
+- Copia su contenido integro a la raiz de un USB accesible desde OOBE y ejecuta menu.cmd desde la consola abierta con Mayus + F10.
+- Si solo preparas medios estandar para uso personal/domestico, puedes ignorarlo.
+- Sus opciones de borrado siempre apuntan al Disco 0; revisa la guia antes de usarlas.
+- Guia completa multilingue: RapidDeploy_Toolkit\README.md

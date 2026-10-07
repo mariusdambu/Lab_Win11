@@ -46,3 +46,9 @@ Use this lab from:
 ```text
 folder where the ZIP was extracted
 ```
+
+## Optional enterprise OOBE toolkit
+
+`RapidDeploy_Toolkit` is a portable, **100% optional** set of OOBE tools for enterprise Windows Autopilot, Intune and Entra ID provisioning. It supports hardware-hash capture with Group Tags, local diagnostics, time resynchronization and a manual MDM check-in. Copy its contents to the root of an OOBE-accessible USB/partition and run `menu.cmd` from Command Prompt opened with **Shift + F10**. Personal/home Windows 11 ISO or USB preparation does not require it.
+
+Read [`RapidDeploy_Toolkit/README.md`](RapidDeploy_Toolkit/README.md) before use. Its disk-wipe actions are destructive and always target Disk 0; the confirmation prompt does not change the target.

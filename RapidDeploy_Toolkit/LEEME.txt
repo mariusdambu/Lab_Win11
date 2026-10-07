@@ -1,0 +1,19 @@
+RAPIDDEPLOY TOOLKIT - GUIA RAPIDA
+=================================
+
+Este modulo es 100% opcional. Esta pensado para OOBE y para aprovisionamiento empresarial con Windows Autopilot, Intune y Entra ID. Si solo preparas una ISO o un USB de Windows 11 para uso domestico, puedes ignorarlo.
+
+USO DESDE OOBE
+1. Copia el contenido integro de RapidDeploy_Toolkit directamente a la raiz del USB o de otra particion accesible desde OOBE. menu.cmd debe quedar en esa raiz.
+2. En la pantalla de configuracion inicial de Windows pulsa Mayus + F10 para abrir la consola.
+3. Cambia a la unidad del USB (por ejemplo, E:) y ejecuta menu.cmd.
+4. El menu permite capturar el hardware hash con Group Tag, ver diagnosticos Autopilot, resincronizar hora, solicitar sincronizacion MDM y usar otras herramientas de despliegue.
+
+La captura consulta MDM_DevDetail_Ext01 y guarda un CSV en HardwareIDs junto al toolkit. El CSV incluye el numero de serie y el hash del dispositivo: protegelo como dato sensible.
+
+BORRADO DE DISCO: PRECAUCION
+Las opciones de borrado actuan siempre sobre el Disco 0. La opcion rapida no pide confirmacion; la opcion con confirmacion exige escribir ERASE. Ambas ejecutan DiskPart clean y convierten el disco a GPT. clean elimina la informacion de particiones, pero no sobrescribe de forma segura los datos. Verifica que el Disco 0 sea el destino correcto y respalda los datos antes de continuar.
+
+La captura del hash requiere Windows/OOBE; puede no funcionar en WinPE basico. Las funciones de hora y MDM necesitan red y el contexto de aprovisionamiento adecuado.
+
+Consulta README.md para la guia completa en EN, ES, FR, RO y DE.
