@@ -1,4 +1,4 @@
-KLARTEXT-BEFEHLE - WIN11 LAB
+﻿KLARTEXT-BEFEHLE - WIN11 LAB
 ============================
 
 Arbeitsordner:

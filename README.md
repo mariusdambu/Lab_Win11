@@ -1,4 +1,4 @@
-[ English ](#english) | [ Español ](#español) | [ Français ](#français) | [ Română ](#română) | [ Deutsch ](#deutsch)
+﻿[ English ](#english) | [ Español ](#español) | [ Français ](#français) | [ Română ](#română) | [ Deutsch ](#deutsch)
 
 ## English
 

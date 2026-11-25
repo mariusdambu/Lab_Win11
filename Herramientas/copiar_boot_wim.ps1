@@ -749,10 +749,10 @@ try {
     })
 
     Write-LabStepHeader -Step 3 -TotalSteps 4 -Title (L "StepConfirmPlan")
-    $planItems = New-Object System.Collections.Generic.List[object]
+    $planItems = [System.Collections.Generic.List[object]]::new()
     $planItems.Add(@{ Label = (L "FilesLabel"); Value = ("{0} ({1}, {2})" -f $payload.Names, $payload.Type, (Format-Bytes -Bytes $payload.TotalSize)); Color = [ConsoleColor]::White })
     foreach ($target in $targets) {
-        $actions = New-Object System.Collections.Generic.List[string]
+        $actions = [System.Collections.Generic.List[string]]::new()
         if ($target.NeedsSources) { $actions.Add((L "CreateSources")) }
         if (@($target.ExistingFiles).Count -gt 0) {
             $actions.Add((LF "ReplaceExisting" ((@($target.ExistingFiles) | ForEach-Object Name) -join ", ")))
@@ -760,11 +760,11 @@ try {
         $actions.Add((LF "WillCopy" $payload.Names))
         $planItems.Add(@{
             Label = ("{0}sources [{1}]" -f $target.Root, $target.UsbDisplay)
-            Value = ($actions -join " | ")
+            Value = ($actions.ToArray() -join " | ")
             Color = $(if ($target.IsUsb2) { [ConsoleColor]::Yellow } else { [ConsoleColor]::Green })
         })
     }
-    Write-LabStatusPanel -Title (L "CopyPlan") -Items $planItems
+    Write-LabStatusPanel -Title (L "CopyPlan") -Items ($planItems.ToArray())
 
     $confirmWord = L "CopyConfirmWord"
     $confirmation = Read-Host (LF "ConfirmCopy" $confirmWord)

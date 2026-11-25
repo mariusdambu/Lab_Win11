@@ -1,4 +1,4 @@
-RAPIDDEPLOY TOOLKIT - GUIA RAPIDA
+﻿RAPIDDEPLOY TOOLKIT - GUIA RAPIDA
 =================================
 
 Este modulo es 100% opcional. Esta pensado para OOBE y para aprovisionamiento empresarial con Windows Autopilot, Intune y Entra ID. Si solo preparas una ISO o un USB de Windows 11 para uso domestico, puedes ignorarlo.

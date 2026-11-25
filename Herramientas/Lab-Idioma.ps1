@@ -437,8 +437,29 @@ public static class LabConsoleNative
     [DllImport("user32.dll", CharSet = CharSet.Unicode)]
     private static extern bool GetMonitorInfoW(IntPtr hMonitor, ref MONITORINFO lpmi);
 
+    [DllImport("user32.dll", CharSet = CharSet.Unicode)]
+    private static extern int GetClassNameW(IntPtr hWnd, System.Text.StringBuilder lpClassName, int nMaxCount);
+
     [DllImport("user32.dll", SetLastError = true)]
     private static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, uint uFlags);
+
+    public static bool IsConPtyOrTerminalHost()
+    {
+        IntPtr hwnd = GetConsoleWindow();
+        if (hwnd == IntPtr.Zero) return true;
+        if (!IsWindowVisible(hwnd)) return true;
+
+        System.Text.StringBuilder sb = new System.Text.StringBuilder(64);
+        if (GetClassNameW(hwnd, sb, sb.Capacity) > 0)
+        {
+            string cls = sb.ToString();
+            if (cls.IndexOf("PseudoConsole", StringComparison.OrdinalIgnoreCase) >= 0)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
 
     public static bool TryResizeVirtualTerminal(int cols, int rows)
     {
@@ -561,6 +582,15 @@ function Set-LabConsoleWindowSize {
             $targetBufH = [Math]::Min(9999, [Math]::Max([Math]::Max([int]$curBuf.Height, $BufferHeight), $targetHeight))
 
             if ([int]$curWin.Width -ne $targetWidth -or [int]$curWin.Height -ne $targetHeight -or [int]$curBuf.Width -ne $targetBufW) {
+                try {
+                    $curPos = $rawUi.WindowPosition
+                    if ($null -ne $curPos -and [int]$curPos.X -gt 0) {
+                        $rawUi.WindowPosition = New-Object System.Management.Automation.Host.Coordinates(0, [int]$curPos.Y)
+                    }
+                }
+                catch {
+                }
+
                 if ([int]$curWin.Width -gt $targetBufW -or [int]$curWin.Height -gt $targetBufH) {
                     $shrinkW = [Math]::Min([int]$curWin.Width, $targetBufW)
                     $shrinkH = [Math]::Min([int]$curWin.Height, $targetBufH)
@@ -594,11 +624,11 @@ function Set-LabConsoleWindowSize {
     try {
         Initialize-LabConsoleNative
         if ($null -ne ("LabConsoleNative" -as [type])) {
-            $isWindowsTerminal = (-not [string]::IsNullOrWhiteSpace($env:WT_SESSION))
-            if ($isWindowsTerminal -or (-not $resizedViaRawUi)) {
+            $isTerminalOrConPty = (-not [string]::IsNullOrWhiteSpace($env:WT_SESSION)) -or [LabConsoleNative]::IsConPtyOrTerminalHost()
+            if ($isTerminalOrConPty -or (-not $resizedViaRawUi)) {
                 [void][LabConsoleNative]::TryResizeVirtualTerminal($targetWidth, $targetHeight)
             }
-            elseif (-not $isWindowsTerminal) {
+            else {
                 [LabConsoleNative]::EnsureWindowWithinWorkArea()
             }
         }
@@ -727,39 +757,77 @@ function Write-LabStatusPanel {
         [ConsoleColor]$BorderColor = [ConsoleColor]::DarkGray
     )
 
-    $rows = New-Object System.Collections.Generic.List[object]
+    $rows = [System.Collections.Generic.List[object]]::new()
+    $tmpEntries = [System.Collections.Generic.List[object]]::new()
+    $handledAsDict = $false
 
-    if ($Items -is [System.Collections.IDictionary]) {
-        foreach ($key in $Items.Keys) {
-            $val = $Items[$key]
-            $rows.Add([pscustomobject]@{
-                Label = [string]$key
-                Value = if ($null -eq $val) { "" } else { [string]$val }
-                Color = [ConsoleColor]::Gray
-            })
+    $rawItems = $Items
+    if ($null -ne $rawItems -and $rawItems -is [psobject]) {
+        $rawItems = $rawItems.PSObject.BaseObject
+    }
+
+    if ($null -eq $rawItems) {
+        $handledAsDict = $true
+    }
+    elseif ($rawItems -is [System.Collections.IDictionary]) {
+        if ($rawItems.Contains("Label") -and $rawItems.Contains("Value")) {
+            $tmpEntries.Add($rawItems)
+        }
+        else {
+            $handledAsDict = $true
+            foreach ($key in $rawItems.Keys) {
+                $val = $rawItems[$key]
+                $rows.Add([pscustomobject]@{
+                    Label = [string]$key
+                    Value = if ($null -eq $val) { "" } else { [string]$val }
+                    Color = [ConsoleColor]::Gray
+                })
+            }
+        }
+    }
+    elseif (($rawItems -is [System.Collections.IEnumerable]) -and -not ($rawItems -is [string])) {
+        $enumerator = ([System.Collections.IEnumerable]$rawItems).GetEnumerator()
+        while ($enumerator.MoveNext()) {
+            $tmpEntries.Add($enumerator.Current)
         }
     }
     else {
-        foreach ($entry in $Items) {
+        $tmpEntries.Add($rawItems)
+    }
+
+    if (-not $handledAsDict) {
+        for ($idx = 0; $idx -lt $tmpEntries.Count; $idx++) {
+            $entry = $tmpEntries[$idx]
             if ($null -eq $entry) { continue }
-            if ($entry -is [System.Collections.IDictionary]) {
-                $lbl = if ($entry.Contains("Label")) { [string]$entry["Label"] } elseif ($entry.Contains("Key")) { [string]$entry["Key"] } else { "" }
-                $val = if ($entry.Contains("Value")) { [string]$entry["Value"] } else { "" }
-                $clr = if ($entry.Contains("Color") -and $null -ne $entry["Color"]) { [ConsoleColor]$entry["Color"] } else { [ConsoleColor]::Gray }
+            $rawEntry = $entry
+            if ($rawEntry -is [psobject] -and $rawEntry.PSObject.BaseObject -is [System.Collections.IDictionary]) {
+                $rawEntry = $rawEntry.PSObject.BaseObject
+            }
+            if ($rawEntry -is [System.Collections.IDictionary]) {
+                $lbl = if ($rawEntry.Contains("Label") -and $null -ne $rawEntry["Label"]) { [string]$rawEntry["Label"] } elseif ($rawEntry.Contains("Key") -and $null -ne $rawEntry["Key"]) { [string]$rawEntry["Key"] } else { "" }
+                $val = if ($rawEntry.Contains("Value") -and $null -ne $rawEntry["Value"]) { [string]$rawEntry["Value"] } else { "" }
+                $clr = [ConsoleColor]::Gray
+                if ($rawEntry.Contains("Color") -and $null -ne $rawEntry["Color"]) {
+                    try { $clr = [ConsoleColor]$rawEntry["Color"] } catch { $clr = [ConsoleColor]::Gray }
+                }
                 $rows.Add([pscustomobject]@{ Label = $lbl; Value = $val; Color = $clr })
             }
             else {
                 $lblProp = $entry.PSObject.Properties["Label"]
                 $valProp = $entry.PSObject.Properties["Value"]
                 $clrProp = $entry.PSObject.Properties["Color"]
-                $lbl = if ($lblProp) { [string]$lblProp.Value } else { "" }
+                $lbl = if ($lblProp -and $null -ne $lblProp.Value) { [string]$lblProp.Value } else { "" }
                 $val = if ($valProp -and $null -ne $valProp.Value) { [string]$valProp.Value } else { "" }
-                $clr = if ($clrProp -and $null -ne $clrProp.Value) { [ConsoleColor]$clrProp.Value } else { [ConsoleColor]::Gray }
+                $clr = [ConsoleColor]::Gray
+                if ($clrProp -and $null -ne $clrProp.Value) {
+                    try { $clr = [ConsoleColor]$clrProp.Value } catch { $clr = [ConsoleColor]::Gray }
+                }
                 $rows.Add([pscustomobject]@{ Label = $lbl; Value = $val; Color = $clr })
             }
         }
     }
 
+    $rowArray = $rows.ToArray()
     $width = Get-LabConsoleWidth
     Write-Host ""
     Write-Host (New-LabSeparator "-" $width) -ForegroundColor $BorderColor
@@ -769,14 +837,14 @@ function Write-LabStatusPanel {
     }
 
     $maxLabel = 0
-    foreach ($row in $rows) {
+    foreach ($row in $rowArray) {
         if ($row.Label.Length -gt $maxLabel) {
             $maxLabel = $row.Label.Length
         }
     }
     if ($maxLabel -lt 8) { $maxLabel = 8 }
 
-    foreach ($row in $rows) {
+    foreach ($row in $rowArray) {
         $padded = $row.Label.PadRight($maxLabel)
         Write-Host -NoNewline ("  {0} : " -f $padded) -ForegroundColor DarkCyan
         Write-Host $row.Value -ForegroundColor $row.Color
@@ -1190,7 +1258,7 @@ public static class LabUsbNative
                             byte[] bufEx = new byte[1024];
                             Array.Copy(BitConverter.GetBytes(port), 0, bufEx, 0, 4);
                             int retEx = 0;
-                            bool okEx = DeviceIoControl(hHub, IOCTL_USB_GET_NODE_CONNECTION_INFORMATION_EX, bufEx, 35, bufEx, bufEx.Length, out retEx, IntPtr.Zero);
+                            bool okEx = DeviceIoControl(hHub, IOCTL_USB_GET_NODE_CONNECTION_INFORMATION_EX, bufEx, bufEx.Length, bufEx, bufEx.Length, out retEx, IntPtr.Zero);
 
                             byte[] bufV2 = new byte[16];
                             Array.Copy(BitConverter.GetBytes(port), 0, bufV2, 0, 4);
@@ -1202,39 +1270,68 @@ public static class LabUsbNative
                             bool hopEvaluated = false;
                             bool hopIsSuper = false;
 
-                            // V2 protocol flags describe hub capabilities and operating modes;
-                            // do not use them as a substitute for a connected-port speed report.
-                            if (okV2 && retV2 >= 16)
+                            uint v2Protocols = 0;
+                            uint v2Flags = 0;
+                            bool hasV2 = (okV2 && retV2 >= 16);
+                            if (hasV2)
                             {
-                                uint flags = BitConverter.ToUInt32(bufV2, 12);
-                                if ((flags & 0x02) != 0 || (flags & 0x08) != 0)
+                                v2Protocols = BitConverter.ToUInt32(bufV2, 8);
+                                v2Flags = BitConverter.ToUInt32(bufV2, 12);
+                                if ((v2Flags & 0x0F) != 0)
                                 {
                                     res.SuperSpeedCapable = true;
                                 }
                             }
 
-                            // EX reports the negotiated speed for this connected port.
-                            // 0/1 are Low/Full Speed, 2 is High Speed (USB 2.0), and 3+ are SuperSpeed.
+                            // On Windows 8/10/11 USBHUB3.SYS, IOCTL_EX caps Speed at UsbHighSpeed (2)
+                            // even for USB 3.x / USB-C SuperSpeed connections; IOCTL_EX_V2 Flags
+                            // (0x01 = SuperSpeed+, 0x04 = SuperSpeedPlus+) and SS-only companion ports
+                            // (SupportedUsbProtocols == 0x04) report the true USB 3.x link state.
+                            bool v2OperatingSuper = hasV2 && (((v2Flags & 0x01) != 0) || ((v2Flags & 0x04) != 0));
+                            bool v2PortUsb3Only = hasV2 && ((v2Protocols & 0x04) != 0) && ((v2Protocols & 0x03) == 0);
+                            bool v2PortNoUsb3 = hasV2 && ((v2Protocols & 0x04) == 0);
+
                             if (okEx && retEx >= 35 && BitConverter.ToInt32(bufEx, 31) == 1)
                             {
                                 byte speed = bufEx[23];
                                 ushort bcdUsb = BitConverter.ToUInt16(bufEx, 6);
                                 if (bcdUsb >= 0x0300) res.SuperSpeedCapable = true;
 
-                                if (speed == 2)
-                                {
-                                    hopEvaluated = true;
-                                    hopIsSuper = false;
-                                }
-                                else if (speed >= 3)
+                                if (v2OperatingSuper || v2PortUsb3Only)
                                 {
                                     hopEvaluated = true;
                                     hopIsSuper = true;
+                                    if (res.DetectionSource == "None")
+                                    {
+                                        res.DetectionSource = "IOCTL_V2";
+                                    }
                                 }
-
-                                if (hopEvaluated && res.DetectionSource == "None")
+                                else if (speed >= 3 || (!v2PortNoUsb3 && bcdUsb >= 0x0300))
                                 {
-                                    res.DetectionSource = "IOCTL_EX";
+                                    hopEvaluated = true;
+                                    hopIsSuper = true;
+                                    if (res.DetectionSource == "None")
+                                    {
+                                        res.DetectionSource = "IOCTL_EX";
+                                    }
+                                }
+                                else if (speed <= 2)
+                                {
+                                    hopEvaluated = true;
+                                    hopIsSuper = false;
+                                    if (res.DetectionSource == "None")
+                                    {
+                                        res.DetectionSource = "IOCTL_EX";
+                                    }
+                                }
+                            }
+                            else if (v2OperatingSuper)
+                            {
+                                hopEvaluated = true;
+                                hopIsSuper = true;
+                                if (res.DetectionSource == "None")
+                                {
+                                    res.DetectionSource = "IOCTL_V2";
                                 }
                             }
 
@@ -1392,7 +1489,7 @@ function Get-LabDiskUsbSpeedInfo {
         }
     }
 
-    $busLooksUsb = ($busType -ieq "USB")
+    $busLooksUsb = ($busType -ieq "USB" -or $busType -eq "7")
     $isUsb = $busLooksUsb
     $isUsb2 = $false
     $isUsb3 = $false
@@ -1701,9 +1798,9 @@ function Find-LabRelocatedVolumeLetter {
             }
         }
 
-        $volInfos = foreach ($ltr in $allLetters) {
+        $volInfos = @(foreach ($ltr in $allLetters) {
             Get-LabVolumeUsbSpeedInfo -DriveLetter $ltr
-        }
+        })
 
         if (-not [string]::IsNullOrWhiteSpace($TrackedVolume.VolumeSerialNumber)) {
             $byVolSerial = @($volInfos | Where-Object {
@@ -1761,7 +1858,7 @@ function Confirm-LabUsbVolumesSpeed {
         [string[]]$DriveLetters
     )
 
-    $tracked = New-Object System.Collections.Generic.List[object]
+    $tracked = [System.Collections.Generic.List[object]]::new()
     foreach ($rawLetter in @($DriveLetters)) {
         $ltr = $rawLetter.Trim().TrimEnd(":\/").ToUpperInvariant()
         if ([string]::IsNullOrWhiteSpace($ltr)) { continue }
@@ -1780,17 +1877,18 @@ function Confirm-LabUsbVolumesSpeed {
         })
     }
 
+    $trackedItems = $tracked.ToArray()
     while ($true) {
-        $usb2Entries = @($tracked | Where-Object { $_.Info.IsUsb2 })
+        $usb2Entries = @($trackedItems | Where-Object { $_.Info.IsUsb2 })
         if ($usb2Entries.Count -eq 0) {
-            $finalLetters = @($tracked | ForEach-Object { $_.CurrentLetter })
+            $finalLetters = @($trackedItems | ForEach-Object { $_.CurrentLetter })
             return [pscustomobject]@{
                 Approved = $true
                 DriveLetters = $finalLetters
             }
         }
 
-        $panelItems = New-Object System.Collections.Generic.List[object]
+        $panelItems = [System.Collections.Generic.List[object]]::new()
         $anySuperCapable = $false
         foreach ($entry in $usb2Entries) {
             if ($entry.Info.SuperSpeedCapable) { $anySuperCapable = $true }
@@ -1803,7 +1901,7 @@ function Confirm-LabUsbVolumesSpeed {
             })
         }
 
-        Write-LabStatusPanel -Title (Get-LabText "UsbSpeedWarnTitle") -TitleColor Yellow -BorderColor Yellow -Items $panelItems
+        Write-LabStatusPanel -Title (Get-LabText "UsbSpeedWarnTitle") -TitleColor Yellow -BorderColor Yellow -Items ($panelItems.ToArray())
         Write-LabWarning (Get-LabText "UsbSpeedWarnBody")
         Write-Host ("  {0}" -f (Get-LabText "UsbSpeedRecommend")) -ForegroundColor Yellow
         if ($anySuperCapable) {
@@ -1825,7 +1923,7 @@ function Confirm-LabUsbVolumesSpeed {
             "1" {
                 Write-LabInfo (Get-LabText "UsbSpeedSearching") Cyan
                 $missingAny = $false
-                foreach ($entry in $tracked) {
+                foreach ($entry in $trackedItems) {
                     if (-not $entry.Info.IsUsb) { continue }
                     $newLetter = Find-LabRelocatedVolumeLetter -TrackedVolume $entry
                     if ([string]::IsNullOrWhiteSpace($newLetter)) {
@@ -1845,12 +1943,12 @@ function Confirm-LabUsbVolumesSpeed {
                     continue
                 }
 
-                $stillUsb2 = @($tracked | Where-Object { $_.Info.IsUsb2 })
+                $stillUsb2 = @($trackedItems | Where-Object { $_.Info.IsUsb2 })
                 if ($stillUsb2.Count -eq 0) {
-                    foreach ($entry in @($tracked | Where-Object { $_.Info.IsUsb })) {
+                    foreach ($entry in @($trackedItems | Where-Object { $_.Info.IsUsb })) {
                         Write-LabOk (Format-LabText "UsbSpeedRelocatedOk" ("{0}: ({1})" -f $entry.CurrentLetter, $entry.Info.DiskFriendlyName) $entry.Info.UsbDisplay)
                     }
-                    $finalLetters = @($tracked | ForEach-Object { $_.CurrentLetter })
+                    $finalLetters = @($trackedItems | ForEach-Object { $_.CurrentLetter })
                     return [pscustomobject]@{
                         Approved = $true
                         DriveLetters = $finalLetters
@@ -1862,7 +1960,7 @@ function Confirm-LabUsbVolumesSpeed {
             }
             "2" {
                 Write-LabWarning (Get-LabText "UsbSpeedContinuedUsb2")
-                $finalLetters = @($tracked | ForEach-Object { $_.CurrentLetter })
+                $finalLetters = @($trackedItems | ForEach-Object { $_.CurrentLetter })
                 return [pscustomobject]@{
                     Approved = $true
                     DriveLetters = $finalLetters

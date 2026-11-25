@@ -1,4 +1,4 @@
-# RapidDeploy Toolkit
+﻿# RapidDeploy Toolkit
 
 Portable, optional tools for Windows OOBE diagnostics and enterprise provisioning.
 
@@ -57,7 +57,7 @@ Si vous préparez uniquement une ISO ou une clé USB Windows 11 standard pour un
 3. Passez sur le lecteur du toolkit (par exemple `E:`), puis lancez `menu.cmd`.
 4. Utilisez le menu pour capturer le hash et définir des Group Tags, consulter les diagnostics, resynchroniser l’heure ou déclencher le contrôle MDM.
 
-Le CSV du hash est enregistré dans `HardwareIDs`, à côté du toolkit. Il contient le numéro de série et le hash matériel de l’appareil : protégez-le comme une donnée sensible de provisionnement.
+Le CSV du hash est enregistré dans `HardwareIDs`, à côté du toolkit. L’Asset Tag est facultatif ; lorsqu’il est indiqué, il précède le numéro de série dans le nom du fichier (`AssetTag-Serial-HWID.csv`). Le CSV contient le numéro de série et le hash matériel de l’appareil : protégez-le comme une donnée sensible de provisionnement.
 
 ### Avertissement concernant l’effacement du disque
 
@@ -78,7 +78,7 @@ Dacă pregătești doar un ISO sau un USB Windows 11 standard pentru uz personal
 3. Schimbă pe unitatea toolkitului (de exemplu `E:`), apoi rulează `menu.cmd`.
 4. Folosește meniul pentru capturarea hash-ului și Group Tags, diagnosticare, resincronizarea orei, sincronizarea MDM sau alte sarcini de deployment.
 
-Fișierul CSV cu hash-ul este salvat în `HardwareIDs`, lângă toolkit. Conține numărul de serie și hash-ul hardware al dispozitivului; păstrează-l ca dată sensibilă de aprovizionare.
+Fișierul CSV cu hash-ul este salvat în `HardwareIDs`, lângă toolkit. Asset Tag este opțional; când este indicat, apare ca prefix în numele fișierului înaintea numărului de serie (`AssetTag-Serial-HWID.csv`). Fișierul CSV conține numărul de serie și hash-ul hardware al dispozitivului; păstrează-l ca dată sensibilă de aprovizionare.
 
 ### Avertisment privind ștergerea discului
 
@@ -99,7 +99,7 @@ Wenn Sie nur eine normale Windows-11-ISO oder einen USB-Stick für den privaten 
 3. Wechseln Sie zum Laufwerk des Toolkits (zum Beispiel `E:`) und starten Sie `menu.cmd`.
 4. Nutzen Sie das Menü für Hash-Erfassung und Group Tags, Diagnosen, Zeitsynchronisierung, MDM-Abgleich und weitere Bereitstellungsaufgaben.
 
-Die Hash-CSV wird im Ordner `HardwareIDs` neben dem Toolkit gespeichert. Sie enthält Seriennummer und Hardwarehash des Geräts und ist als vertrauliche Bereitstellungsinformation zu behandeln.
+Die Hash-CSV wird im Ordner `HardwareIDs` neben dem Toolkit gespeichert. Der Asset Tag ist optional; wenn er angegeben wird, steht er im Dateinamen als Präfix vor der Seriennummer (`AssetTag-Serial-HWID.csv`). Die CSV-Datei enthält Seriennummer und Hardwarehash des Geräts und ist als vertrauliche Bereitstellungsinformation zu behandeln.
 
 ### Warnung zum Löschen des Datenträgers
 

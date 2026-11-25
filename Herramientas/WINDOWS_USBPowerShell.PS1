@@ -1438,7 +1438,7 @@ try {
     Write-LabStepHeader -Step $currentStep -TotalSteps $totalSteps -Title (L "StepPlanAndConfirm")
     $currentStep++
 
-    $planItems = New-Object System.Collections.Generic.List[object]
+    $planItems = [System.Collections.Generic.List[object]]::new()
     $planItems.Add(@{
         Label = (L "PlanModeLabel")
         Value = $(if ($CreatePartitionsOnly) { LF "PlanModePartitionsOnly" $InstallFileSystem } else { LF "PlanModeFull" $InstallFileSystem })
@@ -1469,7 +1469,7 @@ try {
         })
     }
     $planItems.Add(@{ Label = (L "Log"); Value = $LogPath; Color = [ConsoleColor]::DarkGray })
-    Write-LabStatusPanel -Title (L "UsbPlanTitle") -Items $planItems
+    Write-LabStatusPanel -Title (L "UsbPlanTitle") -Items ($planItems.ToArray())
 
     Confirm-DiskErase -Disk $disk -UsbSpeedInfo $usbSpeedInfo
 

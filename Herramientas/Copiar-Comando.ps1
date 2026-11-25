@@ -1,4 +1,4 @@
-[CmdletBinding()]
+﻿[CmdletBinding()]
 param(
     [string]$LabRoot,
     [ValidateSet("en", "es", "fr", "ro", "de")]

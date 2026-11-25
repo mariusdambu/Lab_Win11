@@ -1,4 +1,4 @@
-CLEAN COMMANDS - WIN11 LAB
+﻿CLEAN COMMANDS - WIN11 LAB
 ==========================
 
 Work path:

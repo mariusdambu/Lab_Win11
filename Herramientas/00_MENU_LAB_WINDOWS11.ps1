@@ -688,8 +688,8 @@ function Update-LabMenuWindowSize {
         if ($warnLen -gt $maxLineLen) { $maxLineLen = $warnLen }
     }
 
-    $neededWidth = [Math]::Min(128, [Math]::Max(108, $maxLineLen + 4))
-    $neededHeight = 39
+    $neededWidth = [Math]::Min(128, [Math]::Max(112, $maxLineLen + 4))
+    $neededHeight = 41
     if ($script:OfflineCleanupNeeded) {
         $neededHeight += 2
     }

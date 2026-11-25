@@ -1,4 +1,4 @@
-COMANDOS LIMPIOS - LAB WIN11
+﻿COMANDOS LIMPIOS - LAB WIN11
 ============================
 
 Ruta de trabajo:

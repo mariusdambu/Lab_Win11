@@ -1109,20 +1109,25 @@ function Offer-InstallWimExport {
             Write-LabInfo (L "ExportInstallSkipped") Cyan
             return "SKIPPED"
         }
-        Clear-ImageReadOnlyAttribute -Path $destinationImage
-        Remove-Item -LiteralPath $destinationImage -Force
     }
 
     $sizeBefore = [UInt64](Get-Item -LiteralPath $resolvedSource -ErrorAction Stop).Length
+    $tempDestinationImage = Join-Path $ImagesRoot ("install_optimizado.tmp-{0}.wim" -f [Guid]::NewGuid().ToString("N").Substring(0, 8))
     try {
         Invoke-DismStep -Title (L "ExportInstallTitle") -Arguments @(
             "/Export-Image",
             "/SourceImageFile:$resolvedSource",
             "/SourceIndex:$selectedIndex",
-            "/DestinationImageFile:$destinationImage",
+            "/DestinationImageFile:$tempDestinationImage",
             "/Compress:max",
             "/CheckIntegrity"
         )
+
+        if (Test-Path -LiteralPath $destinationImage -PathType Leaf) {
+            Clear-ImageReadOnlyAttribute -Path $destinationImage
+            Remove-Item -LiteralPath $destinationImage -Force
+        }
+        Move-Item -LiteralPath $tempDestinationImage -Destination $destinationImage -Force
 
         $exportedItem = Get-Item -LiteralPath $destinationImage -ErrorAction Stop
         $sizeAfter = [UInt64]$exportedItem.Length
@@ -1148,6 +1153,11 @@ function Offer-InstallWimExport {
     }
     catch {
         Write-LabError $_.Exception.Message
+    }
+    finally {
+        if (Test-Path -LiteralPath $tempDestinationImage -PathType Leaf) {
+            Remove-Item -LiteralPath $tempDestinationImage -Force -ErrorAction SilentlyContinue
+        }
     }
     return "EXECUTED"
 }
@@ -1836,7 +1846,7 @@ try {
         }
     }
 
-    if ((-not $AutoCommit) -and (-not $flowCancelled) -and (-not $script:Mounted) -and (-not (Test-OfflineRootMounted))) {
+    if ((-not $AutoCommit) -and (-not $flowCancelled) -and (-not [string]::IsNullOrWhiteSpace($script:LastInstallWimPath)) -and ($null -ne $script:LastInstallWimIndex) -and (-not $script:Mounted) -and (-not (Test-OfflineRootMounted))) {
         $exportAction = Offer-InstallWimExport -SourceImageFile $script:LastInstallWimPath -SourceIndex $script:LastInstallWimIndex
         if ($exportAction -in @("EXECUTED", "COPIED")) {
             $pauseBeforeExit = $true
