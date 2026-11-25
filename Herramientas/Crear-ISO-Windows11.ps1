@@ -1,4 +1,4 @@
-#Requires -RunAsAdministrator
+﻿#Requires -RunAsAdministrator
 [CmdletBinding()]
 param(
     [ValidateSet("en", "es", "fr", "ro", "de")]
@@ -13,7 +13,26 @@ Initialize-LabLanguage -Language $Language | Out-Null
 
 Add-LabTranslations @{
     en = @{
-        IsoTitle = "Create custom Windows 11 ISO"
+        IsoTitle = "CREATE CUSTOM WINDOWS 11 ISO"
+        StepCheckCustom = "Verify custom images in Trabajo\images"
+        StepSelectBase = "Select base media and review ISO plan"
+        StepStageMedia = "Copy base ISO structure to Trabajo\media"
+        StepIntegrateImages = "Integrate custom boot.wim and install.* images"
+        StepValidateMedia = "Validate staged bootable media"
+        StepBuildIso = "Build bootable ISO with oscdimg"
+        IsoPlanTitle = "ISO build plan"
+        IsoSummaryTitle = "ISO build summary"
+        PlanBaseLabel = "Base media"
+        PlanBootLabel = "boot.wim source"
+        PlanInstallLabel = "install.* source"
+        PlanStagingLabel = "Staging folder"
+        PlanOscdimgLabel = "oscdimg tool"
+        PlanOutputDirLabel = "Output folder"
+        SummaryStatusLabel = "Status"
+        SummaryIsoPathLabel = "Output ISO"
+        SummarySizeLabel = "Size"
+        SummaryStagingState = "Staging state"
+        BaseSourceTag = "Base ISO"
         PreparingFolders = "Preparing lab folders"
         MediaFolderExists = "Trabajo\media already contains files. Clean it before copying the ISO base?"
         IsoCandidates = "Available Windows ISO/media sources"
@@ -50,7 +69,7 @@ Add-LabTranslations @{
         OutputPrompt = "Output ISO path or name (ENTER = {0})"
         OverwriteIso = "The ISO already exists. Overwrite it?"
         CreatingIso = "Creating ISO with oscdimg"
-        IsoCreated = "ISO created successfully:"
+        IsoCreated = "ISO created successfully"
         DismountingIso = "Unmounting ISO..."
         LargeWimNote = "Note: install.wim larger than 4 GB is valid inside an ISO/UDF. It is not split for ISO creation."
         DoneSize = "Size: {0}"
@@ -72,187 +91,263 @@ Add-LabTranslations @{
         ContinueWithBaseImageQuestion = "Continue using missing image(s) from the base ISO?"
     }
     es = @{
-        IsoTitle = "Crear ISO Windows 11 personalizada"
+        IsoTitle = "CREAR ISO WINDOWS 11 PERSONALIZADA"
+        StepCheckCustom = "Comprobar imágenes personalizadas en Trabajo\images"
+        StepSelectBase = "Seleccionar medio base y revisar plan de ISO"
+        StepStageMedia = "Copiar estructura base de la ISO a Trabajo\media"
+        StepIntegrateImages = "Integrar imágenes personalizadas boot.wim e install.*"
+        StepValidateMedia = "Validar estructura y arranque del medio preparado"
+        StepBuildIso = "Generar ISO arrancable con oscdimg"
+        IsoPlanTitle = "Plan de creación de ISO"
+        IsoSummaryTitle = "Resumen final de la ISO creada"
+        PlanBaseLabel = "Medio base"
+        PlanBootLabel = "Origen boot.wim"
+        PlanInstallLabel = "Origen install.*"
+        PlanStagingLabel = "Carpeta temporal"
+        PlanOscdimgLabel = "Herramienta oscdimg"
+        PlanOutputDirLabel = "Carpeta de salida"
+        SummaryStatusLabel = "Estado"
+        SummaryIsoPathLabel = "ISO generada"
+        SummarySizeLabel = "Tamaño"
+        SummaryStagingState = "Carpeta media"
+        BaseSourceTag = "ISO base"
         PreparingFolders = "Preparando carpetas del lab"
-        MediaFolderExists = "Trabajo\media ya contiene archivos. Limpiarla antes de copiar la ISO base?"
-        IsoCandidates = "Origenes ISO/medio Windows disponibles"
+        MediaFolderExists = "¿Trabajo\media ya contiene archivos. Limpiarla antes de copiar la ISO base?"
+        IsoCandidates = "Orígenes ISO/medio Windows disponibles"
         MountedMedia = "Medio montado {0}  [{1}]"
         LabIso = "ISO del lab {0}  [{1}]"
         ManualSource = "Escribir manualmente una letra montada o ruta ISO"
-        SourcePrompt = "Numero, letra montada o ruta ISO"
+        SourcePrompt = "Número, letra montada o ruta ISO"
         SourcePromptFallback = "Letra montada o ruta ISO"
         MountingIso = "Montando ISO..."
         CannotGetIsoLetter = "No pude obtener la letra de la ISO montada."
         MissingPath = "No existe el medio indicado: {0}"
         MediaMustIso = "El origen debe ser una ISO o una letra ya montada."
-        MissingWindowsMedia = "El origen no parece un medio de instalacion Windows: {0}"
+        MissingWindowsMedia = "El origen no parece un medio de instalación Windows: {0}"
         MissingBootFile = "Falta archivo de arranque requerido: {0}"
         MissingSetup = "Falta setup.exe: {0}"
         MissingBootWim = "Falta sources\boot.wim."
         MissingInstall = "Falta sources\install.wim, sources\install.esd o sources\install*.swm."
         CopyBaseMedia = "Copiando ISO base a Trabajo\media"
-        RobocopyFailed = "Robocopy fallo con codigo {0}."
-        ImagesStage = "Preparando imagenes Windows"
+        RobocopyFailed = "Robocopy falló con código {0}."
+        ImagesStage = "Preparando imágenes Windows"
         UsingLabBoot = "Usando Trabajo\images\boot.wim"
-        AskCopyBootFromIso = "Falta Trabajo\images\boot.wim. Copiar boot.wim desde la ISO base a Trabajo\images y usarlo?"
+        AskCopyBootFromIso = "¿Falta Trabajo\images\boot.wim. Copiar boot.wim desde la ISO base a Trabajo\images y usarlo?"
         UsingIsoBoot = "Usando boot.wim de la ISO base ya copiado en Trabajo\media."
         UsingLabInstall = "Usando Trabajo\images\{0}"
-        AskCopyInstallFromIso = "Trabajo\images no tiene imagen install. Copiar imagen install desde la ISO base a Trabajo\images y usarla?"
+        AskCopyInstallFromIso = "¿Trabajo\images no tiene imagen install. Copiar imagen install desde la ISO base a Trabajo\images y usarla?"
         UsingIsoInstall = "Usando imagen install de la ISO base ya copiada en Trabajo\media."
-        MultipleInstallTypes = "Hay mas de un tipo install.* en {0}. Deja solo un tipo: WIM, ESD o SWM."
+        MultipleInstallTypes = "Hay más de un tipo install.* en {0}. Deja solo un tipo: WIM, ESD o SWM."
         SwmMissing = "Hay archivos SWM en {0}, pero falta install.swm. Deben estar install.swm, install2.swm, etc."
         ReplacingBoot = "Sustituyendo Trabajo\media\sources\boot.wim"
         ReplacingInstall = "Sustituyendo Trabajo\media\sources\install.*"
         ValidateMedia = "Validando medio preparado"
-        OscdimgMissing = "No se encontro oscdimg.exe.`r`n`r`noscdimg.exe no viene de serie con Windows.`r`nForma parte de Windows ADK / Deployment Tools.`r`nSin oscdimg.exe este lab no puede crear una ISO arrancable desde este flujo."
+        OscdimgMissing = "No se encontró oscdimg.exe.`r`n`r`noscdimg.exe no viene de serie con Windows.`r`nForma parte de Windows ADK / Deployment Tools.`r`nSin oscdimg.exe este lab no puede crear una ISO arrancable desde este flujo."
         OscdimgFound = "oscdimg.exe: {0}"
         OutputPrompt = "Ruta o nombre de ISO final (INTRO = {0})"
-        OverwriteIso = "La ISO ya existe. Sobrescribirla?"
+        OverwriteIso = "¿La ISO ya existe. Sobrescribirla?"
         CreatingIso = "Creando ISO con oscdimg"
-        IsoCreated = "ISO creada correctamente:"
+        IsoCreated = "ISO creada correctamente"
         DismountingIso = "Desmontando ISO..."
-        LargeWimNote = "Nota: install.wim mayor de 4 GB es valido dentro de una ISO/UDF. No se divide para crear ISO."
-        DoneSize = "Tamano: {0}"
-        KeepMediaQuestion = "Quieres conservar Trabajo\media para revisar el contenido?"
+        LargeWimNote = "Nota: install.wim mayor de 4 GB es válido dentro de una ISO/UDF. No se divide para crear ISO."
+        DoneSize = "Tamaño: {0}"
+        KeepMediaQuestion = "¿Quieres conservar Trabajo\media para revisar el contenido?"
         MediaCleaned = "Trabajo\media limpiada."
-        MediaKept = "Trabajo\media conservada para revision: {0}"
+        MediaKept = "Trabajo\media conservada para revisión: {0}"
         OutputInsideMedia = "La ISO de salida no puede estar dentro de Trabajo\media porque esa carpeta es temporal."
         MediaPathUnsafe = "No se permite limpiar una carpeta media fuera de Trabajo: {0}"
         NoLabel = "sin etiqueta"
-        OscdimgFailed = "oscdimg fallo con codigo {0}."
+        OscdimgFailed = "oscdimg falló con código {0}."
         BaseMedia = "Medio base: {0}"
         LogPath = "Log: {0}"
-        CheckCustomImages = "Comprobando imagenes personalizadas en Trabajo\images"
-        NoCustomImages = "No se encontro boot.wim ni imagen install en Trabajo\images. Creacion de ISO cancelada. Agrega imagenes personalizadas primero; este flujo no debe recrear la ISO original."
+        CheckCustomImages = "Comprobando imágenes personalizadas en Trabajo\images"
+        NoCustomImages = "No se encontró boot.wim ni imagen install en Trabajo\images. Creación de ISO cancelada. Agrega imágenes personalizadas primero; este flujo no debe recrear la ISO original."
         CustomBootFound = "boot.wim personalizado: {0}"
         CustomInstallFound = "Imagen install personalizada: {0}"
-        MissingBootUsesBase = "Falta Trabajo\images\boot.wim. Si continuas, se usara boot.wim de la ISO base."
-        MissingInstallUsesBase = "Trabajo\images no tiene imagen install. Si continuas, se usara install.* de la ISO base."
-        ContinueWithBaseImageQuestion = "Continuar usando la imagen faltante desde la ISO base?"
+        MissingBootUsesBase = "Falta Trabajo\images\boot.wim. Si continúas, se usará boot.wim de la ISO base."
+        MissingInstallUsesBase = "Trabajo\images no tiene imagen install. Si continúas, se usará install.* de la ISO base."
+        ContinueWithBaseImageQuestion = "¿Continuar usando la imagen faltante desde la ISO base?"
     }
     fr = @{
-        IsoTitle = "Creer une ISO Windows 11 personnalisee"
-        PreparingFolders = "Preparation des dossiers du lab"
-        MediaFolderExists = "Trabajo\media contient deja des fichiers. Le nettoyer avant de copier la base ISO?"
-        IsoCandidates = "Sources ISO/media Windows disponibles"
-        MountedMedia = "Media monte {0}  [{1}]"
+        IsoTitle = "CRÉER UNE ISO WINDOWS 11 PERSONNALISÉE"
+        StepCheckCustom = "Vérifier les images personnalisées dans Trabajo\images"
+        StepSelectBase = "Sélectionner le média de base et vérifier le plan ISO"
+        StepStageMedia = "Copier la structure ISO de base vers Trabajo\media"
+        StepIntegrateImages = "Intégrer les images personnalisées boot.wim et install.*"
+        StepValidateMedia = "Valider le média amorçable préparé"
+        StepBuildIso = "Créer l'ISO amorçable avec oscdimg"
+        IsoPlanTitle = "Plan de création ISO"
+        IsoSummaryTitle = "Résumé final de l'ISO créée"
+        PlanBaseLabel = "Média de base"
+        PlanBootLabel = "Source boot.wim"
+        PlanInstallLabel = "Source install.*"
+        PlanStagingLabel = "Dossier temporaire"
+        PlanOscdimgLabel = "Outil oscdimg"
+        PlanOutputDirLabel = "Dossier de sortie"
+        SummaryStatusLabel = "État"
+        SummaryIsoPathLabel = "ISO générée"
+        SummarySizeLabel = "Taille"
+        SummaryStagingState = "Dossier media"
+        BaseSourceTag = "ISO de base"
+        PreparingFolders = "Préparation des dossiers du lab"
+        MediaFolderExists = "Trabajo\media contient déjà des fichiers. Le nettoyer avant de copier la base ISO ?"
+        IsoCandidates = "Sources ISO/média Windows disponibles"
+        MountedMedia = "Média monté {0}  [{1}]"
         LabIso = "ISO du lab {0}  [{1}]"
-        ManualSource = "Saisir manuellement une lettre montee ou un chemin ISO"
-        SourcePrompt = "Numero, lettre montee ou chemin ISO"
-        SourcePromptFallback = "Lettre montee ou chemin ISO"
+        ManualSource = "Saisir manuellement une lettre montée ou un chemin ISO"
+        SourcePrompt = "Numéro, lettre montée ou chemin ISO"
+        SourcePromptFallback = "Lettre montée ou chemin ISO"
         MountingIso = "Montage ISO..."
-        CannotGetIsoLetter = "Impossible d obtenir la lettre de l ISO montee."
-        MissingPath = "Le media selectionne n existe pas: {0}"
-        MediaMustIso = "La source selectionnee doit etre un fichier ISO ou une lettre deja montee."
-        MissingWindowsMedia = "La source selectionnee ne ressemble pas a un media d installation Windows: {0}"
-        MissingBootFile = "Fichier de demarrage requis manquant: {0}"
-        MissingSetup = "setup.exe manquant: {0}"
+        CannotGetIsoLetter = "Impossible d'obtenir la lettre de l'ISO montée."
+        MissingPath = "Le média sélectionné n'existe pas : {0}"
+        MediaMustIso = "La source sélectionnée doit être un fichier ISO ou une lettre déjà montée."
+        MissingWindowsMedia = "La source sélectionnée ne ressemble pas à un média d'installation Windows : {0}"
+        MissingBootFile = "Fichier de démarrage requis manquant : {0}"
+        MissingSetup = "setup.exe manquant : {0}"
         MissingBootWim = "sources\boot.wim manquant."
         MissingInstall = "sources\install.wim, sources\install.esd ou sources\install*.swm manquant."
         CopyBaseMedia = "Copie de la base ISO vers Trabajo\media"
-        RobocopyFailed = "Robocopy a echoue avec le code {0}."
-        ImagesStage = "Preparation des images Windows"
+        RobocopyFailed = "Robocopy a échoué avec le code {0}."
+        ImagesStage = "Préparation des images Windows"
         UsingLabBoot = "Utilisation de Trabajo\images\boot.wim"
-        AskCopyBootFromIso = "Trabajo\images\boot.wim manque. Copier boot.wim depuis la base ISO vers Trabajo\images et l utiliser?"
-        UsingIsoBoot = "Utilisation de boot.wim de la base ISO deja copie dans Trabajo\media."
+        AskCopyBootFromIso = "Trabajo\images\boot.wim manque. Copier boot.wim depuis la base ISO vers Trabajo\images et l'utiliser ?"
+        UsingIsoBoot = "Utilisation de boot.wim de la base ISO déjà copié dans Trabajo\media."
         UsingLabInstall = "Utilisation de Trabajo\images\{0}"
-        AskCopyInstallFromIso = "Trabajo\images ne contient aucune image install. Copier l image install depuis la base ISO vers Trabajo\images et l utiliser?"
-        UsingIsoInstall = "Utilisation de l image install de la base ISO deja copiee dans Trabajo\media."
-        MultipleInstallTypes = "Plusieurs types install.* existent dans {0}. Gardez un seul type: WIM, ESD ou SWM."
-        SwmMissing = "Des fichiers SWM existent dans {0}, mais install.swm manque. Les fichiers doivent etre install.swm, install2.swm, etc."
+        AskCopyInstallFromIso = "Trabajo\images ne contient aucune image install. Copier l'image install depuis la base ISO vers Trabajo\images et l'utiliser ?"
+        UsingIsoInstall = "Utilisation de l'image install de la base ISO déjà copiée dans Trabajo\media."
+        MultipleInstallTypes = "Plusieurs types install.* existent dans {0}. Gardez un seul type : WIM, ESD ou SWM."
+        SwmMissing = "Des fichiers SWM existent dans {0}, mais install.swm manque. Les fichiers doivent être install.swm, install2.swm, etc."
         ReplacingBoot = "Remplacement de Trabajo\media\sources\boot.wim"
         ReplacingInstall = "Remplacement de Trabajo\media\sources\install.*"
-        ValidateMedia = "Validation du media prepare"
-        OscdimgMissing = "oscdimg.exe est introuvable.`r`n`r`noscdimg.exe n est pas inclus avec Windows standard.`r`nIl fait partie de Windows ADK / Deployment Tools.`r`nSans oscdimg.exe, ce lab ne peut pas creer une ISO demarrable avec ce flux."
-        OscdimgFound = "oscdimg.exe: {0}"
-        OutputPrompt = "Chemin ou nom de l ISO finale (ENTRÉE = {0})"
-        OverwriteIso = "L ISO existe deja. L ecraser?"
-        CreatingIso = "Creation de l ISO avec oscdimg"
-        IsoCreated = "ISO creee correctement:"
-        DismountingIso = "Demontage ISO..."
-        LargeWimNote = "Note: install.wim superieur a 4 GB est valide dans une ISO/UDF. Il n est pas divise pour creer l ISO."
-        DoneSize = "Taille: {0}"
-        KeepMediaQuestion = "Conserver Trabajo\media pour verification manuelle?"
-        MediaCleaned = "Trabajo\media nettoye."
-        MediaKept = "Trabajo\media conserve pour verification: {0}"
-        OutputInsideMedia = "L ISO de sortie ne peut pas etre dans Trabajo\media car ce dossier est temporaire."
-        MediaPathUnsafe = "Refus de nettoyer un dossier media hors de Trabajo: {0}"
-        NoLabel = "sans etiquette"
-        OscdimgFailed = "oscdimg a echoue avec le code {0}."
-        BaseMedia = "Media base: {0}"
-        LogPath = "Log: {0}"
-        CheckCustomImages = "Verification des images personnalisees dans Trabajo\images"
-        NoCustomImages = "Aucun boot.wim ni image install trouve dans Trabajo\images. Creation ISO annulee. Ajoutez d abord des images personnalisees; ce flux ne doit pas recreer l ISO originale."
-        CustomBootFound = "boot.wim personnalise: {0}"
-        CustomInstallFound = "Image install personnalisee: {0}"
-        MissingBootUsesBase = "Trabajo\images\boot.wim manque. Si vous continuez, boot.wim de l ISO de base sera utilise."
-        MissingInstallUsesBase = "Trabajo\images ne contient aucune image install. Si vous continuez, install.* de l ISO de base sera utilise."
-        ContinueWithBaseImageQuestion = "Continuer en utilisant les images manquantes depuis l ISO de base?"
+        ValidateMedia = "Validation du média préparé"
+        OscdimgMissing = "oscdimg.exe est introuvable.`r`n`r`noscdimg.exe n'est pas inclus avec Windows standard.`r`nIl fait partie de Windows ADK / Deployment Tools.`r`nSans oscdimg.exe, ce lab ne peut pas créer une ISO démarrable avec ce flux."
+        OscdimgFound = "oscdimg.exe : {0}"
+        OutputPrompt = "Chemin ou nom de l'ISO finale (ENTRÉE = {0})"
+        OverwriteIso = "L'ISO existe déjà. L'écraser ?"
+        CreatingIso = "Création de l'ISO avec oscdimg"
+        IsoCreated = "ISO créée correctement"
+        DismountingIso = "Démontage ISO..."
+        LargeWimNote = "Note : install.wim supérieur à 4 Go est valide dans une ISO/UDF. Il n'est pas divisé pour créer l'ISO."
+        DoneSize = "Taille : {0}"
+        KeepMediaQuestion = "Conserver Trabajo\media pour vérification manuelle ?"
+        MediaCleaned = "Trabajo\media nettoyé."
+        MediaKept = "Trabajo\media conservé pour vérification : {0}"
+        OutputInsideMedia = "L'ISO de sortie ne peut pas être dans Trabajo\media car ce dossier est temporaire."
+        MediaPathUnsafe = "Refus de nettoyer un dossier media hors de Trabajo : {0}"
+        NoLabel = "sans étiquette"
+        OscdimgFailed = "oscdimg a échoué avec le code {0}."
+        BaseMedia = "Média base : {0}"
+        LogPath = "Log : {0}"
+        CheckCustomImages = "Vérification des images personnalisées dans Trabajo\images"
+        NoCustomImages = "Aucun boot.wim ni image install trouvé dans Trabajo\images. Création ISO annulée. Ajoutez d'abord des images personnalisées ; ce flux ne doit pas recréer l'ISO originale."
+        CustomBootFound = "boot.wim personnalisé : {0}"
+        CustomInstallFound = "Image install personnalisée : {0}"
+        MissingBootUsesBase = "Trabajo\images\boot.wim manque. Si vous continuez, boot.wim de l'ISO de base sera utilisé."
+        MissingInstallUsesBase = "Trabajo\images ne contient aucune image install. Si vous continuez, install.* de l'ISO de base sera utilisé."
+        ContinueWithBaseImageQuestion = "Continuer en utilisant les images manquantes depuis l'ISO de base ?"
     }
     ro = @{
-        IsoTitle = "Creeaza ISO Windows 11 personalizata"
-        PreparingFolders = "Pregatesc folderele labului"
-        MediaFolderExists = "Trabajo\media contine deja fisiere. Il curat inainte sa copiez baza ISO?"
+        IsoTitle = "CREARE ISO WINDOWS 11 PERSONALIZATĂ"
+        StepCheckCustom = "Verificare imagini personalizate în Trabajo\images"
+        StepSelectBase = "Selectare mediu de bază și verificare plan ISO"
+        StepStageMedia = "Copiere structură ISO de bază în Trabajo\media"
+        StepIntegrateImages = "Integrare imagini personalizate boot.wim și install.*"
+        StepValidateMedia = "Validare mediu bootabil pregătit"
+        StepBuildIso = "Generare ISO bootabil cu oscdimg"
+        IsoPlanTitle = "Plan creare ISO"
+        IsoSummaryTitle = "Rezumat final ISO creat"
+        PlanBaseLabel = "Mediu de bază"
+        PlanBootLabel = "Sursă boot.wim"
+        PlanInstallLabel = "Sursă install.*"
+        PlanStagingLabel = "Folder temporar"
+        PlanOscdimgLabel = "Utilitar oscdimg"
+        PlanOutputDirLabel = "Folder de ieșire"
+        SummaryStatusLabel = "Stare"
+        SummaryIsoPathLabel = "ISO generat"
+        SummarySizeLabel = "Dimensiune"
+        SummaryStagingState = "Folder media"
+        BaseSourceTag = "ISO de bază"
+        PreparingFolders = "Pregătesc folderele labului"
+        MediaFolderExists = "Trabajo\media conține deja fișiere. Îl curăț înainte să copiez baza ISO?"
         IsoCandidates = "Surse ISO/media Windows disponibile"
         MountedMedia = "Media montat {0}  [{1}]"
         LabIso = "ISO din lab {0}  [{1}]"
-        ManualSource = "Tasteaza manual o litera montata sau o cale ISO"
-        SourcePrompt = "Numar, litera montata sau cale ISO"
-        SourcePromptFallback = "Litera montata sau cale ISO"
+        ManualSource = "Tastează manual o literă montată sau o cale ISO"
+        SourcePrompt = "Număr, literă montată sau cale ISO"
+        SourcePromptFallback = "Literă montată sau cale ISO"
         MountingIso = "Montez ISO..."
-        CannotGetIsoLetter = "Nu am putut obtine litera ISO-ului montat."
-        MissingPath = "Mediul selectat nu exista: {0}"
-        MediaMustIso = "Sursa selectata trebuie sa fie fisier ISO sau litera deja montata."
-        MissingWindowsMedia = "Sursa selectata nu pare mediu de instalare Windows: {0}"
-        MissingBootFile = "Lipseste fisierul de boot necesar: {0}"
-        MissingSetup = "Lipseste setup.exe: {0}"
-        MissingBootWim = "Lipseste sources\boot.wim."
-        MissingInstall = "Lipseste sources\install.wim, sources\install.esd sau sources\install*.swm."
-        CopyBaseMedia = "Copiez baza ISO in Trabajo\media"
-        RobocopyFailed = "Robocopy a esuat cu codul {0}."
-        ImagesStage = "Pregatesc imaginile Windows"
+        CannotGetIsoLetter = "Nu am putut obține litera ISO-ului montat."
+        MissingPath = "Mediul selectat nu există: {0}"
+        MediaMustIso = "Sursa selectată trebuie să fie fișier ISO sau literă deja montată."
+        MissingWindowsMedia = "Sursa selectată nu pare mediu de instalare Windows: {0}"
+        MissingBootFile = "Lipsește fișierul de boot necesar: {0}"
+        MissingSetup = "Lipsește setup.exe: {0}"
+        MissingBootWim = "Lipsește sources\boot.wim."
+        MissingInstall = "Lipsește sources\install.wim, sources\install.esd sau sources\install*.swm."
+        CopyBaseMedia = "Copiez baza ISO în Trabajo\media"
+        RobocopyFailed = "Robocopy a eșuat cu codul {0}."
+        ImagesStage = "Pregătesc imaginile Windows"
         UsingLabBoot = "Folosesc Trabajo\images\boot.wim"
-        AskCopyBootFromIso = "Lipseste Trabajo\images\boot.wim. Copiez boot.wim din baza ISO in Trabajo\images si il folosesc?"
-        UsingIsoBoot = "Folosesc boot.wim din baza ISO deja copiat in Trabajo\media."
+        AskCopyBootFromIso = "Lipsește Trabajo\images\boot.wim. Copiez boot.wim din baza ISO în Trabajo\images și îl folosesc?"
+        UsingIsoBoot = "Folosesc boot.wim din baza ISO deja copiat în Trabajo\media."
         UsingLabInstall = "Folosesc Trabajo\images\{0}"
-        AskCopyInstallFromIso = "Trabajo\images nu are imagine install. Copiez imaginea install din baza ISO in Trabajo\images si o folosesc?"
-        UsingIsoInstall = "Folosesc imaginea install din baza ISO deja copiata in Trabajo\media."
-        MultipleInstallTypes = "Exista mai multe tipuri install.* in {0}. Pastreaza un singur tip: WIM, ESD sau SWM."
-        SwmMissing = "Exista fisiere SWM in {0}, dar lipseste install.swm. Fisierele trebuie sa fie install.swm, install2.swm, etc."
-        ReplacingBoot = "Inlocuiesc Trabajo\media\sources\boot.wim"
-        ReplacingInstall = "Inlocuiesc Trabajo\media\sources\install.*"
-        ValidateMedia = "Validez mediul pregatit"
-        OscdimgMissing = "oscdimg.exe nu a fost gasit.`r`n`r`noscdimg.exe nu vine inclus in Windows standard.`r`nFace parte din Windows ADK / Deployment Tools.`r`nFara oscdimg.exe, acest lab nu poate crea o ISO bootabila din acest flux."
+        AskCopyInstallFromIso = "Trabajo\images nu are imagine install. Copiez imaginea install din baza ISO în Trabajo\images și o folosesc?"
+        UsingIsoInstall = "Folosesc imaginea install din baza ISO deja copiată în Trabajo\media."
+        MultipleInstallTypes = "Există mai multe tipuri install.* în {0}. Păstrează un singur tip: WIM, ESD sau SWM."
+        SwmMissing = "Există fișiere SWM în {0}, dar lipsește install.swm. Fișierele trebuie să fie install.swm, install2.swm, etc."
+        ReplacingBoot = "Înlocuiesc Trabajo\media\sources\boot.wim"
+        ReplacingInstall = "Înlocuiesc Trabajo\media\sources\install.*"
+        ValidateMedia = "Validez mediul pregătit"
+        OscdimgMissing = "oscdimg.exe nu a fost găsit.`r`n`r`noscdimg.exe nu vine inclus în Windows standard.`r`nFace parte din Windows ADK / Deployment Tools.`r`nFără oscdimg.exe, acest lab nu poate crea o ISO bootabilă din acest flux."
         OscdimgFound = "oscdimg.exe: {0}"
         OutputPrompt = "Cale sau nume pentru ISO final (ENTER = {0})"
-        OverwriteIso = "ISO exista deja. Il suprascriu?"
+        OverwriteIso = "ISO există deja. Îl suprascriu?"
         CreatingIso = "Creez ISO cu oscdimg"
-        IsoCreated = "ISO creat corect:"
+        IsoCreated = "ISO creat corect"
         DismountingIso = "Demontez ISO..."
-        LargeWimNote = "Nota: install.wim mai mare de 4 GB este valid intr-un ISO/UDF. Nu se imparte pentru crearea ISO."
+        LargeWimNote = "Notă: install.wim mai mare de 4 GB este valid într-un ISO/UDF. Nu se împarte pentru crearea ISO."
         DoneSize = "Dimensiune: {0}"
-        KeepMediaQuestion = "Pastrezi Trabajo\media pentru verificare manuala?"
-        MediaCleaned = "Trabajo\media curatat."
-        MediaKept = "Trabajo\media pastrat pentru verificare: {0}"
-        OutputInsideMedia = "ISO-ul de iesire nu poate fi in Trabajo\media deoarece acel folder este temporar."
-        MediaPathUnsafe = "Refuz sa curat un folder media in afara de Trabajo: {0}"
-        NoLabel = "fara eticheta"
-        OscdimgFailed = "oscdimg a esuat cu codul {0}."
-        BaseMedia = "Mediu baza: {0}"
+        KeepMediaQuestion = "Păstrezi Trabajo\media pentru verificare manuală?"
+        MediaCleaned = "Trabajo\media curățat."
+        MediaKept = "Trabajo\media păstrat pentru verificare: {0}"
+        OutputInsideMedia = "ISO-ul de ieșire nu poate fi în Trabajo\media deoarece acel folder este temporar."
+        MediaPathUnsafe = "Refuz să curăț un folder media în afară de Trabajo: {0}"
+        NoLabel = "fără etichetă"
+        OscdimgFailed = "oscdimg a eșuat cu codul {0}."
+        BaseMedia = "Mediu bază: {0}"
         LogPath = "Log: {0}"
-        CheckCustomImages = "Verific imaginile personalizate in Trabajo\images"
-        NoCustomImages = "Nu am gasit boot.wim sau imagine install in Trabajo\images. Crearea ISO a fost anulata. Adauga mai intai imagini personalizate; acest flux nu trebuie sa recreeze ISO-ul original."
+        CheckCustomImages = "Verific imaginile personalizate în Trabajo\images"
+        NoCustomImages = "Nu am găsit boot.wim sau imagine install în Trabajo\images. Crearea ISO a fost anulată. Adaugă mai întâi imagini personalizate; acest flux nu trebuie să recreeze ISO-ul original."
         CustomBootFound = "boot.wim personalizat: {0}"
-        CustomInstallFound = "Imagine install personalizata: {0}"
-        MissingBootUsesBase = "Lipseste Trabajo\images\boot.wim. Daca continui, se va folosi boot.wim din ISO-ul de baza."
-        MissingInstallUsesBase = "Trabajo\images nu are imagine install. Daca continui, se va folosi install.* din ISO-ul de baza."
-        ContinueWithBaseImageQuestion = "Continui folosind imaginea lipsa din ISO-ul de baza?"
+        CustomInstallFound = "Imagine install personalizată: {0}"
+        MissingBootUsesBase = "Lipsește Trabajo\images\boot.wim. Dacă continui, se va folosi boot.wim din ISO-ul de bază."
+        MissingInstallUsesBase = "Trabajo\images nu are imagine install. Dacă continui, se va folosi install.* din ISO-ul de bază."
+        ContinueWithBaseImageQuestion = "Continui folosind imaginea lipsă din ISO-ul de bază?"
     }
     de = @{
-        IsoTitle = "Benutzerdefinierte Windows 11 ISO erstellen"
+        IsoTitle = "BENUTZERDEFINIERTE WINDOWS 11 ISO ERSTELLEN"
+        StepCheckCustom = "Benutzerdefinierte Images in Trabajo\images prüfen"
+        StepSelectBase = "Basismedium wählen und ISO-Plan prüfen"
+        StepStageMedia = "ISO-Basisstruktur nach Trabajo\media kopieren"
+        StepIntegrateImages = "Benutzerdefinierte boot.wim- und install.*-Images integrieren"
+        StepValidateMedia = "Vorbereitetes bootfähiges Medium validieren"
+        StepBuildIso = "Bootfähige ISO mit oscdimg erstellen"
+        IsoPlanTitle = "ISO-Erstellungsplan"
+        IsoSummaryTitle = "Zusammenfassung der erstellten ISO"
+        PlanBaseLabel = "Basismedium"
+        PlanBootLabel = "Quelle boot.wim"
+        PlanInstallLabel = "Quelle install.*"
+        PlanStagingLabel = "Temporärer Ordner"
+        PlanOscdimgLabel = "oscdimg-Werkzeug"
+        PlanOutputDirLabel = "Ausgabeordner"
+        SummaryStatusLabel = "Status"
+        SummaryIsoPathLabel = "Erstellte ISO"
+        SummarySizeLabel = "Größe"
+        SummaryStagingState = "Media-Ordner"
+        BaseSourceTag = "Basis-ISO"
         PreparingFolders = "Lab-Ordner werden vorbereitet"
-        MediaFolderExists = "Trabajo\media enthaelt bereits Dateien. Vor dem Kopieren der ISO-Basis bereinigen?"
-        IsoCandidates = "Verfuegbare Windows ISO/Medienquellen"
+        MediaFolderExists = "Trabajo\media enthält bereits Dateien. Vor dem Kopieren der ISO-Basis bereinigen?"
+        IsoCandidates = "Verfügbare Windows ISO/Medienquellen"
         MountedMedia = "Gemountetes Medium {0}  [{1}]"
         LabIso = "Lab-ISO {0}  [{1}]"
         ManualSource = "Gemounteten Laufwerksbuchstaben oder ISO-Pfad manuell eingeben"
@@ -260,9 +355,9 @@ Add-LabTranslations @{
         SourcePromptFallback = "Gemounteter Buchstabe oder ISO-Pfad"
         MountingIso = "ISO wird gemountet..."
         CannotGetIsoLetter = "Der Laufwerksbuchstabe der gemounteten ISO konnte nicht ermittelt werden."
-        MissingPath = "Ausgewaehltes Medium existiert nicht: {0}"
-        MediaMustIso = "Die ausgewaehlte Quelle muss eine ISO-Datei oder ein gemounteter Laufwerksbuchstabe sein."
-        MissingWindowsMedia = "Die ausgewaehlte Quelle sieht nicht wie Windows-Setup-Medium aus: {0}"
+        MissingPath = "Ausgewähltes Medium existiert nicht: {0}"
+        MediaMustIso = "Die ausgewählte Quelle muss eine ISO-Datei oder ein gemounteter Laufwerksbuchstabe sein."
+        MissingWindowsMedia = "Die ausgewählte Quelle sieht nicht wie Windows-Setup-Medium aus: {0}"
         MissingBootFile = "Erforderliche Boot-Datei fehlt: {0}"
         MissingSetup = "setup.exe fehlt: {0}"
         MissingBootWim = "sources\boot.wim fehlt."
@@ -274,37 +369,37 @@ Add-LabTranslations @{
         AskCopyBootFromIso = "Trabajo\images\boot.wim fehlt. boot.wim aus der ISO-Basis nach Trabajo\images kopieren und verwenden?"
         UsingIsoBoot = "Verwende boot.wim aus der ISO-Basis, bereits nach Trabajo\media kopiert."
         UsingLabInstall = "Verwende Trabajo\images\{0}"
-        AskCopyInstallFromIso = "Trabajo\images enthaelt kein install-Image. install-Image aus der ISO-Basis nach Trabajo\images kopieren und verwenden?"
+        AskCopyInstallFromIso = "Trabajo\images enthält kein install-Image. install-Image aus der ISO-Basis nach Trabajo\images kopieren und verwenden?"
         UsingIsoInstall = "Verwende install-Image aus der ISO-Basis, bereits nach Trabajo\media kopiert."
         MultipleInstallTypes = "Mehr als ein install.* Typ existiert in {0}. Nur einen Typ behalten: WIM, ESD oder SWM."
-        SwmMissing = "SWM-Dateien existieren in {0}, aber install.swm fehlt. Dateien muessen install.swm, install2.swm usw. heissen."
+        SwmMissing = "SWM-Dateien existieren in {0}, aber install.swm fehlt. Dateien müssen install.swm, install2.swm usw. heißen."
         ReplacingBoot = "Trabajo\media\sources\boot.wim wird ersetzt"
         ReplacingInstall = "Trabajo\media\sources\install.* wird ersetzt"
         ValidateMedia = "Vorbereitetes Medium wird validiert"
-        OscdimgMissing = "oscdimg.exe wurde nicht gefunden.`r`n`r`noscdimg.exe ist nicht im normalen Windows enthalten.`r`nEs gehoert zu Windows ADK / Deployment Tools.`r`nOhne oscdimg.exe kann dieses Lab mit diesem Ablauf keine bootfaehige ISO erstellen."
+        OscdimgMissing = "oscdimg.exe wurde nicht gefunden.`r`n`r`noscdimg.exe ist nicht im normalen Windows enthalten.`r`nEs gehört zu Windows ADK / Deployment Tools.`r`nOhne oscdimg.exe kann dieses Lab mit diesem Ablauf keine bootfähige ISO erstellen."
         OscdimgFound = "oscdimg.exe: {0}"
         OutputPrompt = "Pfad oder Name der finalen ISO (EINGABE = {0})"
-        OverwriteIso = "Die ISO existiert bereits. Ueberschreiben?"
+        OverwriteIso = "Die ISO existiert bereits. Überschreiben?"
         CreatingIso = "ISO wird mit oscdimg erstellt"
-        IsoCreated = "ISO erfolgreich erstellt:"
+        IsoCreated = "ISO erfolgreich erstellt"
         DismountingIso = "ISO wird unmountet..."
-        LargeWimNote = "Hinweis: install.wim groesser als 4 GB ist in einer ISO/UDF gueltig. Fuer ISO-Erstellung wird es nicht geteilt."
-        DoneSize = "Groesse: {0}"
-        KeepMediaQuestion = "Trabajo\media fuer manuelle Pruefung behalten?"
+        LargeWimNote = "Hinweis: install.wim größer als 4 GB ist in einer ISO/UDF gültig. Für ISO-Erstellung wird es nicht geteilt."
+        DoneSize = "Größe: {0}"
+        KeepMediaQuestion = "Trabajo\media für manuelle Prüfung behalten?"
         MediaCleaned = "Trabajo\media bereinigt."
-        MediaKept = "Trabajo\media fuer Pruefung behalten: {0}"
-        OutputInsideMedia = "Die Ausgabe-ISO darf nicht in Trabajo\media liegen, weil dieser Ordner temporaer ist."
-        MediaPathUnsafe = "Bereinigung eines media-Ordners ausserhalb von Trabajo wird verweigert: {0}"
+        MediaKept = "Trabajo\media für Prüfung behalten: {0}"
+        OutputInsideMedia = "Die Ausgabe-ISO darf nicht in Trabajo\media liegen, weil dieser Ordner temporär ist."
+        MediaPathUnsafe = "Bereinigung eines media-Ordners außerhalb von Trabajo wird verweigert: {0}"
         NoLabel = "kein Label"
         OscdimgFailed = "oscdimg ist mit Code {0} fehlgeschlagen."
         BaseMedia = "Basismedium: {0}"
         LogPath = "Log: {0}"
-        CheckCustomImages = "Benutzerdefinierte Images in Trabajo\images werden geprueft"
-        NoCustomImages = "Kein boot.wim und kein install-Image in Trabajo\images gefunden. ISO-Erstellung abgebrochen. Fuegen Sie zuerst angepasste Images hinzu; dieser Ablauf soll die Original-ISO nicht neu erstellen."
+        CheckCustomImages = "Benutzerdefinierte Images in Trabajo\images werden geprüft"
+        NoCustomImages = "Kein boot.wim und kein install-Image in Trabajo\images gefunden. ISO-Erstellung abgebrochen. Fügen Sie zuerst angepasste Images hinzu; dieser Ablauf soll die Original-ISO nicht neu erstellen."
         CustomBootFound = "Benutzerdefiniertes boot.wim: {0}"
         CustomInstallFound = "Benutzerdefiniertes install-Image: {0}"
         MissingBootUsesBase = "Trabajo\images\boot.wim fehlt. Wenn Sie fortfahren, wird boot.wim aus der Basis-ISO verwendet."
-        MissingInstallUsesBase = "Trabajo\images enthaelt kein install-Image. Wenn Sie fortfahren, wird install.* aus der Basis-ISO verwendet."
+        MissingInstallUsesBase = "Trabajo\images enthält kein install-Image. Wenn Sie fortfahren, wird install.* aus der Basis-ISO verwendet."
         ContinueWithBaseImageQuestion = "Mit fehlenden Images aus der Basis-ISO fortfahren?"
     }
 }
@@ -318,8 +413,14 @@ $MediaRoot = Join-Path $WorkRoot "media"
 $LogsRoot = Join-Path $WorkRoot "Logs"
 $LogPath = Join-Path $LogsRoot ("Crear-ISO-Win11-{0}.log" -f (Get-Date -Format "yyyyMMdd-HHmmss"))
 $script:MountedIsoPath = $null
-
 $script:IsoLogReady = $false
+
+function Ensure-Directory {
+    param([string]$Path)
+    if (-not (Test-Path -LiteralPath $Path -PathType Container)) {
+        New-Item -ItemType Directory -Path $Path -Force | Out-Null
+    }
+}
 
 function Start-IsoLog {
     Ensure-Directory -Path $LogsRoot
@@ -342,15 +443,8 @@ function Write-IsoLogRaw {
 function Write-IsoSection {
     param([string]$Key)
     $title = L $Key
-    Write-LabSection $title
+    Write-LabSubsection $title
     Write-IsoLog ("== {0} ==" -f $title)
-}
-
-function Ensure-Directory {
-    param([string]$Path)
-    if (-not (Test-Path -LiteralPath $Path -PathType Container)) {
-        New-Item -ItemType Directory -Path $Path -Force | Out-Null
-    }
 }
 
 function Get-DisplayPath {
@@ -454,9 +548,9 @@ function Select-BaseMediaSource {
     if ($options.Count -gt 0) {
         Write-IsoSection "IsoCandidates"
         for ($i = 0; $i -lt $options.Count; $i++) {
-            Write-Host ("{0,2}. {1}" -f ($i + 1), $options[$i].Text)
+            Write-Host ("  [{0,2}] {1}" -f ($i + 1), $options[$i].Text)
         }
-        Write-Host (" 0. {0}" -f (L "ManualSource"))
+        Write-Host ("  [ 0] {0}" -f (L "ManualSource"))
         Write-Host ""
         $answer = Read-Host (L "SourcePrompt")
         $number = 0
@@ -491,7 +585,7 @@ function Resolve-BaseMediaRoot {
     }
 
     Write-Host ""
-    Write-Host (L "MountingIso") -ForegroundColor Cyan
+    Write-LabInfo (L "MountingIso") Cyan
     Mount-DiskImage -ImagePath $path | Out-Null
     $script:MountedIsoPath = $path
     Start-Sleep -Seconds 2
@@ -519,14 +613,23 @@ function Get-InstallPayloadSet {
     $esd = Get-Item -LiteralPath (Join-Path $SourceDirectory "install.esd") -ErrorAction SilentlyContinue
     $swmFiles = @(Get-ChildItem -LiteralPath $SourceDirectory -File -Filter "install*.swm" -ErrorAction SilentlyContinue | Sort-Object Name)
 
-    if ($wim) { return [pscustomobject]@{ Type = "WIM"; Files = @($wim) } }
-    if ($esd) { return [pscustomobject]@{ Type = "ESD"; Files = @($esd) } }
+    $types = @()
+    if ($wim) { $types += "WIM" }
+    if ($esd) { $types += "ESD" }
     if ($swmFiles.Count -gt 0) {
         if (-not ($swmFiles | Where-Object { $_.Name -ieq "install.swm" })) {
             throw (LF "SwmMissing" $SourceDirectory)
         }
-        return [pscustomobject]@{ Type = "SWM"; Files = @($swmFiles) }
+        $types += "SWM"
     }
+
+    if ($types.Count -gt 1) {
+        throw (LF "MultipleInstallTypes" $SourceDirectory)
+    }
+
+    if ($wim) { return [pscustomobject]@{ Type = "WIM"; Files = @($wim) } }
+    if ($esd) { return [pscustomobject]@{ Type = "ESD"; Files = @($esd) } }
+    if ($swmFiles.Count -gt 0) { return [pscustomobject]@{ Type = "SWM"; Files = @($swmFiles) } }
 
     if ($AllowNone) { return $null }
     throw (L "MissingInstall")
@@ -542,7 +645,6 @@ function Get-CustomImageStatus {
 }
 
 function Assert-CustomImagesForIso {
-    Write-IsoSection "CheckCustomImages"
     $status = Get-CustomImageStatus
     $hasBoot = $null -ne $status.Boot
     $hasInstall = $null -ne $status.InstallSet
@@ -555,7 +657,7 @@ function Assert-CustomImagesForIso {
         Write-LabOk (LF "CustomBootFound" (Get-DisplayPath $status.Boot.FullName))
     }
     else {
-        Write-Host (L "MissingBootUsesBase") -ForegroundColor Yellow
+        Write-LabWarning (L "MissingBootUsesBase")
         Write-IsoLog (L "MissingBootUsesBase")
     }
 
@@ -564,7 +666,7 @@ function Assert-CustomImagesForIso {
         Write-LabOk (LF "CustomInstallFound" $installNames)
     }
     else {
-        Write-Host (L "MissingInstallUsesBase") -ForegroundColor Yellow
+        Write-LabWarning (L "MissingInstallUsesBase")
         Write-IsoLog (L "MissingInstallUsesBase")
     }
 
@@ -573,18 +675,8 @@ function Assert-CustomImagesForIso {
             throw (L "Cancelled")
         }
     }
-}
 
-function Remove-WindowsImageFiles {
-    param([string]$SourcesDirectory)
-    foreach ($name in @("boot.wim", "boot.esd", "boot.swm", "install.wim", "install.esd")) {
-        $path = Join-Path $SourcesDirectory $name
-        if (Test-Path -LiteralPath $path -PathType Leaf) {
-            try { (Get-Item -LiteralPath $path).IsReadOnly = $false } catch {}
-            Remove-Item -LiteralPath $path -Force
-        }
-    }
-    Get-ChildItem -LiteralPath $SourcesDirectory -File -Filter "install*.swm" -ErrorAction SilentlyContinue | Remove-Item -Force
+    return $status
 }
 
 function Copy-FileSimple {
@@ -595,17 +687,16 @@ function Copy-FileSimple {
     $destinationDirectory = Split-Path -Parent $Destination
     Ensure-Directory -Path $destinationDirectory
     $copyLine = "  {0} -> {1}" -f (Get-DisplayPath $Source), (Get-DisplayPath $Destination)
-    Write-Host $copyLine -ForegroundColor DarkGray
     Write-IsoLog $copyLine
-    Copy-Item -LiteralPath $Source -Destination $Destination -Force
+    Copy-LabFileWithProgress -Source $Source -Destination $Destination -Activity $copyLine | Out-Null
 }
-
 
 function Get-RobocopyPath {
     param([string]$Path)
-    if ($Path -match '^[A-Za-z]:\$') { return $Path }
+    if ($Path -match '^[A-Za-z]:\\$') { return $Path }
     return $Path.TrimEnd('\')
 }
+
 function Invoke-RobocopyMirror {
     param(
         [string]$Source,
@@ -639,17 +730,16 @@ function Prepare-BootImage {
 
     $mediaSources = Join-Path $MediaRoot "sources"
     $labBoot = Join-Path $ImagesRoot "boot.wim"
-    $isoBoot = Join-Path $BaseMediaRoot "sources\boot.wim"
     $mediaBoot = Join-Path $mediaSources "boot.wim"
 
     if (Test-Path -LiteralPath $labBoot -PathType Leaf) {
-        Write-Host (L "UsingLabBoot") -ForegroundColor Green
-        Write-Host (L "ReplacingBoot") -ForegroundColor Cyan
+        Write-LabOk (L "UsingLabBoot")
+        Write-LabInfo (L "ReplacingBoot") Cyan
         Copy-FileSimple -Source $labBoot -Destination $mediaBoot
         return
     }
 
-    Write-Host (L "UsingIsoBoot") -ForegroundColor Yellow
+    Write-LabWarning (L "UsingIsoBoot")
     Write-IsoLog (L "UsingIsoBoot")
 }
 
@@ -657,16 +747,15 @@ function Prepare-InstallImage {
     param([string]$BaseMediaRoot)
 
     $mediaSources = Join-Path $MediaRoot "sources"
-    $isoSources = Join-Path $BaseMediaRoot "sources"
     $labSet = Get-InstallPayloadSet -SourceDirectory $ImagesRoot -AllowNone
 
     if (-not $labSet) {
-        Write-Host (L "UsingIsoInstall") -ForegroundColor Yellow
+        Write-LabWarning (L "UsingIsoInstall")
         Write-IsoLog (L "UsingIsoInstall")
         return
     }
-    Write-Host (LF "UsingLabInstall" ((@($labSet.Files) | ForEach-Object Name) -join ', ')) -ForegroundColor Green
-    Write-Host (L "ReplacingInstall") -ForegroundColor Cyan
+    Write-LabOk (LF "UsingLabInstall" ((@($labSet.Files) | ForEach-Object Name) -join ', '))
+    Write-LabInfo (L "ReplacingInstall") Cyan
 
     foreach ($name in @("install.wim", "install.esd")) {
         $target = Join-Path $mediaSources $name
@@ -775,7 +864,7 @@ function Invoke-Oscdimg {
     $commandLine = '"{0}" -m {1} -u1 -udfver102 "{2}" "{3}"' -f $OscdimgPath, $bootData, $MediaRoot, $OutputIso
 
     Write-IsoSection "CreatingIso"
-    Write-Host $commandLine -ForegroundColor DarkGray
+    Write-LabCommand $commandLine
     Write-IsoLog ("oscdimg command: {0}" -f $commandLine)
 
     $previousErrorActionPreference = $ErrorActionPreference
@@ -809,24 +898,45 @@ try {
     Write-IsoLog ("Language: {0}" -f $Language)
 
     Clear-Host
-    Write-IsoSection "IsoTitle"
+    Write-LabBanner -Title (L "IsoTitle") -Subtitle $LabRoot
     Write-LabWarning (L "LargeWimNote")
 
-    Assert-CustomImagesForIso
+    Write-LabStepHeader -Step 1 -TotalSteps 6 -Title (L "StepCheckCustom")
+    $customStatus = Assert-CustomImagesForIso
 
+    Write-LabStepHeader -Step 2 -TotalSteps 6 -Title (L "StepSelectBase")
     $baseMediaRoot = Resolve-BaseMediaRoot
     Write-LabOk (LF "BaseMedia" $baseMediaRoot)
     Write-IsoLog (LF "BaseMedia" $baseMediaRoot)
 
+    $bootSourceDesc = if ($null -ne $customStatus.Boot) { Get-DisplayPath $customStatus.Boot.FullName } else { L "BaseSourceTag" }
+    $installSourceDesc = if ($null -ne $customStatus.InstallSet) {
+        ".\Trabajo\images\{0}" -f ((@($customStatus.InstallSet.Files) | ForEach-Object Name) -join ", ")
+    } else { L "BaseSourceTag" }
+    $detectedOscdimg = Resolve-OscdimgPath
+
+    Write-LabStatusPanel -Title (L "IsoPlanTitle") -Items @(
+        @{ Label = (L "PlanBaseLabel"); Value = $baseMediaRoot; Color = [ConsoleColor]::White },
+        @{ Label = (L "PlanBootLabel"); Value = $bootSourceDesc; Color = $(if ($null -ne $customStatus.Boot) { [ConsoleColor]::Green } else { [ConsoleColor]::Yellow }) },
+        @{ Label = (L "PlanInstallLabel"); Value = $installSourceDesc; Color = $(if ($null -ne $customStatus.InstallSet) { [ConsoleColor]::Green } else { [ConsoleColor]::Yellow }) },
+        @{ Label = (L "PlanStagingLabel"); Value = $MediaRoot; Color = [ConsoleColor]::Gray },
+        @{ Label = (L "PlanOscdimgLabel"); Value = $(if ($detectedOscdimg) { $detectedOscdimg } else { "oscdimg.exe (-)" }); Color = $(if ($detectedOscdimg) { [ConsoleColor]::Green } else { [ConsoleColor]::Yellow }) },
+        @{ Label = (L "PlanOutputDirLabel"); Value = $IsoRoot; Color = [ConsoleColor]::Cyan },
+        @{ Label = (L "Log"); Value = $LogPath; Color = [ConsoleColor]::DarkGray }
+    )
+
+    Write-LabStepHeader -Step 3 -TotalSteps 6 -Title (L "StepStageMedia")
     Clear-MediaFolderIfNeeded
     Invoke-RobocopyMirror -Source $baseMediaRoot -Destination $MediaRoot
 
-    Write-IsoSection "ImagesStage"
+    Write-LabStepHeader -Step 4 -TotalSteps 6 -Title (L "StepIntegrateImages")
     Prepare-BootImage -BaseMediaRoot $baseMediaRoot
     Prepare-InstallImage -BaseMediaRoot $baseMediaRoot
 
+    Write-LabStepHeader -Step 5 -TotalSteps 6 -Title (L "StepValidateMedia")
     Assert-PreparedIsoMedia
 
+    Write-LabStepHeader -Step 6 -TotalSteps 6 -Title (L "StepBuildIso")
     $oscdimg = Resolve-OscdimgPath
     if (-not $oscdimg) { throw (L "OscdimgMissing") }
     Write-LabOk (LF "OscdimgFound" $oscdimg)
@@ -837,29 +947,35 @@ try {
     Invoke-Oscdimg -OscdimgPath $oscdimg -OutputIso $outputIso
 
     $finalIso = Get-Item -LiteralPath $outputIso -ErrorAction Stop
-    Write-Host ""
-    Write-Host (L "IsoCreated") -ForegroundColor Green
-    Write-Host $finalIso.FullName -ForegroundColor Green
-    Write-Host (LF "DoneSize" (Format-LabBytes ([UInt64]$finalIso.Length))) -ForegroundColor Green
     Write-IsoLog ("SUCCESS: ISO created: {0} [{1}]" -f $finalIso.FullName, (Format-LabBytes ([UInt64]$finalIso.Length)))
-    Write-Host (LF "LogPath" $LogPath) -ForegroundColor DarkGray
 
     Write-Host ""
+    $stagingStatusText = ""
     if (Confirm-LabYesNo -Question (L "KeepMediaQuestion") -Default $false) {
-        Write-Host (LF "MediaKept" $MediaRoot) -ForegroundColor Yellow
-        Write-IsoLog (LF "MediaKept" $MediaRoot)
+        $stagingStatusText = LF "MediaKept" $MediaRoot
+        Write-IsoLog $stagingStatusText
     }
     else {
         Clear-MediaFolderContents
-        Write-Host (L "MediaCleaned") -ForegroundColor Green
-        Write-IsoLog (L "MediaCleaned")
+        $stagingStatusText = L "MediaCleaned"
+        Write-IsoLog $stagingStatusText
     }
+
+    Write-LabStatusPanel -Title (L "IsoSummaryTitle") -TitleColor Green -Items @(
+        @{ Label = (L "SummaryStatusLabel"); Value = (L "IsoCreated"); Color = [ConsoleColor]::Green },
+        @{ Label = (L "SummaryIsoPathLabel"); Value = $finalIso.FullName; Color = [ConsoleColor]::Green },
+        @{ Label = (L "SummarySizeLabel"); Value = (Format-LabBytes ([UInt64]$finalIso.Length)); Color = [ConsoleColor]::Cyan },
+        @{ Label = (L "PlanBootLabel"); Value = $bootSourceDesc; Color = [ConsoleColor]::White },
+        @{ Label = (L "PlanInstallLabel"); Value = $installSourceDesc; Color = [ConsoleColor]::White },
+        @{ Label = (L "SummaryStagingState"); Value = $stagingStatusText; Color = [ConsoleColor]::Gray },
+        @{ Label = (L "Log"); Value = $LogPath; Color = [ConsoleColor]::DarkGray }
+    )
 }
 catch {
     Write-Host ""
-    Write-Host (LF "ErrorPrefix" $_.Exception.Message) -ForegroundColor Red
+    Write-LabError (LF "ErrorPrefix" $_.Exception.Message)
     Write-IsoLog ("FAILED: {0}" -f $_.Exception.Message)
-    Write-IsoLogRaw ($_.ScriptStackTrace)
+    Write-IsoLogRaw ($_.ScriptStackTrace | Out-String)
     if ($script:IsoLogReady) {
         Write-Host (LF "LogPath" $LogPath) -ForegroundColor DarkGray
     }
@@ -867,7 +983,7 @@ catch {
 finally {
     if ($script:MountedIsoPath) {
         Write-Host ""
-        Write-Host (L "DismountingIso") -ForegroundColor Cyan
+        Write-LabInfo (L "DismountingIso") Cyan
         Write-IsoLog ("Dismounting ISO: {0}" -f $script:MountedIsoPath)
         Dismount-DiskImage -ImagePath $script:MountedIsoPath -ErrorAction SilentlyContinue
     }
@@ -875,10 +991,3 @@ finally {
     Write-Host ""
     Read-Host (L "PressEnterExit") | Out-Null
 }
-
-
-
-
-
-
-

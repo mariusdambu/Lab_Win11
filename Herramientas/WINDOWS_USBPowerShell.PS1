@@ -35,6 +35,26 @@ foreach ($root in @($IsoRoot, $ImagesRoot, $LogsRoot)) {
 
 Add-LabTranslations @{
     en = @{
+        UsbBannerTitle = "CREATE WINDOWS 11 UEFI/GPT USB"
+        StepSelectMedia = "Select source media and Windows images"
+        StepSelectDisk = "Select target USB drive and check port speed"
+        StepPlanAndConfirm = "Review execution plan and confirm disk erase"
+        StepPreparePartitions = "Clean disk and create UEFI/GPT partitions"
+        StepCopyPayload = "Copy boot files and Windows images to USB"
+        UsbPlanTitle = "USB preparation plan"
+        UsbSummaryTitle = "USB preparation summary"
+        PlanModeLabel = "Mode"
+        PlanModeFull = "Full Windows 11 USB (GPT: FAT32 + {0})"
+        PlanModePartitionsOnly = "Partitions only (GPT: FAT32 + {0})"
+        PlanMediaLabel = "Base media"
+        PlanBootLabel = "Boot image"
+        PlanInstallLabel = "Install image"
+        PlanTargetDiskLabel = "Target disk"
+        PlanUsbSpeedLabel = "USB speed"
+        PlanPartitionsLabel = "Layout"
+        SummaryBootPartLabel = "FAT32 boot partition"
+        SummaryInstallPartLabel = "Installer partition ({0})"
+        SummaryStatusLabel = "Status"
         LogStartUsb = "Start Create Win11 USB"
         MountedMediaText = "Use already mounted ISO/media {0}  [{1}, {2}]"
         LabIsoText = "Mount lab ISO {0}  [{1}]"
@@ -124,14 +144,18 @@ Add-LabTranslations @{
         UsbBootLine = "  FAT32 boot: {0}"
         UsbInstallLine = "  {0} installer: {1}"
         DismountingIso = "Unmounting ISO..."
+        PressEnterExit = "Press ENTER to exit"
         DiskColNumber = "Number"
         DiskColName = "Name"
+        DiskColBus = "Bus"
         DiskColSize = "Size"
         DiskColStyle = "Style"
         DiskColBoot = "Boot"
         DiskColSystem = "System"
+        DiskColOffline = "Offline"
         DiskColReadOnly = "ReadOnly"
         DiskColState = "State"
+        DiskColSerial = "Serial"
         PartColNumber = "Partition"
         PartColLetter = "Letter"
         PartColSize = "Size"
@@ -139,396 +163,484 @@ Add-LabTranslations @{
         PartColFs = "FileSystem"
     }
     es = @{
+        UsbBannerTitle = "CREAR USB WINDOWS 11 UEFI/GPT"
+        StepSelectMedia = "Seleccionar medio de origen e imágenes Windows"
+        StepSelectDisk = "Seleccionar disco USB y comprobar velocidad del puerto"
+        StepPlanAndConfirm = "Revisar plan de ejecución y confirmar borrado"
+        StepPreparePartitions = "Limpiar disco y crear particiones UEFI/GPT"
+        StepCopyPayload = "Copiar archivos de arranque e imágenes al USB"
+        UsbPlanTitle = "Plan de preparación del USB"
+        UsbSummaryTitle = "Resumen final del USB preparado"
+        PlanModeLabel = "Modo"
+        PlanModeFull = "USB completo Windows 11 (GPT: FAT32 + {0})"
+        PlanModePartitionsOnly = "Solo particiones (GPT: FAT32 + {0})"
+        PlanMediaLabel = "Medio base"
+        PlanBootLabel = "Imagen arranque"
+        PlanInstallLabel = "Imagen install"
+        PlanTargetDiskLabel = "Disco destino"
+        PlanUsbSpeedLabel = "Velocidad USB"
+        PlanPartitionsLabel = "Esquema"
+        SummaryBootPartLabel = "Partición arranque FAT32"
+        SummaryInstallPartLabel = "Partición instalador ({0})"
+        SummaryStatusLabel = "Estado"
         LogStartUsb = "Inicio Crear USB Win11"
         MountedMediaText = "Usar ISO/medio ya montado {0}  [{1}, {2}]"
         LabIsoText = "Montar ISO del lab {0}  [{1}]"
         NoLabel = "sin etiqueta"
-        InstallMediaAvailable = "Medio de instalacion disponible:"
+        InstallMediaAvailable = "Medio de instalación disponible:"
         ManualMediaOption = "Escribir manualmente una letra montada o una ISO del lab"
-        MountedIsoHint = "Si ya tenias la ISO montada, elige la opcion de unidad ya montada."
-        MediaPrompt = "Numero, letra montada (ej. I:) o ruta ISO"
+        MountedIsoHint = "Si ya tenías la ISO montada, elige la opción de unidad ya montada."
+        MediaPrompt = "Número, letra montada (ej. I:) o ruta ISO"
         MediaPromptFallback = "Letra ya montada o ISO dentro de {0}, ejemplo I: o {0}\Win11.iso"
         MissingBootWim = "El medio {0} no parece instalador Windows. Falta sources\boot.wim."
         MissingInstallImage = "El medio {0} no tiene sources\install.wim, sources\install.esd ni sources\install.swm."
         MediaNotFound = "No existe el medio indicado: {0}"
         MediaMustIso = "El medio debe ser una ISO o una letra ya montada."
-        IsoMustBeInside = "La ISO debe estar dentro de {0}. Copiala ahi primero para mantener limpio el lab."
+        IsoMustBeInside = "La ISO debe estar dentro de {0}. Cópiala ahí primero para mantener limpio el lab."
         MountingIso = "Montando ISO..."
         CannotGetIsoLetter = "No pude obtener la letra de la ISO montada."
-        BootOtherWarning = "Aviso: para arrancar uso boot.wim exacto; no usare otros boot.* de images."
+        BootOtherWarning = "Aviso: para arrancar uso boot.wim exacto; no usaré otros boot.* de images."
         SourceMountedIso = "ISO montada"
         SourceLabImages = "Trabajo\images"
-        BootSelectionTitle = "Origenes boot.wim disponibles:"
-        BootSelectionPrompt = "Opcion de arranque (INTRO = {0})"
-        BootSelectionInvalid = "Opcion boot no valida."
+        BootSelectionTitle = "Orígenes boot.wim disponibles:"
+        BootSelectionPrompt = "Opción de arranque (INTRO = {0})"
+        BootSelectionInvalid = "Opción boot no válida."
         BootCopiesAs = "se copia como sources\boot.wim"
         SwmMissing = "Hay SWM en {0}, pero falta install.swm. Deben estar install.swm, install2.swm, etc."
-        MultipleInstallTypes = "Hay mas de un tipo de install.* en {0} ({1}). Deja solo WIM, solo ESD o solo SWM."
+        MultipleInstallTypes = "Hay más de un tipo de install.* en {0} ({1}). Deja solo WIM, solo ESD o solo SWM."
         NoInstallPayload = "No encuentro install.wim, install.esd ni install*.swm en {0} ni en {1}."
         DiskReadFailed = "No pude leer la lista de discos."
         DisksAvailable = "Discos disponibles:"
-        DiskNumberPrompt = "Numero del USB que se va a BORRAR"
-        InvalidDiskNumber = "Numero de disco no valido."
+        DiskNumberPrompt = "Número del USB que se va a BORRAR"
+        InvalidDiskNumber = "Número de disco no válido."
         RefuseSystemDisk = "El disco {0} es de arranque/sistema. No lo voy a tocar."
         NoPartitionsVisible = "  Sin particiones visibles."
         NotExternalWarn1 = "AVISO: este disco no aparece como USB/SD/MMC."
         NotExternalWarn2 = "Windows lo muestra como BusType: {0}"
-        NotExternalWarn3 = "Si es una caja USB o adaptador, puede ser normal. Si no estas seguro, cancela."
+        NotExternalWarn3 = "Si es una caja USB o adaptador, puede ser normal. Si no estás seguro, cancela."
         UnderstandDisk = "ENTIENDO DISCO {0}"
         TypeExactToContinue = "Escribe exactamente '{0}' para seguir con este disco"
-        CancelNotUsb = "Cancelado porque el disco no parecia USB."
+        CancelNotUsb = "Cancelado porque el disco no parecía USB."
         RunningDiskPart = "Ejecutando DiskPart: {0}"
-        DiskPartFailed = "DiskPart fallo. Revisa {0}"
+        DiskPartFailed = "DiskPart falló. Revisa {0}"
         CleanRetry = "Reintentando limpiar el USB ({0}/{1})..."
-        CleanAttemptFailed = "El intento de clean {0} fallo. Revisa {1}"
-        CleanManualTitle = "Windows sigue sin poder limpiar el USB automaticamente."
-        CleanManualHelp1 = "Puedes desconectar/conectar el USB o limpiarlo manualmente con Administracion de discos/DiskPart."
-        CleanManualHelp2 = "No cierres esta ventana. Cuando el USB este preparado, vuelve aqui."
+        CleanAttemptFailed = "El intento de clean {0} falló. Revisa {1}"
+        CleanManualTitle = "Windows sigue sin poder limpiar el USB automáticamente."
+        CleanManualHelp1 = "Puedes desconectar/conectar el USB o limpiarlo manualmente con Administración de discos/DiskPart."
+        CleanManualHelp2 = "No cierres esta ventana. Cuando el USB esté preparado, vuelve aquí."
         CleanManualPrompt = "Pulsa INTRO para comprobar el USB y continuar"
         CleaningDisk = "Limpiando disco {0}..."
         StateAfterClean = "Estado tras clean: {0}"
         InitGpt = "Inicializando disco {0} como GPT para UEFI..."
         ConvertGpt = "Convirtiendo disco {0} de MBR a GPT para UEFI..."
-        AlreadyGpt = "El disco {0} ya esta GPT despues de clean; continuo."
-        UnexpectedStyle = "Estado de particion inesperado despues de clean: {0}"
-        NotGpt = "El disco {0} no quedo como GPT. Estado actual: {1}"
-        StillPartitions = "El disco {0} todavia tiene particiones despues de limpiar/inicializar. No continuo."
+        AlreadyGpt = "El disco {0} ya está GPT después de clean; continúo."
+        UnexpectedStyle = "Estado de partición inesperado después de clean: {0}"
+        NotGpt = "El disco {0} no quedó como GPT. Estado actual: {1}"
+        StillPartitions = "El disco {0} todavía tiene particiones después de limpiar/inicializar. No continúo."
         SelectedDisk = "DISCO SELECCIONADO:"
         CurrentPartitions = "Particiones actuales:"
         ErasePhrase = "BORRAR DISCO {0}"
-        DeleteWarning = "Esto eliminara todas las particiones del disco {0}."
+        DeleteWarning = "Esto eliminará todas las particiones del disco {0}."
         ErasePrompt = "Escribe exactamente '{0}' para continuar"
-        CancelBadConfirm = "Cancelado por confirmacion incorrecta."
-        RobocopyFailed = "Robocopy fallo con codigo {0}."
+        CancelBadConfirm = "Cancelado por confirmación incorrecta."
+        RobocopyFailed = "Robocopy falló con código {0}."
         CopyBootSkeleton = "Copiando arranque FAT32 sin sources completo..."
         CopyBootWimToFat32 = "Copiando el boot.wim elegido a sources de FAT32..."
-        BootCopyMissing = "No se copio boot.wim en {0}."
-        BootCopySizeMismatch = "El tamano de boot.wim no coincide. Origen: {0}. Destino: {1}."
+        BootCopyMissing = "No se copió boot.wim en {0}."
+        BootCopySizeMismatch = "El tamaño de boot.wim no coincide. Origen: {0}. Destino: {1}."
         BootCopyDone = "boot.wim copiado a FAT32: {0} [{1}]"
         CopyInstallFrom = "Copiando install.* desde {0} a {1}..."
-        InstallCopyMissing = "No se copio {0} en {1}."
-        InstallCopySizeMismatch = "El tamano de {0} no coincide. Origen: {1}. Destino: {2}."
+        InstallCopyMissing = "No se copió {0} en {1}."
+        InstallCopySizeMismatch = "El tamaño de {0} no coincide. Origen: {1}. Destino: {2}."
         InstallCopyDone = "{0} copiado a {1}: {2} [{3}]"
-        InstallMedia = "Medio de instalacion: {0}"
+        InstallMedia = "Medio de instalación: {0}"
         BootLine = "Boot.wim: {0} ({1})"
         InstallLine = "Install.*: {0} ({1}: {2})"
         PreparingDisk = "Preparando disco..."
-        CreatingBootPartition = "Creando particion FAT32 de arranque ({0} MB)..."
-        CreatingInstallPartition = "Creando particion {0} Basic Data para instalador..."
+        CreatingBootPartition = "Creando partición FAT32 de arranque ({0} MB)..."
+        CreatingInstallPartition = "Creando partición {0} Basic Data para instalador..."
         CannotGetLetters = "No pude obtener las letras asignadas a las particiones creadas."
         PartitionsCreated = "Particiones creadas:"
         Fat32BootLine = "  FAT32: {0}"
         InstallPartitionLine = "  {0}: {1}"
         CopyIsoSkeleton = "Copiando esqueleto de la ISO al {0} sin boot.wim/install.*..."
         UsbReady = "USB Windows 11 preparado."
-        UsbCopySummary = "Copia de imagenes finalizada:"
+        UsbCopySummary = "Copia de imágenes finalizada:"
         UsbBootWimCopied = "  boot.wim -> FAT32: {0} [{1}]"
         UsbInstallCopied = "  {0} -> {1}: {2} [{3}]"
         UsbPartitionsSummary = "Particiones:"
         UsbBootLine = "  FAT32 arranque: {0}"
         UsbInstallLine = "  {0} instalador: {1}"
         DismountingIso = "Desmontando ISO..."
-        DiskColNumber = "Numero"
+        PressEnterExit = "Pulsa INTRO para salir"
+        DiskColNumber = "Número"
         DiskColName = "Nombre"
-        DiskColSize = "Tamano"
+        DiskColBus = "Bus"
+        DiskColSize = "Tamaño"
         DiskColStyle = "Estilo"
         DiskColBoot = "Arranque"
         DiskColSystem = "Sistema"
+        DiskColOffline = "Offline"
         DiskColReadOnly = "SoloLectura"
         DiskColState = "Estado"
-        PartColNumber = "Particion"
+        DiskColSerial = "Serie"
+        PartColNumber = "Partición"
         PartColLetter = "Letra"
-        PartColSize = "Tamano"
+        PartColSize = "Tamaño"
         PartColLabel = "Etiqueta"
         PartColFs = "Sistema"
     }
-}
-Add-LabTranslations @{
     fr = @{
-        LogStartUsb = "Debut creation USB Win11"
-        MountedMediaText = "Utiliser ISO/media deja monte {0}  [{1}, {2}]"
+        UsbBannerTitle = "CRÉER CLÉ USB WINDOWS 11 UEFI/GPT"
+        StepSelectMedia = "Sélectionner le média source et les images Windows"
+        StepSelectDisk = "Sélectionner la clé USB et vérifier la vitesse du port"
+        StepPlanAndConfirm = "Vérifier le plan d'exécution et confirmer l'effacement"
+        StepPreparePartitions = "Nettoyer le disque et créer les partitions UEFI/GPT"
+        StepCopyPayload = "Copier les fichiers de démarrage et les images sur la clé USB"
+        UsbPlanTitle = "Plan de préparation USB"
+        UsbSummaryTitle = "Résumé final de la clé USB"
+        PlanModeLabel = "Mode"
+        PlanModeFull = "Clé USB complète Windows 11 (GPT : FAT32 + {0})"
+        PlanModePartitionsOnly = "Partitions uniquement (GPT : FAT32 + {0})"
+        PlanMediaLabel = "Média de base"
+        PlanBootLabel = "Image de démarrage"
+        PlanInstallLabel = "Image d'installation"
+        PlanTargetDiskLabel = "Disque cible"
+        PlanUsbSpeedLabel = "Vitesse USB"
+        PlanPartitionsLabel = "Schéma"
+        SummaryBootPartLabel = "Partition démarrage FAT32"
+        SummaryInstallPartLabel = "Partition installateur ({0})"
+        SummaryStatusLabel = "État"
+        LogStartUsb = "Début création USB Win11"
+        MountedMediaText = "Utiliser ISO/média déjà monté {0}  [{1}, {2}]"
         LabIsoText = "Monter l'ISO du lab {0}  [{1}]"
-        NoLabel = "sans etiquette"
-        InstallMediaAvailable = "Media d'installation disponible:"
-        ManualMediaOption = "Taper manuellement une lettre montee ou une ISO du lab"
-        MountedIsoHint = "Si l'ISO est deja montee, choisissez l'option de lecteur monte."
-        MediaPrompt = "Numero, lettre montee (ex. I:) ou chemin ISO"
-        MediaPromptFallback = "Lettre deja montee ou ISO dans {0}, exemple I: ou {0}\Win11.iso"
-        MissingBootWim = "Le media {0} ne ressemble pas a un installateur Windows. sources\boot.wim manque."
-        MissingInstallImage = "Le media {0} ne contient pas sources\install.wim, sources\install.esd ni sources\install.swm."
-        MediaNotFound = "Le media indique n'existe pas: {0}"
-        MediaMustIso = "Le media doit etre une ISO ou une lettre deja montee."
-        IsoMustBeInside = "L'ISO doit etre dans {0}. Copiez-la la d'abord pour garder le lab propre."
+        NoLabel = "sans étiquette"
+        InstallMediaAvailable = "Média d'installation disponible :"
+        ManualMediaOption = "Taper manuellement une lettre montée ou une ISO du lab"
+        MountedIsoHint = "Si l'ISO est déjà montée, choisissez l'option de lecteur monté."
+        MediaPrompt = "Numéro, lettre montée (ex. I:) ou chemin ISO"
+        MediaPromptFallback = "Lettre déjà montée ou ISO dans {0}, exemple I: ou {0}\Win11.iso"
+        MissingBootWim = "Le média {0} ne ressemble pas à un installateur Windows. sources\boot.wim manque."
+        MissingInstallImage = "Le média {0} ne contient pas sources\install.wim, sources\install.esd ni sources\install.swm."
+        MediaNotFound = "Le média indiqué n'existe pas : {0}"
+        MediaMustIso = "Le média doit être une ISO ou une lettre déjà montée."
+        IsoMustBeInside = "L'ISO doit être dans {0}. Copiez-la là d'abord pour garder le lab propre."
         MountingIso = "Montage de l'ISO..."
-        CannotGetIsoLetter = "Impossible d'obtenir la lettre de l'ISO montee."
-        BootOtherWarning = "Avis: pour demarrer j'utilise boot.wim exact; les autres boot.* de images ne seront pas utilises."
-        SourceMountedIso = "ISO montee"
+        CannotGetIsoLetter = "Impossible d'obtenir la lettre de l'ISO montée."
+        BootOtherWarning = "Avis : pour démarrer j'utilise boot.wim exact ; les autres boot.* de images ne seront pas utilisés."
+        SourceMountedIso = "ISO montée"
         SourceLabImages = "Trabajo\images"
-        BootSelectionTitle = "Sources boot.wim disponibles:"
+        BootSelectionTitle = "Sources boot.wim disponibles :"
         BootSelectionPrompt = "Option de démarrage (ENTRÉE = {0})"
         BootSelectionInvalid = "Option boot invalide."
-        BootCopiesAs = "copie comme sources\boot.wim"
-        SwmMissing = "Il y a du SWM dans {0}, mais install.swm manque. Les fichiers doivent etre install.swm, install2.swm, etc."
+        BootCopiesAs = "copié comme sources\boot.wim"
+        SwmMissing = "Il y a du SWM dans {0}, mais install.swm manque. Les fichiers doivent être install.swm, install2.swm, etc."
         MultipleInstallTypes = "Il y a plusieurs types install.* dans {0} ({1}). Laissez seulement WIM, seulement ESD ou seulement SWM."
         NoInstallPayload = "Je ne trouve pas install.wim, install.esd ni install*.swm dans {0} ni dans {1}."
         DiskReadFailed = "Impossible de lire la liste des disques."
-        DisksAvailable = "Disques disponibles:"
-        DiskNumberPrompt = "Numero de la cle USB qui SERA EFFACEE"
-        InvalidDiskNumber = "Numero de disque invalide."
-        RefuseSystemDisk = "Le disque {0} est de demarrage/systeme. Je ne le toucherai pas."
+        DisksAvailable = "Disques disponibles :"
+        DiskNumberPrompt = "Numéro de la clé USB qui SERA EFFACÉE"
+        InvalidDiskNumber = "Numéro de disque invalide."
+        RefuseSystemDisk = "Le disque {0} est de démarrage/système. Je ne le toucherai pas."
         NoPartitionsVisible = "  Aucune partition visible."
-        NotExternalWarn1 = "AVIS: ce disque n'apparait pas comme USB/SD/MMC."
-        NotExternalWarn2 = "Windows affiche BusType: {0}"
-        NotExternalWarn3 = "Si c'est un boitier USB ou adaptateur, cela peut etre normal. Si vous doutez, annulez."
+        NotExternalWarn1 = "AVIS : ce disque n'apparaît pas comme USB/SD/MMC."
+        NotExternalWarn2 = "Windows affiche BusType : {0}"
+        NotExternalWarn3 = "Si c'est un boîtier USB ou adaptateur, cela peut être normal. Si vous doutez, annulez."
         UnderstandDisk = "JE COMPRENDS DISQUE {0}"
         TypeExactToContinue = "Tapez exactement '{0}' pour continuer avec ce disque"
-        CancelNotUsb = "Annule car le disque ne semblait pas USB."
-        RunningDiskPart = "Execution de DiskPart: {0}"
-        DiskPartFailed = "DiskPart a echoue. Revoyez {0}"
+        CancelNotUsb = "Annulé car le disque ne semblait pas USB."
+        RunningDiskPart = "Exécution de DiskPart : {0}"
+        DiskPartFailed = "DiskPart a échoué. Revoyez {0}"
         CleanRetry = "Nouvel essai de nettoyage USB ({0}/{1})..."
-        CleanAttemptFailed = "La tentative clean {0} a echoue. Revoyez {1}"
-        CleanManualTitle = "Windows ne peut toujours pas nettoyer la cle USB automatiquement."
-        CleanManualHelp1 = "Vous pouvez debrancher/rebrancher la cle USB ou la nettoyer manuellement avec Gestion des disques/DiskPart."
-        CleanManualHelp2 = "Ne fermez pas cette fenetre. Quand la cle USB est prete, revenez ici."
+        CleanAttemptFailed = "La tentative clean {0} a échoué. Revoyez {1}"
+        CleanManualTitle = "Windows ne peut toujours pas nettoyer la clé USB automatiquement."
+        CleanManualHelp1 = "Vous pouvez débrancher/rebrancher la clé USB ou la nettoyer manuellement avec Gestion des disques/DiskPart."
+        CleanManualHelp2 = "Ne fermez pas cette fenêtre. Quand la clé USB est prête, revenez ici."
         CleanManualPrompt = "Appuyez sur ENTRÉE pour vérifier la clé USB et continuer"
         CleaningDisk = "Nettoyage du disque {0}..."
-        StateAfterClean = "Etat apres clean: {0}"
+        StateAfterClean = "État après clean : {0}"
         InitGpt = "Initialisation du disque {0} en GPT pour UEFI..."
         ConvertGpt = "Conversion du disque {0} de MBR vers GPT pour UEFI..."
-        AlreadyGpt = "Le disque {0} est deja GPT apres clean; je continue."
-        UnexpectedStyle = "Style de partition inattendu apres clean: {0}"
-        NotGpt = "Le disque {0} n'est pas reste en GPT. Etat actuel: {1}"
-        StillPartitions = "Le disque {0} a encore des partitions apres nettoyage/initialisation. Je ne continue pas."
-        SelectedDisk = "DISQUE SELECTIONNE:"
-        CurrentPartitions = "Partitions actuelles:"
+        AlreadyGpt = "Le disque {0} est déjà GPT après clean ; je continue."
+        UnexpectedStyle = "Style de partition inattendu après clean : {0}"
+        NotGpt = "Le disque {0} n'est pas resté en GPT. État actuel : {1}"
+        StillPartitions = "Le disque {0} a encore des partitions après nettoyage/initialisation. Je ne continue pas."
+        SelectedDisk = "DISQUE SÉLECTIONNÉ :"
+        CurrentPartitions = "Partitions actuelles :"
         ErasePhrase = "EFFACER DISQUE {0}"
         DeleteWarning = "Cela supprimera toutes les partitions du disque {0}."
         ErasePrompt = "Tapez exactement '{0}' pour continuer"
-        CancelBadConfirm = "Annule car la confirmation etait incorrecte."
-        RobocopyFailed = "Robocopy a echoue avec le code {0}."
-        CopyBootSkeleton = "Copie du demarrage FAT32 sans sources complet..."
+        CancelBadConfirm = "Annulé car la confirmation était incorrecte."
+        RobocopyFailed = "Robocopy a échoué avec le code {0}."
+        CopyBootSkeleton = "Copie du démarrage FAT32 sans sources complet..."
         CopyBootWimToFat32 = "Copie du boot.wim choisi vers sources FAT32..."
-        BootCopyMissing = "boot.wim n'a pas ete copie vers {0}."
-        BootCopySizeMismatch = "La taille de boot.wim ne correspond pas. Source: {0}. Destination: {1}."
-        BootCopyDone = "boot.wim copie vers FAT32: {0} [{1}]"
+        BootCopyMissing = "boot.wim n'a pas été copié vers {0}."
+        BootCopySizeMismatch = "La taille de boot.wim ne correspond pas. Source : {0}. Destination : {1}."
+        BootCopyDone = "boot.wim copié vers FAT32 : {0} [{1}]"
         CopyInstallFrom = "Copie de install.* depuis {0} vers {1}..."
-        InstallCopyMissing = "{0} n'a pas ete copie vers {1}."
-        InstallCopySizeMismatch = "La taille de {0} ne correspond pas. Source: {1}. Destination: {2}."
-        InstallCopyDone = "{0} copie vers {1}: {2} [{3}]"
-        InstallMedia = "Media d'installation: {0}"
-        BootLine = "Boot.wim: {0} ({1})"
-        InstallLine = "Install.*: {0} ({1}: {2})"
-        PreparingDisk = "Preparation du disque..."
-        CreatingBootPartition = "Creation de la partition FAT32 de demarrage ({0} MB)..."
-        CreatingInstallPartition = "Creation de la partition installateur {0} Basic Data..."
-        CannotGetLetters = "Impossible d'obtenir les lettres assignees aux partitions creees."
-        PartitionsCreated = "Partitions creees:"
-        Fat32BootLine = "  FAT32: {0}"
-        InstallPartitionLine = "  {0}: {1}"
+        InstallCopyMissing = "{0} n'a pas été copié vers {1}."
+        InstallCopySizeMismatch = "La taille de {0} ne correspond pas. Source : {1}. Destination : {2}."
+        InstallCopyDone = "{0} copié vers {1} : {2} [{3}]"
+        InstallMedia = "Média d'installation : {0}"
+        BootLine = "Boot.wim : {0} ({1})"
+        InstallLine = "Install.* : {0} ({1} : {2})"
+        PreparingDisk = "Préparation du disque..."
+        CreatingBootPartition = "Création de la partition FAT32 de démarrage ({0} MB)..."
+        CreatingInstallPartition = "Création de la partition installateur {0} Basic Data..."
+        CannotGetLetters = "Impossible d'obtenir les lettres assignées aux partitions créées."
+        PartitionsCreated = "Partitions créées :"
+        Fat32BootLine = "  FAT32 : {0}"
+        InstallPartitionLine = "  {0} : {1}"
         CopyIsoSkeleton = "Copie du squelette ISO vers {0} sans boot.wim/install.*..."
-        UsbReady = "USB Windows 11 prepare."
-        UsbCopySummary = "Copie des images terminee:"
-        UsbBootWimCopied = "  boot.wim -> FAT32: {0} [{1}]"
-        UsbInstallCopied = "  {0} -> {1}: {2} [{3}]"
-        UsbPartitionsSummary = "Partitions:"
-        UsbBootLine = "  Demarrage FAT32: {0}"
-        UsbInstallLine = "  Installateur {0}: {1}"
-        DismountingIso = "Demontage de l'ISO..."
+        UsbReady = "USB Windows 11 préparé."
+        UsbCopySummary = "Copie des images terminée :"
+        UsbBootWimCopied = "  boot.wim -> FAT32 : {0} [{1}]"
+        UsbInstallCopied = "  {0} -> {1} : {2} [{3}]"
+        UsbPartitionsSummary = "Partitions :"
+        UsbBootLine = "  Démarrage FAT32 : {0}"
+        UsbInstallLine = "  Installateur {0} : {1}"
+        DismountingIso = "Démontage de l'ISO..."
         PressEnterExit = "Appuyez sur ENTRÉE pour quitter"
-        DiskColNumber = "Numero"
+        DiskColNumber = "Numéro"
         DiskColName = "Nom"
+        DiskColBus = "Bus"
         DiskColSize = "Taille"
         DiskColStyle = "Style"
-        DiskColBoot = "Demarrage"
-        DiskColSystem = "Systeme"
+        DiskColBoot = "Démarrage"
+        DiskColSystem = "Système"
+        DiskColOffline = "HorsLigne"
         DiskColReadOnly = "LectureSeule"
-        DiskColState = "Etat"
+        DiskColState = "État"
+        DiskColSerial = "Série"
         PartColNumber = "Partition"
         PartColLetter = "Lettre"
         PartColSize = "Taille"
-        PartColLabel = "Etiquette"
-        PartColFs = "Systeme"
+        PartColLabel = "Étiquette"
+        PartColFs = "Système"
     }
     ro = @{
+        UsbBannerTitle = "CREARE USB WINDOWS 11 UEFI/GPT"
+        StepSelectMedia = "Selectare mediu sursă și imagini Windows"
+        StepSelectDisk = "Selectare disc USB și verificare viteză port"
+        StepPlanAndConfirm = "Verificare plan de execuție și confirmare ștergere"
+        StepPreparePartitions = "Curățare disc și creare partiții UEFI/GPT"
+        StepCopyPayload = "Copiere fișiere de boot și imagini pe USB"
+        UsbPlanTitle = "Plan de pregătire USB"
+        UsbSummaryTitle = "Rezumat final USB pregătit"
+        PlanModeLabel = "Mod"
+        PlanModeFull = "USB complet Windows 11 (GPT: FAT32 + {0})"
+        PlanModePartitionsOnly = "Doar partiții (GPT: FAT32 + {0})"
+        PlanMediaLabel = "Mediu de bază"
+        PlanBootLabel = "Imagine boot"
+        PlanInstallLabel = "Imagine install"
+        PlanTargetDiskLabel = "Disc țintă"
+        PlanUsbSpeedLabel = "Viteză USB"
+        PlanPartitionsLabel = "Schemă"
+        SummaryBootPartLabel = "Partiție boot FAT32"
+        SummaryInstallPartLabel = "Partiție instalator ({0})"
+        SummaryStatusLabel = "Stare"
         LogStartUsb = "Start creare USB Win11"
-        MountedMediaText = "Foloseste ISO/mediu deja montat {0}  [{1}, {2}]"
-        LabIsoText = "Monteaza ISO din lab {0}  [{1}]"
-        NoLabel = "fara eticheta"
+        MountedMediaText = "Folosește ISO/mediu deja montat {0}  [{1}, {2}]"
+        LabIsoText = "Montează ISO din lab {0}  [{1}]"
+        NoLabel = "fără etichetă"
         InstallMediaAvailable = "Medii de instalare disponibile:"
-        ManualMediaOption = "Scrie manual o litera montata sau un ISO din lab"
-        MountedIsoHint = "Daca ISO-ul este deja montat, alege optiunea de unitate montata."
-        MediaPrompt = "Numar, litera montata (ex. I:) sau cale ISO"
-        MediaPromptFallback = "Litera deja montata sau ISO in {0}, exemplu I: sau {0}\Win11.iso"
-        MissingBootWim = "Mediul {0} nu pare instalator Windows. Lipseste sources\boot.wim."
+        ManualMediaOption = "Scrie manual o literă montată sau un ISO din lab"
+        MountedIsoHint = "Dacă ISO-ul este deja montat, alege opțiunea de unitate montată."
+        MediaPrompt = "Număr, literă montată (ex. I:) sau cale ISO"
+        MediaPromptFallback = "Literă deja montată sau ISO în {0}, exemplu I: sau {0}\Win11.iso"
+        MissingBootWim = "Mediul {0} nu pare instalator Windows. Lipsește sources\boot.wim."
         MissingInstallImage = "Mediul {0} nu are sources\install.wim, sources\install.esd sau sources\install.swm."
-        MediaNotFound = "Mediul indicat nu exista: {0}"
-        MediaMustIso = "Mediul trebuie sa fie un ISO sau o litera deja montata."
-        IsoMustBeInside = "ISO-ul trebuie sa fie in {0}. Copiaza-l acolo intai pentru a pastra labul curat."
+        MediaNotFound = "Mediul indicat nu există: {0}"
+        MediaMustIso = "Mediul trebuie să fie un ISO sau o literă deja montată."
+        IsoMustBeInside = "ISO-ul trebuie să fie în {0}. Copiază-l acolo întâi pentru a păstra labul curat."
         MountingIso = "Montez ISO..."
-        CannotGetIsoLetter = "Nu am putut obtine litera ISO-ului montat."
+        CannotGetIsoLetter = "Nu am putut obține litera ISO-ului montat."
         BootOtherWarning = "Avertisment: pentru boot folosesc exact boot.wim; alte boot.* din images nu vor fi folosite."
         SourceMountedIso = "ISO montat"
         SourceLabImages = "Trabajo\images"
         BootSelectionTitle = "Surse boot.wim disponibile:"
         BootSelectionPrompt = "Opțiune de pornire (ENTER = {0})"
-        BootSelectionInvalid = "Optiune boot nevalida."
-        BootCopiesAs = "se copiaza ca sources\boot.wim"
-        SwmMissing = "Exista SWM in {0}, dar lipseste install.swm. Trebuie sa fie install.swm, install2.swm, etc."
-        MultipleInstallTypes = "Exista mai multe tipuri install.* in {0} ({1}). Lasa doar WIM, doar ESD sau doar SWM."
-        NoInstallPayload = "Nu gasesc install.wim, install.esd sau install*.swm in {0} sau {1}."
+        BootSelectionInvalid = "Opțiune boot nevalidă."
+        BootCopiesAs = "se copiază ca sources\boot.wim"
+        SwmMissing = "Există SWM în {0}, dar lipsește install.swm. Trebuie să fie install.swm, install2.swm, etc."
+        MultipleInstallTypes = "Există mai multe tipuri install.* în {0} ({1}). Lasă doar WIM, doar ESD sau doar SWM."
+        NoInstallPayload = "Nu găsesc install.wim, install.esd sau install*.swm în {0} sau {1}."
         DiskReadFailed = "Nu am putut citi lista de discuri."
         DisksAvailable = "Discuri disponibile:"
-        DiskNumberPrompt = "Numarul USB-ului care VA FI STERS"
-        InvalidDiskNumber = "Numar de disc invalid."
-        RefuseSystemDisk = "Discul {0} este de boot/sistem. Nu il ating."
-        NoPartitionsVisible = "  Fara partitii vizibile."
+        DiskNumberPrompt = "Numărul USB-ului care VA FI ȘTERS"
+        InvalidDiskNumber = "Număr de disc invalid."
+        RefuseSystemDisk = "Discul {0} este de boot/sistem. Nu îl ating."
+        NoPartitionsVisible = "  Fără partiții vizibile."
         NotExternalWarn1 = "AVERTISMENT: acest disc nu apare ca USB/SD/MMC."
-        NotExternalWarn2 = "Windows arata BusType: {0}"
-        NotExternalWarn3 = "Daca este o carcasa USB sau adaptor, poate fi normal. Daca nu esti sigur, anuleaza."
+        NotExternalWarn2 = "Windows arată BusType: {0}"
+        NotExternalWarn3 = "Dacă este o carcasă USB sau adaptor, poate fi normal. Dacă nu ești sigur, anulează."
         UnderstandDisk = "INTELEG DISC {0}"
-        TypeExactToContinue = "Tasteaza exact '{0}' pentru a continua cu acest disc"
-        CancelNotUsb = "Anulat deoarece discul nu parea USB."
+        TypeExactToContinue = "Tastează exact '{0}' pentru a continua cu acest disc"
+        CancelNotUsb = "Anulat deoarece discul nu părea USB."
         RunningDiskPart = "Rulez DiskPart: {0}"
-        DiskPartFailed = "DiskPart a esuat. Verifica {0}"
-        CleanRetry = "Reincerc curatarea USB ({0}/{1})..."
-        CleanAttemptFailed = "Incercarea clean {0} a esuat. Verifica {1}"
-        CleanManualTitle = "Windows inca nu poate curata USB-ul automat."
-        CleanManualHelp1 = "Poti scoate/reconecta USB-ul sau il poti curata manual cu Disk Management/DiskPart."
-        CleanManualHelp2 = "Nu inchide aceasta fereastra. Cand USB-ul este gata, revino aici."
+        DiskPartFailed = "DiskPart a eșuat. Verifică {0}"
+        CleanRetry = "Reîncerc curățarea USB ({0}/{1})..."
+        CleanAttemptFailed = "Încercarea clean {0} a eșuat. Verifică {1}"
+        CleanManualTitle = "Windows încă nu poate curăța USB-ul automat."
+        CleanManualHelp1 = "Poți scoate/reconecta USB-ul sau îl poți curăța manual cu Disk Management/DiskPart."
+        CleanManualHelp2 = "Nu închide această fereastră. Când USB-ul este gata, revino aici."
         CleanManualPrompt = "Apasă ENTER pentru a verifica USB-ul și a continua"
-        CleaningDisk = "Curat discul {0}..."
-        StateAfterClean = "Stare dupa clean: {0}"
-        InitGpt = "Initializez discul {0} ca GPT pentru UEFI..."
-        ConvertGpt = "Convertesc discul {0} din MBR in GPT pentru UEFI..."
-        AlreadyGpt = "Discul {0} este deja GPT dupa clean; continui."
-        UnexpectedStyle = "Stil de partitie neasteptat dupa clean: {0}"
-        NotGpt = "Discul {0} nu a ramas GPT. Stare curenta: {1}"
-        StillPartitions = "Discul {0} inca are partitii dupa curatare/initializare. Nu continui."
+        CleaningDisk = "Curăț discul {0}..."
+        StateAfterClean = "Stare după clean: {0}"
+        InitGpt = "Inițializez discul {0} ca GPT pentru UEFI..."
+        ConvertGpt = "Convertesc discul {0} din MBR în GPT pentru UEFI..."
+        AlreadyGpt = "Discul {0} este deja GPT după clean; continui."
+        UnexpectedStyle = "Stil de partiție neașteptat după clean: {0}"
+        NotGpt = "Discul {0} nu a rămas GPT. Stare curentă: {1}"
+        StillPartitions = "Discul {0} încă are partiții după curățare/inițializare. Nu continui."
         SelectedDisk = "DISC SELECTAT:"
-        CurrentPartitions = "Partitii curente:"
+        CurrentPartitions = "Partiții curente:"
         ErasePhrase = "STERGE DISC {0}"
-        DeleteWarning = "Aceasta va elimina toate partitiile de pe discul {0}."
-        ErasePrompt = "Tasteaza exact '{0}' pentru a continua"
-        CancelBadConfirm = "Anulat din cauza confirmarii incorecte."
-        RobocopyFailed = "Robocopy a esuat cu codul {0}."
-        CopyBootSkeleton = "Copiez boot FAT32 fara sources complet..."
-        CopyBootWimToFat32 = "Copiez boot.wim ales in sources FAT32..."
-        BootCopyMissing = "boot.wim nu a fost copiat in {0}."
-        BootCopySizeMismatch = "Dimensiunea boot.wim nu coincide. Sursa: {0}. Destinatie: {1}."
-        BootCopyDone = "boot.wim copiat in FAT32: {0} [{1}]"
-        CopyInstallFrom = "Copiez install.* din {0} in {1}..."
-        InstallCopyMissing = "{0} nu a fost copiat in {1}."
-        InstallCopySizeMismatch = "Dimensiunea {0} nu coincide. Sursa: {1}. Destinatie: {2}."
-        InstallCopyDone = "{0} copiat in {1}: {2} [{3}]"
+        DeleteWarning = "Aceasta va elimina toate partițiile de pe discul {0}."
+        ErasePrompt = "Tastează exact '{0}' pentru a continua"
+        CancelBadConfirm = "Anulat din cauza confirmării incorecte."
+        RobocopyFailed = "Robocopy a eșuat cu codul {0}."
+        CopyBootSkeleton = "Copiez boot FAT32 fără sources complet..."
+        CopyBootWimToFat32 = "Copiez boot.wim ales în sources FAT32..."
+        BootCopyMissing = "boot.wim nu a fost copiat în {0}."
+        BootCopySizeMismatch = "Dimensiunea boot.wim nu coincide. Sursă: {0}. Destinație: {1}."
+        BootCopyDone = "boot.wim copiat în FAT32: {0} [{1}]"
+        CopyInstallFrom = "Copiez install.* din {0} în {1}..."
+        InstallCopyMissing = "{0} nu a fost copiat în {1}."
+        InstallCopySizeMismatch = "Dimensiunea {0} nu coincide. Sursă: {1}. Destinație: {2}."
+        InstallCopyDone = "{0} copiat în {1}: {2} [{3}]"
         InstallMedia = "Mediu de instalare: {0}"
         BootLine = "Boot.wim: {0} ({1})"
         InstallLine = "Install.*: {0} ({1}: {2})"
-        PreparingDisk = "Pregatesc discul..."
-        CreatingBootPartition = "Creez partitia FAT32 de boot ({0} MB)..."
-        CreatingInstallPartition = "Creez partitia de instalator {0} Basic Data..."
-        CannotGetLetters = "Nu am putut obtine literele asignate partitiilor create."
-        PartitionsCreated = "Partitii create:"
+        PreparingDisk = "Pregătesc discul..."
+        CreatingBootPartition = "Creez partiția FAT32 de boot ({0} MB)..."
+        CreatingInstallPartition = "Creez partiția de instalator {0} Basic Data..."
+        CannotGetLetters = "Nu am putut obține literele asignate partițiilor create."
+        PartitionsCreated = "Partiții create:"
         Fat32BootLine = "  FAT32: {0}"
         InstallPartitionLine = "  {0}: {1}"
-        CopyIsoSkeleton = "Copiez scheletul ISO in {0} fara boot.wim/install.*..."
-        UsbReady = "USB Windows 11 pregatit."
-        UsbCopySummary = "Copierea imaginilor finalizata:"
+        CopyIsoSkeleton = "Copiez scheletul ISO în {0} fără boot.wim/install.*..."
+        UsbReady = "USB Windows 11 pregătit."
+        UsbCopySummary = "Copierea imaginilor finalizată:"
         UsbBootWimCopied = "  boot.wim -> FAT32: {0} [{1}]"
         UsbInstallCopied = "  {0} -> {1}: {2} [{3}]"
-        UsbPartitionsSummary = "Partitii:"
+        UsbPartitionsSummary = "Partiții:"
         UsbBootLine = "  Boot FAT32: {0}"
         UsbInstallLine = "  Instalator {0}: {1}"
         DismountingIso = "Demontez ISO..."
         PressEnterExit = "Apasă ENTER pentru ieșire"
-        DiskColNumber = "Numar"
+        DiskColNumber = "Număr"
         DiskColName = "Nume"
+        DiskColBus = "Bus"
         DiskColSize = "Dimensiune"
         DiskColStyle = "Stil"
         DiskColBoot = "Boot"
         DiskColSystem = "Sistem"
+        DiskColOffline = "Offline"
         DiskColReadOnly = "DoarCitire"
         DiskColState = "Stare"
-        PartColNumber = "Partitie"
-        PartColLetter = "Litera"
+        DiskColSerial = "Serie"
+        PartColNumber = "Partiție"
+        PartColLetter = "Literă"
         PartColSize = "Dimensiune"
-        PartColLabel = "Eticheta"
+        PartColLabel = "Etichetă"
         PartColFs = "Sistem"
     }
     de = @{
+        UsbBannerTitle = "WINDOWS 11 UEFI/GPT-USB ERSTELLEN"
+        StepSelectMedia = "Quellmedium und Windows-Images auswählen"
+        StepSelectDisk = "USB-Datenträger wählen und Anschlussgeschwindigkeit prüfen"
+        StepPlanAndConfirm = "Ausführungsplan prüfen und Löschen bestätigen"
+        StepPreparePartitions = "Datenträger bereinigen und UEFI/GPT-Partitionen erstellen"
+        StepCopyPayload = "Bootdateien und Windows-Images auf USB kopieren"
+        UsbPlanTitle = "USB-Vorbereitungsplan"
+        UsbSummaryTitle = "Zusammenfassung des vorbereiteten USB-Laufwerks"
+        PlanModeLabel = "Modus"
+        PlanModeFull = "Vollständiger Windows 11 USB (GPT: FAT32 + {0})"
+        PlanModePartitionsOnly = "Nur Partitionen (GPT: FAT32 + {0})"
+        PlanMediaLabel = "Basismedium"
+        PlanBootLabel = "Boot-Image"
+        PlanInstallLabel = "Install-Image"
+        PlanTargetDiskLabel = "Zieldatenträger"
+        PlanUsbSpeedLabel = "USB-Geschwindigkeit"
+        PlanPartitionsLabel = "Layout"
+        SummaryBootPartLabel = "FAT32-Bootpartition"
+        SummaryInstallPartLabel = "Installer-Partition ({0})"
+        SummaryStatusLabel = "Status"
         LogStartUsb = "Start Windows 11 USB erstellen"
         MountedMediaText = "Bereits gemountete ISO/Medium verwenden {0}  [{1}, {2}]"
         LabIsoText = "Lab-ISO mounten {0}  [{1}]"
         NoLabel = "kein Label"
-        InstallMediaAvailable = "Verfuegbare Installationsmedien:"
+        InstallMediaAvailable = "Verfügbare Installationsmedien:"
         ManualMediaOption = "Gemounteten Laufwerksbuchstaben oder Lab-ISO manuell eingeben"
-        MountedIsoHint = "Wenn die ISO bereits gemountet ist, waehlen Sie die gemountete Laufwerksoption."
+        MountedIsoHint = "Wenn die ISO bereits gemountet ist, wählen Sie die gemountete Laufwerksoption."
         MediaPrompt = "Nummer, gemounteter Buchstabe (z.B. I:) oder ISO-Pfad"
         MediaPromptFallback = "Bereits gemounteter Buchstabe oder ISO in {0}, Beispiel I: oder {0}\Win11.iso"
         MissingBootWim = "Medium {0} sieht nicht wie Windows-Setup aus. sources\boot.wim fehlt."
-        MissingInstallImage = "Medium {0} enthaelt kein sources\install.wim, sources\install.esd oder sources\install.swm."
+        MissingInstallImage = "Medium {0} enthält kein sources\install.wim, sources\install.esd oder sources\install.swm."
         MediaNotFound = "Angegebenes Medium existiert nicht: {0}"
         MediaMustIso = "Das Medium muss eine ISO oder ein bereits gemounteter Laufwerksbuchstabe sein."
         IsoMustBeInside = "Die ISO muss in {0} liegen. Kopieren Sie sie zuerst dorthin, um das Lab sauber zu halten."
         MountingIso = "ISO wird gemountet..."
         CannotGetIsoLetter = "Der Laufwerksbuchstabe der gemounteten ISO konnte nicht ermittelt werden."
-        BootOtherWarning = "Hinweis: fuer den Start nutze ich genau boot.wim; andere boot.* in images werden nicht verwendet."
+        BootOtherWarning = "Hinweis: für den Start nutze ich genau boot.wim; andere boot.* in images werden nicht verwendet."
         SourceMountedIso = "Gemountete ISO"
         SourceLabImages = "Trabajo\images"
-        BootSelectionTitle = "Verfuegbare boot.wim Quellen:"
+        BootSelectionTitle = "Verfügbare boot.wim Quellen:"
         BootSelectionPrompt = "Startoption (EINGABE = {0})"
-        BootSelectionInvalid = "Ungueltige Boot-Option."
+        BootSelectionInvalid = "Ungültige Boot-Option."
         BootCopiesAs = "wird als sources\boot.wim kopiert"
-        SwmMissing = "In {0} gibt es SWM, aber install.swm fehlt. Es muessen install.swm, install2.swm usw. vorhanden sein."
+        SwmMissing = "In {0} gibt es SWM, aber install.swm fehlt. Es müssen install.swm, install2.swm usw. vorhanden sein."
         MultipleInstallTypes = "Es gibt mehr als einen install.* Typ in {0} ({1}). Lassen Sie nur WIM, nur ESD oder nur SWM."
         NoInstallPayload = "Ich finde install.wim, install.esd oder install*.swm weder in {0} noch in {1}."
-        DiskReadFailed = "Die Datentraegerliste konnte nicht gelesen werden."
-        DisksAvailable = "Verfuegbare Datentraeger:"
-        DiskNumberPrompt = "USB-Datentraegernummer, die GELOESCHT WIRD"
-        InvalidDiskNumber = "Ungueltige Datentraegernummer."
-        RefuseSystemDisk = "Datentraeger {0} ist Boot/System. Ich fasse ihn nicht an."
+        DiskReadFailed = "Die Datenträgerliste konnte nicht gelesen werden."
+        DisksAvailable = "Verfügbare Datenträger:"
+        DiskNumberPrompt = "USB-Datenträgernummer, die GELÖSCHT WIRD"
+        InvalidDiskNumber = "Ungültige Datenträgernummer."
+        RefuseSystemDisk = "Datenträger {0} ist Boot/System. Ich fasse ihn nicht an."
         NoPartitionsVisible = "  Keine sichtbaren Partitionen."
-        NotExternalWarn1 = "WARNUNG: dieser Datentraeger erscheint nicht als USB/SD/MMC."
+        NotExternalWarn1 = "WARNUNG: dieser Datenträger erscheint nicht als USB/SD/MMC."
         NotExternalWarn2 = "Windows zeigt BusType: {0}"
-        NotExternalWarn3 = "Bei USB-Gehaeuse oder Adapter kann das normal sein. Wenn unsicher, abbrechen."
+        NotExternalWarn3 = "Bei USB-Gehäuse oder Adapter kann das normal sein. Wenn unsicher, abbrechen."
         UnderstandDisk = "ICH VERSTEHE DATENTRAEGER {0}"
-        TypeExactToContinue = "Geben Sie exakt '{0}' ein, um mit diesem Datentraeger fortzufahren"
-        CancelNotUsb = "Abgebrochen, weil der Datentraeger nicht wie USB aussah."
-        RunningDiskPart = "DiskPart wird ausgefuehrt: {0}"
-        DiskPartFailed = "DiskPart ist fehlgeschlagen. Pruefen Sie {0}"
+        TypeExactToContinue = "Geben Sie exakt '{0}' ein, um mit diesem Datenträger fortzufahren"
+        CancelNotUsb = "Abgebrochen, weil der Datenträger nicht wie USB aussah."
+        RunningDiskPart = "DiskPart wird ausgeführt: {0}"
+        DiskPartFailed = "DiskPart ist fehlgeschlagen. Prüfen Sie {0}"
         CleanRetry = "USB-Bereinigung wird erneut versucht ({0}/{1})..."
-        CleanAttemptFailed = "Clean-Versuch {0} ist fehlgeschlagen. Pruefen Sie {1}"
-        CleanManualTitle = "Windows kann den USB-Datentraeger weiterhin nicht automatisch bereinigen."
-        CleanManualHelp1 = "Sie koennen den USB-Datentraeger neu einstecken oder manuell mit Datentraegerverwaltung/DiskPart bereinigen."
-        CleanManualHelp2 = "Schliessen Sie dieses Fenster nicht. Wenn der USB-Datentraeger bereit ist, kommen Sie hierher zurueck."
-        CleanManualPrompt = "Druecken Sie EINGABE, um den USB-Datentraeger erneut zu pruefen und fortzufahren"
-        CleaningDisk = "Datentraeger {0} wird bereinigt..."
+        CleanAttemptFailed = "Clean-Versuch {0} ist fehlgeschlagen. Prüfen Sie {1}"
+        CleanManualTitle = "Windows kann den USB-Datenträger weiterhin nicht automatisch bereinigen."
+        CleanManualHelp1 = "Sie können den USB-Datenträger neu einstecken oder manuell mit Datenträgerverwaltung/DiskPart bereinigen."
+        CleanManualHelp2 = "Schließen Sie dieses Fenster nicht. Wenn der USB-Datenträger bereit ist, kommen Sie hierher zurück."
+        CleanManualPrompt = "Drücken Sie EINGABE, um den USB-Datenträger erneut zu prüfen und fortzufahren"
+        CleaningDisk = "Datenträger {0} wird bereinigt..."
         StateAfterClean = "Status nach clean: {0}"
-        InitGpt = "Datentraeger {0} wird als GPT fuer UEFI initialisiert..."
-        ConvertGpt = "Datentraeger {0} wird von MBR zu GPT fuer UEFI konvertiert..."
-        AlreadyGpt = "Datentraeger {0} ist nach clean bereits GPT; weiter."
+        InitGpt = "Datenträger {0} wird als GPT für UEFI initialisiert..."
+        ConvertGpt = "Datenträger {0} wird von MBR zu GPT für UEFI konvertiert..."
+        AlreadyGpt = "Datenträger {0} ist nach clean bereits GPT; weiter."
         UnexpectedStyle = "Unerwarteter Partitionsstil nach clean: {0}"
-        NotGpt = "Datentraeger {0} wurde nicht GPT. Aktueller Status: {1}"
-        StillPartitions = "Datentraeger {0} hat nach Bereinigung/Initialisierung noch Partitionen. Ich fahre nicht fort."
-        SelectedDisk = "AUSGEWAEHLTER DATENTRAEGER:"
+        NotGpt = "Datenträger {0} wurde nicht GPT. Aktueller Status: {1}"
+        StillPartitions = "Datenträger {0} hat nach Bereinigung/Initialisierung noch Partitionen. Ich fahre nicht fort."
+        SelectedDisk = "AUSGEWÄHLTER DATENTRÄGER:"
         CurrentPartitions = "Aktuelle Partitionen:"
         ErasePhrase = "DATENTRAEGER LOESCHEN {0}"
-        DeleteWarning = "Dies entfernt alle Partitionen von Datentraeger {0}."
+        DeleteWarning = "Dies entfernt alle Partitionen von Datenträger {0}."
         ErasePrompt = "Geben Sie exakt '{0}' ein, um fortzufahren"
-        CancelBadConfirm = "Abgebrochen wegen falscher Bestaetigung."
+        CancelBadConfirm = "Abgebrochen wegen falscher Bestätigung."
         RobocopyFailed = "Robocopy ist mit Code {0} fehlgeschlagen."
-        CopyBootSkeleton = "FAT32-Bootdateien ohne vollstaendige sources werden kopiert..."
-        CopyBootWimToFat32 = "Ausgewaehlte boot.wim wird nach FAT32 sources kopiert..."
+        CopyBootSkeleton = "FAT32-Bootdateien ohne vollständige sources werden kopiert..."
+        CopyBootWimToFat32 = "Ausgewählte boot.wim wird nach FAT32 sources kopiert..."
         BootCopyMissing = "boot.wim wurde nicht nach {0} kopiert."
-        BootCopySizeMismatch = "boot.wim Groesse stimmt nicht. Quelle: {0}. Ziel: {1}."
+        BootCopySizeMismatch = "boot.wim Größe stimmt nicht. Quelle: {0}. Ziel: {1}."
         BootCopyDone = "boot.wim nach FAT32 kopiert: {0} [{1}]"
         CopyInstallFrom = "install.* wird von {0} nach {1} kopiert..."
         InstallCopyMissing = "{0} wurde nicht nach {1} kopiert."
-        InstallCopySizeMismatch = "{0} Groesse stimmt nicht. Quelle: {1}. Ziel: {2}."
+        InstallCopySizeMismatch = "{0} Größe stimmt nicht. Quelle: {1}. Ziel: {2}."
         InstallCopyDone = "{0} nach {1} kopiert: {2} [{3}]"
         InstallMedia = "Installationsmedium: {0}"
         BootLine = "Boot.wim: {0} ({1})"
         InstallLine = "Install.*: {0} ({1}: {2})"
-        PreparingDisk = "Datentraeger wird vorbereitet..."
+        PreparingDisk = "Datenträger wird vorbereitet..."
         CreatingBootPartition = "FAT32-Bootpartition wird erstellt ({0} MB)..."
         CreatingInstallPartition = "{0} Basic Data Installer-Partition wird erstellt..."
         CannotGetLetters = "Die zugewiesenen Laufwerksbuchstaben der erstellten Partitionen konnten nicht ermittelt werden."
@@ -544,24 +656,27 @@ Add-LabTranslations @{
         UsbBootLine = "  FAT32 Boot: {0}"
         UsbInstallLine = "  {0} Installer: {1}"
         DismountingIso = "ISO wird unmountet..."
-        PressEnterExit = "EINGABETASTE druecken zum Beenden"
+        PressEnterExit = "EINGABETASTE drücken zum Beenden"
         DiskColNumber = "Nummer"
         DiskColName = "Name"
-        DiskColSize = "Groesse"
+        DiskColBus = "Bus"
+        DiskColSize = "Größe"
         DiskColStyle = "Stil"
         DiskColBoot = "Boot"
         DiskColSystem = "System"
+        DiskColOffline = "Offline"
         DiskColReadOnly = "NurLesen"
         DiskColState = "Status"
+        DiskColSerial = "Seriennr"
         PartColNumber = "Partition"
         PartColLetter = "Buchstabe"
-        PartColSize = "Groesse"
+        PartColSize = "Größe"
         PartColLabel = "Label"
         PartColFs = "Dateisystem"
     }
 }
 
-Add-Content -LiteralPath $LogPath -Value ("[{0}] {1}" -f (Get-Date -Format "yyyy-MM-dd HH:mm:ss"), (L "LogStartUsb"))
+Add-Content -LiteralPath $LogPath -Value ("[{0}] {1}" -f (Get-Date -Format "yyyy-MM-dd HH:mm:ss"), (L "LogStartUsb")) -Encoding UTF8
 
 function Write-Step {
     param(
@@ -576,7 +691,7 @@ function Write-Step {
         ([ConsoleColor]::Cyan) { Write-LabInfo $Message Cyan; break }
         default { Write-LabInfo $Message $Color; break }
     }
-    Add-Content -LiteralPath $LogPath -Value ("[{0}] {1}" -f (Get-Date -Format "yyyy-MM-dd HH:mm:ss"), $Message)
+    Add-Content -LiteralPath $LogPath -Value ("[{0}] {1}" -f (Get-Date -Format "yyyy-MM-dd HH:mm:ss"), $Message) -Encoding UTF8
 }
 
 function Write-Section {
@@ -586,16 +701,13 @@ function Write-Section {
     )
 
     Write-LabSection -Title $Title -Color $Color
-    Add-Content -LiteralPath $LogPath -Value ("[{0}] {1}" -f (Get-Date -Format "yyyy-MM-dd HH:mm:ss"), $Title)
+    Add-Content -LiteralPath $LogPath -Value ("[{0}] {1}" -f (Get-Date -Format "yyyy-MM-dd HH:mm:ss"), $Title) -Encoding UTF8
 }
 
 function Format-Bytes {
     param([UInt64]$Bytes)
 
-    if ($Bytes -ge 1TB) { return "{0:N2} TB" -f ($Bytes / 1TB) }
-    if ($Bytes -ge 1GB) { return "{0:N2} GB" -f ($Bytes / 1GB) }
-    if ($Bytes -ge 1MB) { return "{0:N2} MB" -f ($Bytes / 1MB) }
-    return "$Bytes bytes"
+    return (Format-LabBytes -Bytes $Bytes)
 }
 
 function Test-PathInsideDirectory {
@@ -656,7 +768,7 @@ function Select-IsoPath {
     }
 
     $isoCandidates = @(Get-IsoCandidates | Sort-Object LastWriteTime -Descending)
-    if ($isoCandidates.Count -eq 1) {
+    if ($options.Count -eq 0 -and $isoCandidates.Count -eq 1) {
         return $isoCandidates[0].FullName
     }
 
@@ -669,11 +781,11 @@ function Select-IsoPath {
     }
 
     if ($options.Count -gt 0) {
-        Write-Section (L "InstallMediaAvailable")
+        Write-LabSubsection (L "InstallMediaAvailable")
         for ($i = 0; $i -lt $options.Count; $i++) {
-            Write-Host ("{0,2}. {1}" -f ($i + 1), $options[$i].Text)
+            Write-Host ("  [{0,2}] {1}" -f ($i + 1), $options[$i].Text)
         }
-        Write-Host (" 0. {0}" -f (L "ManualMediaOption"))
+        Write-Host ("  [ 0] {0}" -f (L "ManualMediaOption"))
         Write-Host ""
         Write-Host (L "MountedIsoHint") -ForegroundColor Yellow
 
@@ -783,10 +895,10 @@ function Get-BootImageFile {
         return $candidates[0]
     }
 
-    Write-Section (L "BootSelectionTitle")
+    Write-LabSubsection (L "BootSelectionTitle")
     for ($i = 0; $i -lt $candidates.Count; $i++) {
         $candidate = $candidates[$i]
-        Write-Host ("{0}. {1}  [{2}]  ({3}; {4})" -f ($i + 1), $candidate.Display, (Format-Bytes -Bytes ([UInt64]$candidate.Length)), $candidate.Source, (L "BootCopiesAs"))
+        Write-Host ("  [{0,2}] {1}  [{2}]  ({3}; {4})" -f ($i + 1), $candidate.Display, (Format-Bytes -Bytes ([UInt64]$candidate.Length)), $candidate.Source, (L "BootCopiesAs"))
     }
 
     $defaultChoice = 1
@@ -870,15 +982,17 @@ function Show-DiskTable {
         Get-Disk |
             Sort-Object Number |
             ForEach-Object {
+                $usbInfo = Get-LabDiskUsbSpeedInfo -DiskNumber $_.Number -Disk $_
                 $row = [ordered]@{}
                 $row[(L "DiskColNumber")] = $_.Number
                 $row[(L "DiskColName")] = $_.FriendlyName
-                $row["Bus"] = $_.BusType
+                $row[(L "DiskColBus")] = $_.BusType
+                $row[(L "UsbColHeader")] = $usbInfo.UsbDisplay
                 $row[(L "DiskColSize")] = Format-Bytes -Bytes ([UInt64]$_.Size)
                 $row[(L "DiskColStyle")] = $_.PartitionStyle
                 $row[(L "DiskColBoot")] = $_.IsBoot
                 $row[(L "DiskColSystem")] = $_.IsSystem
-                $row["Offline"] = $_.IsOffline
+                $row[(L "DiskColOffline")] = $_.IsOffline
                 $row[(L "DiskColReadOnly")] = $_.IsReadOnly
                 $row[(L "DiskColState")] = ($_.OperationalStatus -join ",")
                 [pscustomobject]$row
@@ -896,7 +1010,7 @@ function Get-SelectedDisk {
     param([Nullable[int]]$Number = $DiskNumber)
 
     if ($null -eq $Number) {
-        Write-Section (L "DisksAvailable")
+        Write-LabSubsection (L "DisksAvailable")
         Show-DiskTable
         $answer = Read-Host (L "DiskNumberPrompt")
         $parsed = 0
@@ -972,17 +1086,17 @@ function Invoke-DiskPartScript {
     $output = & diskpart.exe /s $scriptPath 2>&1
     $output | Set-Content -LiteralPath $outputPath -Encoding UTF8
     $outputText = ($output | Out-String)
-    Add-Content -LiteralPath $LogPath -Value $outputText
+    Add-Content -LiteralPath $LogPath -Value $outputText -Encoding UTF8
 
     $failureText = $outputText
     $harmlessPatterns = @(
-        "(?is)(Virtual Disk Service error:|Error del Servicio de disco virtual:)\s*(The disk is already online\.?|El disco ya est. en l.nea\.?)"
+        "(?is)(Virtual Disk Service error:|Error del Servicio de disco virtual:|Erreur du service de disque virtuel\s*:|Fehler beim Dienst f.+r virtuelle Datentr.+ger:|Eroare serviciu disc virtual:)\s*(The disk is already online\.?|El disco ya est.+ en l.+nea\.?|Le disque est d.+j.+ en ligne\.?|Der Datentr.+ger ist bereits online\.?|Discul este deja online\.?)"
     )
     foreach ($pattern in $harmlessPatterns) {
         $failureText = [regex]::Replace($failureText, $pattern, "")
     }
 
-    $diskPartErrorPattern = "DiskPart has encountered an error|DiskPart ha encontrado un error|Virtual Disk Service error|Error del Servicio de disco virtual|Access is denied|Acceso denegado|No se puede|cannot|failed|fall[oó]"
+    $diskPartErrorPattern = "DiskPart has encountered an error|DiskPart ha encontrado un error|DiskPart a rencontr.+ une erreur|DiskPart hat einen Fehler festgestellt|DiskPart a .+nt.+mpinat o eroare|Virtual Disk Service error|Error del Servicio de disco virtual|Erreur du service de disque virtuel|Fehler beim Dienst f.+r virtuelle Datentr.+ger|Access is denied|Acceso denegado|Acc.+s refus.+|Zugriff verweigert|Accesul este interzis|No se puede|cannot|failed|fall[oó]"
     $failed = ($LASTEXITCODE -ne 0 -or ($failureText -match $diskPartErrorPattern))
     if ($failed) {
         if ($NoThrow) {
@@ -1026,7 +1140,7 @@ function Invoke-DiskCleanWithRetry {
         )
 
         # DiskPart may return a nonzero exit code for a harmless condition even
-        # when clean succeeds. Confirm the disk state before retrying or failing.
+        # when clean succeeds. Confirm the disk state and output before retrying.
         Update-Disk -Number $Number -ErrorAction SilentlyContinue
         $diskAfterClean = Get-Disk -Number $Number -ErrorAction SilentlyContinue
         $cleanVerified = $false
@@ -1036,15 +1150,40 @@ function Invoke-DiskCleanWithRetry {
                 $cleanVerified = ($partitionsAfterClean.Count -eq 0)
             }
             catch {
-                $cleanVerified = $false
+                if (($_.CategoryInfo.Category -eq [System.Management.Automation.ErrorCategory]::ObjectNotFound) -or
+                    ($_.FullyQualifiedErrorId -match 'ObjectNotFound|CmdletizationQuery_NotFound')) {
+                    $cleanVerified = ([int]$diskAfterClean.NumberOfPartitions -eq 0)
+                }
+                else {
+                    $cleanVerified = $false
+                }
             }
         }
 
-        $diskPartOutput = Get-Content -LiteralPath $result.OutputPath -Raw -ErrorAction SilentlyContinue
-        $cleanReportedSuccess = ($diskPartOutput -match '(?im)^\s*DiskPart succeeded in cleaning the disk\.?\s*$' -or
-            $diskPartOutput -match '(?im)^\s*DiskPart ha limpiado el disco correctamente\.?\s*$')
+        $diskPartOutput = ""
+        if ($null -ne $result -and -not [string]::IsNullOrWhiteSpace($result.OutputPath) -and (Test-Path -LiteralPath $result.OutputPath -PathType Leaf)) {
+            $rawDiskPartOutput = Get-Content -LiteralPath $result.OutputPath -Raw -Encoding UTF8 -ErrorAction SilentlyContinue
+            if ($null -ne $rawDiskPartOutput) {
+                $diskPartOutput = $rawDiskPartOutput
+            }
+        }
 
-        if ($cleanVerified -or $cleanReportedSuccess) {
+        $cleanSuccessPatterns = @(
+            '(?im)^\s*DiskPart succeeded in cleaning the disk\.?\s*$',
+            '(?im)^\s*DiskPart ha limpiado el disco (?:satisfactoriamente|correctamente)\.?\s*$',
+            '(?im)^\s*DiskPart a r(?:é|e|\S{1,2})ussi (?:à|a|\S{1,2}) nettoyer le disque\.?\s*$',
+            '(?im)^\s*(?:Der Datentr(?:ä|ae|\S{1,2})ger wurde von DiskPart bereinigt|DiskPart hat den Datentr(?:ä|ae|\S{1,2})ger(?: erfolgreich)? bereinigt)\.?\s*$',
+            '(?im)^\s*DiskPart a (?:reu(?:ș|ş|s|\S{1,2})it s(?:ă|a|\S{1,2}) cure(?:ț|ţ|t|\S{1,2})e discul|cur(?:ă|a|\S{1,2})(?:ț|ţ|t|\S{1,2})at discul(?: cu succes)?)\.?\s*$'
+        )
+        $cleanReportedSuccess = $false
+        foreach ($cleanPattern in $cleanSuccessPatterns) {
+            if ($diskPartOutput -match $cleanPattern) {
+                $cleanReportedSuccess = $true
+                break
+            }
+        }
+
+        if (($result.Success -and $cleanVerified) -or $cleanReportedSuccess) {
             return
         }
 
@@ -1112,18 +1251,22 @@ function Initialize-DiskForUefiGptUsb {
 }
 
 function Confirm-DiskErase {
-    param([Microsoft.Management.Infrastructure.CimInstance]$Disk)
+    param(
+        [Microsoft.Management.Infrastructure.CimInstance]$Disk,
+        [pscustomobject]$UsbSpeedInfo
+    )
 
-    Write-Section (L "SelectedDisk") Yellow
+    Write-LabSubsection (L "SelectedDisk") Yellow
     $selectedRow = [ordered]@{}
     $selectedRow[(L "DiskColNumber")] = $Disk.Number
     $selectedRow[(L "DiskColName")] = $Disk.FriendlyName
-    $selectedRow["Bus"] = $Disk.BusType
+    $selectedRow[(L "DiskColBus")] = $Disk.BusType
+    $selectedRow[(L "UsbColHeader")] = if ($null -ne $UsbSpeedInfo) { $UsbSpeedInfo.UsbDisplay } else { "-" }
     $selectedRow[(L "DiskColSize")] = Format-Bytes -Bytes ([UInt64]$Disk.Size)
-    $selectedRow["Serial"] = $Disk.SerialNumber
-    Write-Host ([pscustomobject]$selectedRow | Format-Table -AutoSize | Out-String -Width 180)
+    $selectedRow[(L "DiskColSerial")] = if ($null -ne $UsbSpeedInfo -and -not [string]::IsNullOrWhiteSpace($UsbSpeedInfo.EffectiveSerial)) { $UsbSpeedInfo.EffectiveSerial } else { $Disk.SerialNumber }
+    Write-Host ([pscustomobject]$selectedRow | Format-Table -AutoSize | Out-String -Width 200)
 
-    Write-Section (L "CurrentPartitions") Yellow
+    Write-LabSubsection (L "CurrentPartitions") Yellow
     Show-DiskVolumes -Number $Disk.Number
 
     $expected = LF "ErasePhrase" $Disk.Number
@@ -1172,7 +1315,7 @@ function Invoke-RobocopyCopy {
     Write-Step ("Robocopy: {0} -> {1}" -f $Source, $Destination) Cyan
     $output = @(& robocopy @arguments 2>&1)
     $exitCode = $LASTEXITCODE
-    Add-Content -LiteralPath $LogPath -Value ($output | Out-String)
+    Add-Content -LiteralPath $LogPath -Value ($output | Out-String) -Encoding UTF8
     if ($exitCode -ge 8) {
         throw (LF "RobocopyFailed" $exitCode)
     }
@@ -1211,7 +1354,7 @@ function Test-BootWimOnFat32 {
     }
 
     if (-not $Quiet) {
-        Write-Host (LF "BootCopyDone" $DestinationBootPath (Format-Bytes -Bytes ([UInt64]$destinationBoot.Length))) -ForegroundColor Green
+        Write-LabOk (LF "BootCopyDone" $DestinationBootPath (Format-Bytes -Bytes ([UInt64]$destinationBoot.Length)))
     }
 }
 
@@ -1261,10 +1404,19 @@ function Copy-InstallPayloadFiles {
 }
 
 try {
+    Clear-Host
+    Write-LabBanner -Title (L "UsbBannerTitle") -Subtitle $LabRoot
+
+    $totalSteps = if ($CreatePartitionsOnly) { 3 } else { 5 }
+    $currentStep = 1
+
     $mediaRoot = $null
     $bootImage = $null
     $installPayload = $null
     if (-not $CreatePartitionsOnly) {
+        Write-LabStepHeader -Step $currentStep -TotalSteps $totalSteps -Title (L "StepSelectMedia")
+        $currentStep++
+
         $mediaRoot = Resolve-InstallMedia -Path $MediaPath
         $bootImage = Get-BootImageFile -MediaRoot $mediaRoot
         $installPayload = Resolve-InstallPayloadSet -MediaRoot $mediaRoot
@@ -1274,11 +1426,56 @@ try {
         Write-LabOk (LF "InstallLine" $installPayload.Source $installPayload.Type ((@($installPayload.Files) | ForEach-Object Name) -join ', '))
     }
 
+    Write-LabStepHeader -Step $currentStep -TotalSteps $totalSteps -Title (L "StepSelectDisk")
+    $currentStep++
+
     $disk = Get-SelectedDisk
     Confirm-DiskLooksExternal -Disk $disk
-    Confirm-DiskErase -Disk $disk
+    $disk = Confirm-LabUsbDiskSpeed -Disk $disk
+    $script:DiskNumber = $disk.Number
+    $usbSpeedInfo = Get-LabDiskUsbSpeedInfo -DiskNumber $disk.Number -Disk $disk
 
-    Write-Host ""
+    Write-LabStepHeader -Step $currentStep -TotalSteps $totalSteps -Title (L "StepPlanAndConfirm")
+    $currentStep++
+
+    $planItems = New-Object System.Collections.Generic.List[object]
+    $planItems.Add(@{
+        Label = (L "PlanModeLabel")
+        Value = $(if ($CreatePartitionsOnly) { LF "PlanModePartitionsOnly" $InstallFileSystem } else { LF "PlanModeFull" $InstallFileSystem })
+        Color = [ConsoleColor]::White
+    })
+    $planItems.Add(@{
+        Label = (L "PlanTargetDiskLabel")
+        Value = ("#{0} - {1} ({2})" -f $disk.Number, $disk.FriendlyName, (Format-Bytes -Bytes ([UInt64]$disk.Size)))
+        Color = [ConsoleColor]::Yellow
+    })
+    $planItems.Add(@{
+        Label = (L "PlanUsbSpeedLabel")
+        Value = $usbSpeedInfo.UsbDisplay
+        Color = $(if ($usbSpeedInfo.IsUsb2) { [ConsoleColor]::Yellow } elseif ($usbSpeedInfo.IsUsb3) { [ConsoleColor]::Green } else { [ConsoleColor]::Gray })
+    })
+    $planItems.Add(@{
+        Label = (L "PlanPartitionsLabel")
+        Value = ("FAT32 ({0} MB, {1}) + {2} ({3})" -f $BootSizeMB, $BootLabel, $InstallFileSystem, $InstallLabel)
+        Color = [ConsoleColor]::Gray
+    })
+    if (-not $CreatePartitionsOnly) {
+        $planItems.Add(@{ Label = (L "PlanMediaLabel"); Value = $mediaRoot; Color = [ConsoleColor]::Gray })
+        $planItems.Add(@{ Label = (L "PlanBootLabel"); Value = ("{0} ({1})" -f $bootImage.Display, $bootImage.Source); Color = [ConsoleColor]::Gray })
+        $planItems.Add(@{
+            Label = (L "PlanInstallLabel")
+            Value = ("{0}: {1} ({2})" -f $installPayload.Type, ((@($installPayload.Files) | ForEach-Object Name) -join ", "), $installPayload.Source)
+            Color = [ConsoleColor]::Gray
+        })
+    }
+    $planItems.Add(@{ Label = (L "Log"); Value = $LogPath; Color = [ConsoleColor]::DarkGray })
+    Write-LabStatusPanel -Title (L "UsbPlanTitle") -Items $planItems
+
+    Confirm-DiskErase -Disk $disk -UsbSpeedInfo $usbSpeedInfo
+
+    Write-LabStepHeader -Step $currentStep -TotalSteps $totalSteps -Title (L "StepPreparePartitions")
+    $currentStep++
+
     Write-Step (L "PreparingDisk") Cyan
     Set-Disk -Number $disk.Number -IsOffline $false -ErrorAction SilentlyContinue
     Set-Disk -Number $disk.Number -IsReadOnly $false -ErrorAction SilentlyContinue
@@ -1304,12 +1501,18 @@ try {
     $installRoot = "$($installPartition.DriveLetter):\"
 
     if ($CreatePartitionsOnly) {
-        Write-Host ""
-        Write-LabOk (L "PartitionsCreated")
-        Write-Host (LF "Fat32BootLine" $bootRoot)
-        Write-Host (LF "InstallPartitionLine" $InstallFileSystem $installRoot)
+        Write-LabStatusPanel -Title (L "UsbSummaryTitle") -TitleColor Green -Items @(
+            @{ Label = (L "SummaryStatusLabel"); Value = (L "PartitionsCreated"); Color = [ConsoleColor]::Green },
+            @{ Label = (L "PlanTargetDiskLabel"); Value = ("#{0} - {1}" -f $disk.Number, $disk.FriendlyName); Color = [ConsoleColor]::White },
+            @{ Label = (L "PlanUsbSpeedLabel"); Value = $usbSpeedInfo.UsbDisplay; Color = [ConsoleColor]::Cyan },
+            @{ Label = (L "SummaryBootPartLabel"); Value = ("{0} [{1}]" -f $bootRoot, $BootLabel); Color = [ConsoleColor]::Green },
+            @{ Label = (LF "SummaryInstallPartLabel" $InstallFileSystem); Value = ("{0} [{1}]" -f $installRoot, $InstallLabel); Color = [ConsoleColor]::Green },
+            @{ Label = (L "Log"); Value = $LogPath; Color = [ConsoleColor]::DarkGray }
+        )
         return
     }
+
+    Write-LabStepHeader -Step $currentStep -TotalSteps $totalSteps -Title (L "StepCopyPayload")
 
     Copy-BootPartitionFiles -MediaRoot $mediaRoot -BootRoot $bootRoot -BootImagePath $bootImage.Path
 
@@ -1321,33 +1524,36 @@ try {
     Test-BootWimOnFat32 -BootImagePath $bootImage.Path -DestinationBootPath (Join-Path $bootRoot "sources\boot.wim") -Quiet
 
     $finalBootWim = Get-Item -LiteralPath (Join-Path $bootRoot "sources\boot.wim") -ErrorAction Stop
-    $finalInstallFiles = foreach ($file in @($installPayload.Files)) {
+    $finalInstallFiles = @(foreach ($file in @($installPayload.Files)) {
         Get-Item -LiteralPath (Join-Path (Join-Path $installRoot "sources") $file.Name) -ErrorAction Stop
-    }
+    })
+    $finalInstallTotal = [UInt64]0
+    foreach ($fItem in $finalInstallFiles) { $finalInstallTotal += [UInt64]$fItem.Length }
+    $finalInstallText = "{0} [{1}]" -f (($finalInstallFiles | ForEach-Object FullName) -join ", "), (Format-Bytes -Bytes $finalInstallTotal)
 
-    Write-Host ""
-    Write-LabOk (L "UsbReady")
-    Write-LabOk (L "UsbCopySummary")
-    Write-Host (LF "UsbBootWimCopied" $finalBootWim.FullName (Format-Bytes -Bytes ([UInt64]$finalBootWim.Length)))
-    foreach ($file in @($finalInstallFiles)) {
-        Write-Host (LF "UsbInstallCopied" $file.Name $InstallFileSystem $file.FullName (Format-Bytes -Bytes ([UInt64]$file.Length)))
-    }
-    Write-LabOk (L "UsbPartitionsSummary")
-    Write-Host (LF "UsbBootLine" $bootRoot)
-    Write-Host (LF "UsbInstallLine" $InstallFileSystem $installRoot)
+    Write-LabStatusPanel -Title (L "UsbSummaryTitle") -TitleColor Green -Items @(
+        @{ Label = (L "SummaryStatusLabel"); Value = (L "UsbReady"); Color = [ConsoleColor]::Green },
+        @{ Label = (L "PlanTargetDiskLabel"); Value = ("#{0} - {1}" -f $disk.Number, $disk.FriendlyName); Color = [ConsoleColor]::White },
+        @{ Label = (L "PlanUsbSpeedLabel"); Value = $usbSpeedInfo.UsbDisplay; Color = $(if ($usbSpeedInfo.IsUsb3) { [ConsoleColor]::Green } else { [ConsoleColor]::Yellow }) },
+        @{ Label = (L "SummaryBootPartLabel"); Value = ("{0} ({1})" -f $bootRoot, $BootLabel); Color = [ConsoleColor]::Green },
+        @{ Label = (LF "SummaryInstallPartLabel" $InstallFileSystem); Value = ("{0} ({1})" -f $installRoot, $InstallLabel); Color = [ConsoleColor]::Green },
+        @{ Label = (L "PlanBootLabel"); Value = ("{0} [{1}]" -f $finalBootWim.FullName, (Format-Bytes -Bytes ([UInt64]$finalBootWim.Length))); Color = [ConsoleColor]::White },
+        @{ Label = (L "PlanInstallLabel"); Value = $finalInstallText; Color = [ConsoleColor]::White },
+        @{ Label = (L "Log"); Value = $LogPath; Color = [ConsoleColor]::DarkGray }
+    )
 }
 catch {
     Write-Host ""
     Write-LabError (LF "ErrorPrefix" $_.Exception.Message)
     Write-Host ("{0}: {1}" -f (L "Log"), $LogPath) -ForegroundColor Yellow
-    Add-Content -LiteralPath $LogPath -Value ("[{0}] ERROR: {1}" -f (Get-Date -Format "yyyy-MM-dd HH:mm:ss"), $_.Exception.Message)
-    Add-Content -LiteralPath $LogPath -Value ($_.ScriptStackTrace | Out-String)
+    Add-Content -LiteralPath $LogPath -Value ("[{0}] ERROR: {1}" -f (Get-Date -Format "yyyy-MM-dd HH:mm:ss"), $_.Exception.Message) -Encoding UTF8
+    Add-Content -LiteralPath $LogPath -Value ($_.ScriptStackTrace | Out-String) -Encoding UTF8
 }
 finally {
     if ($MountedIsoPath) {
         Write-Host ""
         Write-LabInfo (L "DismountingIso") Cyan
-        Add-Content -LiteralPath $LogPath -Value ("[{0}] Desmontando ISO: {1}" -f (Get-Date -Format "yyyy-MM-dd HH:mm:ss"), $MountedIsoPath)
+        Add-Content -LiteralPath $LogPath -Value ("[{0}] {1} {2}" -f (Get-Date -Format "yyyy-MM-dd HH:mm:ss"), (L "DismountingIso"), $MountedIsoPath) -Encoding UTF8
         Dismount-DiskImage -ImagePath $MountedIsoPath -ErrorAction SilentlyContinue
     }
 }
@@ -1356,4 +1562,3 @@ Write-Host ""
 Write-Host ("{0}: {1}" -f (L "Log"), $LogPath) -ForegroundColor Yellow
 Read-Host (L "PressEnterExit") | Out-Null
 exit
-

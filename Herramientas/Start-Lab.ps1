@@ -10,6 +10,7 @@ $LanguageHelpers = Join-Path $ToolsRoot "Lab-Idioma.ps1"
 if (Test-Path -LiteralPath $LanguageHelpers -PathType Leaf) {
     . $LanguageHelpers
     Set-LabConsoleStyle
+    Set-LabConsoleWindowSize -MinWidth 112 -MinHeight 41
 }
 
 try {

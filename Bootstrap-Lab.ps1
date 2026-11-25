@@ -39,6 +39,9 @@ try {
     }
 
     Clear-Host
+    if (Get-Command Set-LabConsoleWindowSize -ErrorAction SilentlyContinue) {
+        Set-LabConsoleWindowSize -MinWidth 112 -MinHeight 41
+    }
     Write-LabSection "Windows 11 Deployment Lab"
 
     Write-LabPhase "Startup checks"

@@ -1,4 +1,5 @@
 @echo off
+title Lab_Win11
 color 07
 setlocal EnableExtensions
 
